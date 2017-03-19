@@ -10,7 +10,7 @@ public class RowKwadrat {
 	}
 
 	public void parsowanie(String[] tab) throws ArgumentAIsZero {
-		for (int i = 0; i < tab.length; i++) {
+		for (int i = 0; i < 3; i++) {
 			try {
 				dane[i] = Double.parseDouble(tab[i]);
 			} catch (NumberFormatException error) {
@@ -18,7 +18,7 @@ public class RowKwadrat {
 			}
 		}
 		if (dane[0] == 0) {
-			throw new ArgumentAIsZero("Wartosc a = 0 wiec rownanie nie jest kwadratowe!");
+			throw new ArgumentAIsZero();
 		}
 	}
 
