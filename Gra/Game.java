@@ -48,10 +48,15 @@ public class Game {
 			System.out.println("Szukana liczba jest mniejsza!");
 			System.out.println("Liczba pozostalych prob: " + (10 - numberOfTries));
 		}
+		else if (guessingNumber == -1) {
+			setNumberOfTries();
+			System.out.println("Liczba pozostalych prob: " + (10 - numberOfTries));
+		}
 		else {
 			setNumberOfTries();
 			System.out.println("Szukana liczba jest wieksza!");
 			System.out.println("Liczba pozostalych prob: " + (10 - numberOfTries));
 		}
 	}
+	
 }
