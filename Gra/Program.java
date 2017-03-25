@@ -1,5 +1,7 @@
+import java.util.Scanner;
+
 public class Program {
-	private static int range = 0;
+	private static int range = 0, guessingNumber;
 	
 	private void parse(String[] data) throws ArgumentAIsZeroException, NumberFormatException {
 		range = Integer.parseInt(data[0]);
@@ -14,12 +16,19 @@ public class Program {
 			Program obj = new Program();
 			obj.parse(data);
 			Game object = new Game(range);
+			System.out.println("Szukana liczba zostala wylosowana z zakresu od 0 do " + range);
+			do {
+				System.out.print("Podaj swoj typ: ");
+				Scanner input = new Scanner(System.in);
+				guessingNumber = input.nextInt();
+				object.check(guessingNumber);
+			} while (object.getNumberOfTries() < 10 && object.getResult() == false);
 			object.showResults(range);
 			
 		}
 		catch (ArrayIndexOutOfBoundsException e) {
 			System.out.println("Brak podanego zakresu");
-		} 
+		}
 		catch (NumberFormatException error) {
 			System.out.println("Podany zakres musi byc liczba!");
 		}

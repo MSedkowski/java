@@ -14,6 +14,18 @@ public class Game {
 		numberOfTries = 0;
 	}
 	
+	public int getNumberOfTries() {
+		return numberOfTries;
+	}
+	
+	private void setNumberOfTries() {
+		numberOfTries++;
+	}
+	
+	public boolean getResult() {
+		return result;
+	}
+	
 	public void showResults(int range) {
 		if (result) {
 			System.out.println("WYGRANA !");
@@ -27,15 +39,19 @@ public class Game {
 		System.out.println("Liczba prob: " + numberOfTries);
 	}
 	
-	public void check(int guessingNumber, int range) {
+	public void check(int guessingNumber) {
 		if (guessingNumber == number) {
-			showResults(range);
+			result = true;
 		}
-		if (guessingNumber > number) {
+		else if (guessingNumber > number) {
+			setNumberOfTries();
 			System.out.println("Szukana liczba jest mniejsza!");
+			System.out.println("Liczba pozostalych prob: " + (10 - numberOfTries));
 		}
 		else {
+			setNumberOfTries();
 			System.out.println("Szukana liczba jest wieksza!");
+			System.out.println("Liczba pozostalych prob: " + (10 - numberOfTries));
 		}
 	}
 }
