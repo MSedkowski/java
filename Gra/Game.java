@@ -47,6 +47,7 @@ public class Game {
             System.out.println("Liczba pozostalych prob: " + (10 - numberOfTries));
         } else if (guessingNumber == -1) {
             setNumberOfTries();
+            System.out.println("Straciles probe!");
             System.out.println("Liczba pozostalych prob: " + (10 - numberOfTries));
         } else {
             setNumberOfTries();
@@ -54,5 +55,6 @@ public class Game {
             System.out.println("Liczba pozostalych prob: " + (10 - numberOfTries));
         }
     }
+    
 
 }
