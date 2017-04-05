@@ -55,6 +55,5 @@ public class Game {
             System.out.println("Liczba pozostalych prob: " + (10 - numberOfTries));
         }
     }
-    
 
 }

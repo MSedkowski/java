@@ -21,47 +21,45 @@ public class Program {
             guessingNumber = -1;
         }
     }
-    
+
     public void checkRepeat() {
         do {
-        System.out.println("Czy chcesz zagraæ ponownie? [1] - Tak, [2] - Nie");
-        this.input();
-        if (guessingNumber == 2) {
-          repeat = false;
-        } 
-        else if (guessingNumber == 1) {
-            repeat = true;
-        }
-        else {
-            System.out.println("Podales zla liczbe!");
-            guessingNumber = 0;
-        }
+            System.out.println("Czy chcesz zagrac ponownie? [1] - Tak, [2] - Nie");
+            this.input();
+            if (guessingNumber == 2) {
+                repeat = false;
+            } else if (guessingNumber == 1) {
+                repeat = true;
+            } else {
+                System.out.println("Nalezy podac '1' albo '2'!");
+                guessingNumber = 0;
+            }
         } while (guessingNumber == 0);
     }
-    
+
     public static void help() {
         System.out.println("Aby poprawnie wywolac program wpisz polecenie:");
-        System.out.println("java Program.java n");
+        System.out.println("java Program n");
         System.out.println("gdzie n to gorny zakres losowanej liczby, np. 250");
     }
 
     public static void main(String[] data) {
         try {
             do {
-            Program obj = new Program();
-            obj.parse(data);
-            Game object = new Game(range);
-            System.out.println("Gra");
-            System.out.println("Szukana liczba zostala wylosowana z zakresu od 0 do " + range);
-            do {
-                System.out.print("Podaj swoj typ: ");
-                obj.input();
-                object.check(guessingNumber);
-            } while (object.getNumberOfTries() < 10 && object.getResult() == false);
-            clearScreen();
-            object.showResults(range);
-            obj.checkRepeat();
-        } while (repeat == true);
+                Program obj = new Program();
+                obj.parse(data);
+                Game object = new Game(range);
+                System.out.println("Gra");
+                System.out.println("Szukana liczba zostala wylosowana z zakresu od 0 do " + range);
+                do {
+                    System.out.print("Podaj swoj typ: ");
+                    obj.input();
+                    object.check(guessingNumber);
+                } while (object.getNumberOfTries() < 10 && object.getResult() == false);
+                clearScreen();
+                object.showResults(range);
+                obj.checkRepeat();
+            } while (repeat == true);
             System.out.println("Dziekuje za gre");
         } catch (ArrayIndexOutOfBoundsException e) {
             System.out.println("Brak podanego zakresu");
