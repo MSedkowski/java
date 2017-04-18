@@ -24,14 +24,22 @@ public class Program {
 
     public void checkRepeat() {
         do {
+<<<<<<< HEAD
             System.out.println("Czy chcesz zagraæ ponownie? [1] - Tak, [2] - Nie");
+=======
+            System.out.println("Czy chcesz zagrac ponownie? [1] - Tak, [2] - Nie");
+>>>>>>> e192a12ec5b6ad8fb075abacf58f3273affb9064
             this.input();
             if (guessingNumber == 2) {
                 repeat = false;
             } else if (guessingNumber == 1) {
                 repeat = true;
             } else {
+<<<<<<< HEAD
                 System.out.println("Podales zla liczbe!");
+=======
+                System.out.println("Nalezy podac '1' albo '2'!");
+>>>>>>> e192a12ec5b6ad8fb075abacf58f3273affb9064
                 guessingNumber = 0;
             }
         } while (guessingNumber == 0);
@@ -39,7 +47,7 @@ public class Program {
 
     public static void help() {
         System.out.println("Aby poprawnie wywolac program wpisz polecenie:");
-        System.out.println("java Program.java n");
+        System.out.println("java Program n");
         System.out.println("gdzie n to gorny zakres losowanej liczby, np. 250");
     }
 
