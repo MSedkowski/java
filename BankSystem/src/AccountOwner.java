@@ -11,11 +11,18 @@ public class AccountOwner implements Serializable {
     private String pesel;
     
     AccountOwner() throws PostCodeFormatException, PeselFormatException {
+        System.out.print("Podaj imie wlasciciela: ");
         setName();
+        System.out.println("Podaj nazwisko wlasciciela: ");
         setSurname();
+        System.out.println("Podaj adres wlasciciela: ");
+        System.out.println("Ulica: ");
         setStreet();
-        setCity();
+        System.out.println("Kod pocztowy: ");
         setPostCode();
+        System.out.println("Miasto: ");
+        setCity();
+        System.out.println("Pesel: ");
         setPesel();
     }
     

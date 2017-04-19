@@ -2,24 +2,28 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class AccountList {
-    private List <AccountOwner> accountList;
+    private List <AccountData> accountList;
     
     public AccountList()
     {
-        accountList = new ArrayList<AccountOwner>();
+        accountList = new ArrayList<AccountData>();
     }
     
-    public void addAccountOwner(AccountOwner a)
+    public void addAccountData(AccountData a)
     {
         accountList.add(a);
     }
     
-    public AccountOwner selectAccountOwner(int numer)
-    {
-        return accountList.get(numer - 1);
+    public void removeAccountData (int number) {
+        accountList.remove(number);
     }
     
-    public List<AccountOwner> returnAllAccountOwners()
+    public AccountData selectAccountData(int number)
+    {
+        return accountList.get(number - 1);
+    }
+    
+    public List<AccountData> returnAllAccountData()
     {
         return accountList;
     }

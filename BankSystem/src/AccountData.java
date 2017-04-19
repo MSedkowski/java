@@ -7,7 +7,10 @@ public class AccountData implements Serializable {
     private AccountOwner owner;
     
     AccountData(AccountOwner owner) throws AccountNumberFormatException {
+        System.out.print("Podaj stan konta: ");
         this.balance = inputInt();
+        System.out.println();
+        System.out.print("Podaj numer konta: ");
         this.accountNumber = inputStr();
         if(!accountNumber.matches("[0-9]{26}") && !accountNumber.matches("[0-9]{2} [0-9]{4} [0-9]{4} [0-9]{4} [0-9]{4} [0-9]{4} [0-9]{4}")) throw new AccountNumberFormatException();
         this.owner = owner;

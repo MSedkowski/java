@@ -3,9 +3,23 @@ import java.util.Scanner;
 
 public class BankAccountSystem {
     int chosenOption;
+    static boolean menuOption, transactionOption;
     
     BankAccountSystem() {
+        showMenu();
+        setChosenOption();
+    }
+    
+    private int getChosenOption() {
+        return chosenOption;
+    }
+    
+    private void setChosenOption() {
         chosenOption = inputInt();
+    }
+    
+    private static void setMenuOption(boolean value) {
+        menuOption = value;
     }
     
     void showMenu() {
@@ -25,7 +39,7 @@ public class BankAccountSystem {
         System.out.println("[0] Wyjscie");
     }
     
-    private int inputInt() {
+    private static int inputInt() {
         try {
             Scanner input = new Scanner(System.in);
             return input.nextInt();
@@ -36,7 +50,49 @@ public class BankAccountSystem {
     }
     
     public static void main(String[] args) {
-        
+        menuOption = true;
+        System.out.println("Witam w programie bankowym");
+        AccountList newList = new AccountList();
+        while(menuOption) {
+            BankAccountSystem newSystem = new BankAccountSystem();
+            switch(newSystem.getChosenOption()) {
+            
+            case 1: {
+                try {
+                    AccountOwner newOwner = new AccountOwner();
+                    AccountData newData = new AccountData(newOwner);
+                    newList.addAccountData(newData);
+                    newData.showOwner();
+                    break;
+                } catch (PostCodeFormatException e) {
+                    System.out.println(e.getMessage());
+                    e.printStackTrace();
+                } catch (PeselFormatException e) {
+                    System.out.println(e.getMessage());
+                    e.printStackTrace();
+                } catch (AccountNumberFormatException e) {
+                    System.out.println(e.getMessage());
+                }
+            }
+            
+            case 3: {
+                System.out.println("Podaj pozycje do usuniecia: ");
+                newList.removeAccountData(inputInt());
+                break;
+            }
+            
+            case 6: {
+                newList.returnAllAccountData();
+                break;
+            }
+            
+            case 0: {
+                setMenuOption(false);
+            }
+            
+            }
+            
+        }
     }
     
 }
