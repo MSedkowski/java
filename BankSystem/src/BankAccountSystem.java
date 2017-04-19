@@ -3,6 +3,7 @@ import java.util.Scanner;
 
 public class BankAccountSystem {
     int chosenOption;
+    static int position;
     static boolean menuOption, transactionOption;
     
     BankAccountSystem() {
@@ -26,12 +27,24 @@ public class BankAccountSystem {
         System.out.println("[1] Dodaj konto");
         System.out.println("[2] Aktualizuj konto");
         System.out.println("[3] Usun konto");
-        System.out.println("[4] Wykonaj przelew");
+        System.out.println("[4] Wykonaj transakcje");
         System.out.println("[5] Wyszukaj");
         System.out.println("[6] Wszystkie konta");
         System.out.println("[0] Wyjscie");
     }
 
+    static void showOwnerDataMenu() {
+        System.out.println("[1] Imie");
+        System.out.println("[2] Nazwisko");
+        System.out.println("[3] Ulica");
+        System.out.println("[4] Kod pocztowy");
+        System.out.println("[5] Miasto");
+        System.out.println("[6] Pesel");
+        System.out.println("[7] Stan konta");
+        System.out.println("[8] Numer konta");
+        System.out.println("[0] Wyjscie");
+    }
+    
     void showTransactionMenu() {
         System.out.println("[1] Wplata");
         System.out.println("[2] Wyplata");
@@ -49,7 +62,17 @@ public class BankAccountSystem {
         }
     }
     
-    public static void main(String[] args) {
+    private static String inputStr() {
+        try {
+            Scanner input = new Scanner(System.in);
+            return input.next();
+        } catch (InputMismatchException e) {
+            System.out.println("Nalezy podac liczbe!");
+            return "Brak danych";
+        }
+    }
+    
+    public static void main(String[] args) throws PostCodeFormatException, PeselFormatException, AccountNumberFormatException {
         menuOption = true;
         System.out.println("Witam w programie bankowym");
         AccountList newList = new AccountList();
@@ -75,9 +98,71 @@ public class BankAccountSystem {
                 }
             }
             
+            case 2: {
+                System.out.println("Podaj pozycje do aktualizacji: ");
+                position = inputInt();
+                AccountData newData = newList.selectAccountData(position);
+                newData.showOwner();
+                System.out.println("Podaj ktore dane chcesz aktualizowac :");
+                showOwnerDataMenu();
+                System.out.println("Twoj wybor: ");
+                switch(inputInt()) {
+                
+                case 1: {
+                    newData.owner.setName();
+                    break;
+                }
+                
+                case 2: {
+                    newData.owner.setSurname();
+                    break;
+                }
+                
+                case 3: {
+                    newData.owner.setStreet();
+                    break;
+                }
+                
+                case 4: {
+                    newData.owner.setPostCode();
+                    break;
+                }
+                
+                case 5: {
+                    newData.owner.setCity();
+                    break;
+                }
+                
+                case 6: {
+                    newData.owner.setPesel();
+                    break;
+                }
+                
+                case 7: {
+                    System.out.println("Podaj nowy stan konta: ");
+                    newData.setAccountBalance(inputInt());
+                    break;
+                }
+                
+                case 8: {
+                    System.out.println("Podaj nowy numer konta: ");
+                    newData.setAccountNumber(inputStr());
+                    break;
+                }
+                
+                case 0: {
+                    System.out.println("Brak zmian!");
+                    break;
+                }
+                }
+                newData.showOwner();
+                newList.setAccountData(newData, position - 1);
+                break;
+            }
+            
             case 3: {
                 System.out.println("Podaj pozycje do usuniecia: ");
-                newList.removeAccountData(inputInt());
+                newList.removeAccountData(inputInt() - 1);
                 break;
             }
             

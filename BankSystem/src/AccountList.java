@@ -15,7 +15,7 @@ public class AccountList {
     }
     
     public void removeAccountData (int number) {
-        accountList.remove(number);
+        accountList.remove(number - 1);
     }
     
     public AccountData selectAccountData(int number)
@@ -26,6 +26,10 @@ public class AccountList {
     public List<AccountData> returnAllAccountData()
     {
         return accountList;
+    }
+
+    public void setAccountData(AccountData newData, int i) {
+        accountList.set(i, newData);
     }
 
 }
