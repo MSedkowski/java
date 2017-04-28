@@ -12,7 +12,7 @@ public class AccountData implements Serializable {
         System.out.println();
         System.out.print("Podaj numer konta: ");
         this.accountNumber = inputStr();
-        if(!accountNumber.matches("[0-9]{26}") && !accountNumber.matches("[0-9]{2} [0-9]{4} [0-9]{4} [0-9]{4} [0-9]{4} [0-9]{4} [0-9]{4}")) throw new AccountNumberFormatException();
+        if(!accountNumber.matches("[0-9]{26}") && !accountNumber.matches("[0-9]{2}[ ][0-9]{4}[ ][0-9]{4}[ ][0-9]{4}[ ][0-9]{4}[ ][0-9]{4}[ ][0-9]{4}")) throw new AccountNumberFormatException();
         this.setOwner(owner);
     }
     
@@ -29,18 +29,12 @@ public class AccountData implements Serializable {
     }
     
     public void setAccountNumber(String value) throws AccountNumberFormatException {
-        if(!value.matches("[0-9]{26}") && !value.matches("[0-9]{2} [0-9]{4} [0-9]{4} [0-9]{4} [0-9]{4} [0-9]{4} [0-9]{4}")) throw new AccountNumberFormatException();
+        if(!value.matches("/[0-9]{26}/") && !value.matches("/[0-9]{2}[ ][0-9]{4}[ ][0-9]{4}[ ][0-9]{4}[ ][0-9]{4}[ ][0-9]{4}[ ][0-9]{4}/")) throw new AccountNumberFormatException();
         this.accountNumber = value;
     }
     
-    public void showOwner() {
-        System.out.println("Imie: " + getOwner().getName());
-        System.out.println("Nazwisko: " + getOwner().getSurname());
-        System.out.println("Adres: " + getOwner().getStreet());
-        System.out.println(getOwner().getPostCode() + ", " + getOwner().getCity());
-        System.out.println("Pesel: " + getOwner().getPesel());
-        System.out.println("Numer konta: " + accountNumber);
-        System.out.println("Stan konta: " + balance);
+    public String toString() {
+        return owner.toString() + "\n Numer konta: " + accountNumber + "\n Stan konta: " + balance;
     }
     
     private int inputInt() {
@@ -54,13 +48,8 @@ public class AccountData implements Serializable {
     }
     
     private String inputStr() {
-        try {
-            Scanner input = new Scanner(System.in);
-            return input.next();
-        } catch (InputMismatchException e) {
-            System.out.println("Nalezy podac liczbe!");
-            return "Brak danych";
-        }
+        Scanner input = new Scanner(System.in);
+        return input.next();
     }
 
     public AccountOwner getOwner() {
