@@ -85,4 +85,9 @@ public class AccountOwner implements Serializable {
             return "Brak danych";
         }
     }
+    
+    public String toString() {
+        return "Imie i nazwisko: " + name + " " + surname + "\n " + "Adres: " + street + "\n " + postCode + ", " + city
+                + "\n Pesel: " + pesel;
+    }
 }

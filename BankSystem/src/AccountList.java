@@ -18,12 +18,12 @@ public class AccountList {
         accountList.remove(number - 1);
     }
     
-    public AccountData selectAccountData(int number)
+    /*public AccountData selectAccountData(int number)
     {
         return accountList.get(number - 1);
-    }
+    }*/
     
-    public List<AccountData> returnAllAccountData()
+    public List<AccountData> getList()
     {
         return accountList;
     }

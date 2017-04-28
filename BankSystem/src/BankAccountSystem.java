@@ -85,7 +85,7 @@ public class BankAccountSystem {
                     AccountOwner newOwner = new AccountOwner();
                     AccountData newData = new AccountData(newOwner);
                     newList.addAccountData(newData);
-                    newData.showOwner();
+                    newData.toString();
                     break;
                 } catch (PostCodeFormatException e) {
                     System.out.println(e.getMessage());
@@ -101,8 +101,8 @@ public class BankAccountSystem {
             case 2: {
                 System.out.println("Podaj pozycje do aktualizacji: ");
                 position = inputInt();
-                AccountData newData = newList.selectAccountData(position);
-                newData.showOwner();
+                AccountData newData = newList.getList().get(position);
+                System.out.println(newData.toString());
                 System.out.println("Podaj ktore dane chcesz aktualizowac :");
                 showOwnerDataMenu();
                 System.out.println("Twoj wybor: ");
@@ -155,7 +155,7 @@ public class BankAccountSystem {
                     break;
                 }
                 }
-                newData.showOwner();
+                newData.toString();
                 newList.setAccountData(newData, position - 1);
                 break;
             }
@@ -172,12 +172,8 @@ public class BankAccountSystem {
             }
             
             case 6: { 
-                newList.returnAllAccountData();
-                int listSize = newList.getListSize();
-                for (int i = 0; i < listSize; i++) {
-                    AccountData newData = newList.selectAccountData(i + 1);
-                    newData.showOwner();
-                    System.out.println();
+                for (int i = 0; i < newList.getListSize(); i++) {
+                    System.out.println(newList.getList().get(i));
                 }
                 break;
             }
