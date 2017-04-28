@@ -77,13 +77,8 @@ public class AccountOwner implements Serializable {
     }
     
     private String inputStr() {
-        try {
-            Scanner input = new Scanner(System.in);
-            return input.next();
-        } catch (InputMismatchException e) {
-            System.out.println("Nalezy podac liczbe!");
-            return "Brak danych";
-        }
+        Scanner input = new Scanner(System.in);
+        return input.next();
     }
     
     public String toString() {

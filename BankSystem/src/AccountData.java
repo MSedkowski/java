@@ -12,7 +12,7 @@ public class AccountData implements Serializable {
         System.out.println();
         System.out.print("Podaj numer konta: ");
         this.accountNumber = inputStr();
-        if(!accountNumber.matches("[0-9]{26}") && !accountNumber.matches("[0-9]{2} [0-9]{4} [0-9]{4} [0-9]{4} [0-9]{4} [0-9]{4} [0-9]{4}")) throw new AccountNumberFormatException();
+        if(!accountNumber.matches("[0-9]{26}") && !accountNumber.matches("[0-9]{2}[ ][0-9]{4}[ ][0-9]{4}[ ][0-9]{4}[ ][0-9]{4}[ ][0-9]{4}[ ][0-9]{4}")) throw new AccountNumberFormatException();
         this.setOwner(owner);
     }
     
@@ -29,7 +29,7 @@ public class AccountData implements Serializable {
     }
     
     public void setAccountNumber(String value) throws AccountNumberFormatException {
-        if(!value.matches("/[0-9]{26}/") && !value.matches("/[0-9]{2} [0-9]{4} [0-9]{4} [0-9]{4} [0-9]{4} [0-9]{4} [0-9]{4}/")) throw new AccountNumberFormatException();
+        if(!value.matches("/[0-9]{26}/") && !value.matches("/[0-9]{2}[ ][0-9]{4}[ ][0-9]{4}[ ][0-9]{4}[ ][0-9]{4}[ ][0-9]{4}[ ][0-9]{4}/")) throw new AccountNumberFormatException();
         this.accountNumber = value;
     }
     
@@ -48,13 +48,8 @@ public class AccountData implements Serializable {
     }
     
     private String inputStr() {
-        try {
-            Scanner input = new Scanner(System.in);
-            return input.next();
-        } catch (InputMismatchException e) {
-            System.out.println("Nalezy podac liczbe!");
-            return "Brak danych";
-        }
+        Scanner input = new Scanner(System.in);
+        return input.next();
     }
 
     public AccountOwner getOwner() {

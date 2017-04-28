@@ -63,13 +63,8 @@ public class BankAccountSystem {
     }
     
     private static String inputStr() {
-        try {
-            Scanner input = new Scanner(System.in);
-            return input.next();
-        } catch (InputMismatchException e) {
-            System.out.println("Nalezy podac liczbe!");
-            return "Brak danych";
-        }
+        Scanner input = new Scanner(System.in);
+        return input.next();
     }
     
     public static void main(String[] args) throws PostCodeFormatException, PeselFormatException, AccountNumberFormatException {
@@ -101,7 +96,7 @@ public class BankAccountSystem {
             case 2: {
                 System.out.println("Podaj pozycje do aktualizacji: ");
                 position = inputInt();
-                AccountData newData = newList.getList().get(position);
+                AccountData newData = newList.getList().get(position - 1);
                 System.out.println(newData.toString());
                 System.out.println("Podaj ktore dane chcesz aktualizowac :");
                 showOwnerDataMenu();
@@ -162,7 +157,7 @@ public class BankAccountSystem {
             
             case 3: {
                 System.out.println("Podaj pozycje do usuniecia: ");
-                newList.removeAccountData(inputInt() - 1);
+                newList.removeAccountData(inputInt());
                 break;
             }
             
