@@ -32,4 +32,8 @@ public class AccountList {
         accountList.set(i, newData);
     }
 
+    public int getListSize() {
+        return accountList.size();
+    }
+
 }

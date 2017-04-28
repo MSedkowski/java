@@ -166,8 +166,19 @@ public class BankAccountSystem {
                 break;
             }
             
-            case 6: {
+            case 5: {
+                
+                break;
+            }
+            
+            case 6: { 
                 newList.returnAllAccountData();
+                int listSize = newList.getListSize();
+                for (int i = 0; i < listSize; i++) {
+                    AccountData newData = newList.selectAccountData(i + 1);
+                    newData.showOwner();
+                    System.out.println();
+                }
                 break;
             }
             
