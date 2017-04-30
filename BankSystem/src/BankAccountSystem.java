@@ -1,6 +1,7 @@
 import java.util.InputMismatchException;
 import java.util.Scanner;
-
+import java.io.FileNotFoundException;
+import java.io.PrintWriter;
 public class BankAccountSystem {
     int chosenOption;
     static int position;
@@ -68,7 +69,7 @@ public class BankAccountSystem {
         return input.next();
     }
     
-    public static void main(String[] args) throws PostCodeFormatException, PeselFormatException, AccountNumberFormatException {
+    public static void main(String[] args) throws PostCodeFormatException, PeselFormatException, AccountNumberFormatException, FileNotFoundException {
         menuOption = true;
         System.out.println("Witam w programie bankowym");
         AccountList newList = new AccountList();
@@ -177,7 +178,7 @@ public class BankAccountSystem {
             case 0: {
                 setMenuOption(false);
             }
-            
+            newList.saveList();
             }
             
         }

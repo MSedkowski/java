@@ -1,3 +1,5 @@
+import java.io.FileNotFoundException;
+import java.io.PrintWriter;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -35,5 +37,13 @@ public class AccountList {
     public int getListSize() {
         return accountList.size();
     }
+    
+    public void saveList() throws FileNotFoundException{
+        PrintWriter zapis = new PrintWriter("ala.txt");
+        for (int i = 0; i < accountList.size(); i++) {
+        zapis.println(accountList.get(i));
+        }
+        zapis.close();
+  }
 
 }

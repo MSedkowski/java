@@ -32,7 +32,7 @@ public class AccountData implements Serializable {
     }
     
     public void setAccountNumber(String value) throws AccountNumberFormatException {
-        if(!value.matches("/[0-9]{26}/") && !value.matches("/[0-9]{2}[ ][0-9]{4}[ ][0-9]{4}[ ][0-9]{4}[ ][0-9]{4}[ ][0-9]{4}[ ][0-9]{4}/")) throw new AccountNumberFormatException();
+        if(!value.matches("[0-9]{26}") && !value.matches("[0-9]{2}[ ][0-9]{4}[ ][0-9]{4}[ ][0-9]{4}[ ][0-9]{4}[ ][0-9]{4}[ ][0-9]{4}")) throw new AccountNumberFormatException();
         this.accountNumber = value;
     }
     
@@ -63,4 +63,5 @@ public class AccountData implements Serializable {
     public void setOwner(AccountOwner owner) {
         this.owner = owner;
     }
+    
 }
