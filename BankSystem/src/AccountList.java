@@ -2,6 +2,8 @@ import java.io.FileNotFoundException;
 import java.io.PrintWriter;
 import java.util.ArrayList;
 import java.util.List;
+import java.io.File;
+import java.util.Scanner;
 
 public class AccountList {
     private List <AccountData> accountList;
@@ -38,12 +40,25 @@ public class AccountList {
         return accountList.size();
     }
     
+    /*public void loadList(){
+         File file = new File("ala.txt");
+         Scanner in = new Scanner(file);
+       
+         accountList.set(i) = in.nextLine();
+    }*/
+    
     public void saveList() throws FileNotFoundException{
-        PrintWriter zapis = new PrintWriter("ala.txt");
+        PrintWriter saveDatabase = new PrintWriter("accountDatabase.txt");
+        PrintWriter saveText = new PrintWriter("accountText.txt");
+        saveDatabase.println(accountList.size());
         for (int i = 0; i < accountList.size(); i++) {
-        zapis.println(accountList.get(i));
+            saveDatabase.println(accountList.get(i).databaseSave());
         }
-        zapis.close();
+        for (int i = 0; i < accountList.size(); i++) {
+            saveText.println(accountList.get(i).textSave());
+        }
+        saveDatabase.close();
+        saveText.close();
   }
 
 }

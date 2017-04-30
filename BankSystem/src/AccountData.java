@@ -15,7 +15,7 @@ public class AccountData implements Serializable {
         System.out.println();
         System.out.print("Podaj numer konta: ");
         this.accountNumber = inputStr();
-        if(!accountNumber.matches("[0-9]{26}") && !accountNumber.matches("[0-9]{2}[ ][0-9]{4}[ ][0-9]{4}[ ][0-9]{4}[ ][0-9]{4}[ ][0-9]{4}[ ][0-9]{4}")) throw new AccountNumberFormatException();
+        if(!accountNumber.matches("[0-9]{26}") && !accountNumber.matches("[0-9]{2} [0-9]{4} [0-9]{4} [0-9]{4} [0-9]{4} [0-9]{4} [0-9]{4}")) throw new AccountNumberFormatException();
         this.setOwner(owner);
     }
     
@@ -36,9 +36,20 @@ public class AccountData implements Serializable {
         this.accountNumber = value;
     }
     
-    @Override
-    public String toString() {
-        return owner.toString() + "\n Numer konta: " + accountNumber + "\n Stan konta: " + balance;
+    public String textSave() {
+        StringBuilder sbAccount = new StringBuilder();
+        sbAccount.append(owner.textSave()); 
+        sbAccount.append("Numer konta: " + accountNumber).append(System.getProperty("line.separator")); 
+        sbAccount.append("Stan konta: " + balance).append(System.getProperty("line.separator")); 
+        return sbAccount.toString();
+    }
+    
+    public String databaseSave() {
+        StringBuilder sbAccount = new StringBuilder();
+        sbAccount.append(owner.databaseSave()); 
+        sbAccount.append(accountNumber).append(System.getProperty("line.separator")); 
+        sbAccount.append(balance); 
+        return sbAccount.toString();
     }
     
     private int inputInt() {

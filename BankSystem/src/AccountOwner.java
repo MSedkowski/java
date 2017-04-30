@@ -79,12 +79,26 @@ public class AccountOwner implements Serializable {
     
     private String inputStr() {
         input = new Scanner(System.in);
-        return input.next();
+        return input.nextLine();
     }
     
-    @Override
-    public String toString() {
-        return "Imie i nazwisko: " + name + " " + surname + "\n " + "Adres: " + street + "\n " + postCode + ", " + city
-                + "\n Pesel: " + pesel;
+    public String textSave() {
+        StringBuilder sbOwner = new StringBuilder();
+        sbOwner.append("Imie i nazwisko: " + name + " " + surname).append(System.getProperty("line.separator")); 
+        sbOwner.append("Adres: " + street).append(System.getProperty("line.separator")); 
+        sbOwner.append(postCode + ", " + city).append(System.getProperty("line.separator")); 
+        sbOwner.append("Pesel: " + pesel).append(System.getProperty("line.separator")); 
+        return sbOwner.toString();
+    }
+    
+    public String databaseSave() {
+        StringBuilder sbOwner = new StringBuilder();
+        sbOwner.append(name).append(System.getProperty("line.separator")); 
+        sbOwner.append(surname).append(System.getProperty("line.separator")); 
+        sbOwner.append(street).append(System.getProperty("line.separator")); 
+        sbOwner.append(postCode).append(System.getProperty("line.separator")); 
+        sbOwner.append(city).append(System.getProperty("line.separator")); 
+        sbOwner.append(pesel).append(System.getProperty("line.separator")); 
+        return sbOwner.toString();
     }
 }
