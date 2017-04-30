@@ -1,29 +1,16 @@
-import java.util.InputMismatchException;
-import java.util.Scanner;
 import java.io.Serializable;
+import java.math.BigDecimal;
 
 public class AccountData implements Serializable {
     private static final long serialVersionUID = 7178247579750074142L;
-    private Integer balance;
+    private BigDecimal balance;
     private String accountNumber;
     AccountOwner owner;
-    private Scanner input;
     
     AccountData() {
-        
     }
     
-    public void setAccountData(AccountOwner owner) throws AccountNumberFormatException {
-        System.out.print("Podaj stan konta: ");
-        this.balance = inputInt();
-        System.out.println();
-        System.out.print("Podaj numer konta: ");
-        this.accountNumber = inputStr();
-        if(!accountNumber.matches("[0-9]{26}") && !accountNumber.matches("[0-9]{2} [0-9]{4} [0-9]{4} [0-9]{4} [0-9]{4} [0-9]{4} [0-9]{4}")) throw new AccountNumberFormatException();
-        this.owner = owner;
-    }
-    
-    public int getAccountBalance() {
+    public BigDecimal getAccountBalance() {
         return balance;
     }
     
@@ -31,7 +18,7 @@ public class AccountData implements Serializable {
         return accountNumber;
     }
     
-    public void setAccountBalance(int value) {
+    public void setAccountBalance(BigDecimal value) {
         this.balance = value; 
     }
     
@@ -56,20 +43,9 @@ public class AccountData implements Serializable {
         sbAccount.append(balance); 
         return sbAccount.toString();
     }
-    
-    private int inputInt() {
-        try {
-            input = new Scanner(System.in);
-            return input.nextInt();
-        } catch (InputMismatchException e) {
-            System.out.println("Nalezy podac liczbe!");
-            return 0;
-        }
-    }
-    
-    private String inputStr() {
-        input = new Scanner(System.in);
-        return input.nextLine();
+
+    public void setOwner(AccountOwner newOwner) {
+        this.owner = newOwner;
     }
 
 }

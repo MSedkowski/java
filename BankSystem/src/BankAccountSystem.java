@@ -1,7 +1,7 @@
 import java.util.InputMismatchException;
 import java.util.Scanner;
 import java.io.FileNotFoundException;
-import java.io.PrintWriter;
+import java.math.BigDecimal;
 public class BankAccountSystem {
     int chosenOption;
     static int position;
@@ -64,6 +64,16 @@ public class BankAccountSystem {
         }
     }
     
+    private static BigDecimal inputBigDecimal() {
+        try {
+            input = new Scanner(System.in);
+            return input.nextBigDecimal();
+        } catch (InputMismatchException e) {
+            System.out.println("Nalezy podac liczbe!");
+            return null ;
+        }
+    }
+    
     private static String inputStr() {
         input = new Scanner(System.in);
         return input.next();
@@ -81,8 +91,24 @@ public class BankAccountSystem {
                 try {
                     AccountOwner newOwner = new AccountOwner();
                     AccountData newData = new AccountData();
-                    newOwner.setOwner();
-                    newData.setAccountData(newOwner);
+                    System.out.print("Podaj imie wlasciciela: ");
+                    newOwner.setName(inputStr());
+                    System.out.println("Podaj nazwisko wlasciciela: ");
+                    newOwner.setSurname(inputStr());
+                    System.out.println("Podaj adres wlasciciela: ");
+                    System.out.println("Ulica: ");
+                    newOwner.setStreet(inputStr());
+                    System.out.println("Kod pocztowy: ");
+                    newOwner.setPostCode(inputStr());
+                    System.out.println("Miasto: ");
+                    newOwner.setCity(inputStr());
+                    System.out.println("Pesel: ");
+                    newOwner.setPesel(inputStr());
+                    newData.setOwner(newOwner);
+                    System.out.println("Podaj stan konta: ");
+                    newData.setAccountBalance(inputBigDecimal());
+                    System.out.println("Podaj numer konta: ");
+                    newData.setAccountNumber(inputStr());
                     newList.addAccountData(newData);
                     newData.toString();
                     break;
@@ -108,38 +134,38 @@ public class BankAccountSystem {
                 switch(inputInt()) {
                 
                 case 1: {
-                    newData.owner.setName();
+                    newData.owner.setName(inputStr());
                     break;
                 }
                 
                 case 2: {
-                    newData.owner.setSurname();
+                    newData.owner.setSurname(inputStr());
                     break;
                 }
                 
                 case 3: {
-                    newData.owner.setStreet();
+                    newData.owner.setStreet(inputStr());
                     break;
                 }
                 
                 case 4: {
-                    newData.owner.setPostCode();
+                    newData.owner.setPostCode(inputStr());
                     break;
                 }
                 
                 case 5: {
-                    newData.owner.setCity();
+                    newData.owner.setCity(inputStr());
                     break;
                 }
                 
                 case 6: {
-                    newData.owner.setPesel();
+                    newData.owner.setPesel(inputStr());
                     break;
                 }
                 
                 case 7: {
                     System.out.println("Podaj nowy stan konta: ");
-                    newData.setAccountBalance(inputInt());
+                    newData.setAccountBalance(inputBigDecimal());
                     break;
                 }
                 
