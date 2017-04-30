@@ -80,7 +80,9 @@ public class BankAccountSystem {
             case 1: {
                 try {
                     AccountOwner newOwner = new AccountOwner();
-                    AccountData newData = new AccountData(newOwner);
+                    AccountData newData = new AccountData();
+                    newOwner.setOwner();
+                    newData.setAccountData(newOwner);
                     newList.addAccountData(newData);
                     newData.toString();
                     break;
@@ -169,7 +171,7 @@ public class BankAccountSystem {
             }
             
             case 6: { 
-                for (int i = 0; i < newList.getListSize(); i++) {
+                for (int i = 0; i < newList.getList().size(); i++) {
                     System.out.println(newList.getList().get(i));
                 }
                 break;

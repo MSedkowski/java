@@ -22,11 +22,6 @@ public class AccountList {
         accountList.remove(number - 1);
     }
     
-    /*public AccountData selectAccountData(int number)
-    {
-        return accountList.get(number - 1);
-    }*/
-    
     public List<AccountData> getList()
     {
         return accountList;
@@ -36,9 +31,6 @@ public class AccountList {
         accountList.set(i, newData);
     }
 
-    public int getListSize() {
-        return accountList.size();
-    }
     
     /*public void loadList(){
          File file = new File("ala.txt");
@@ -55,7 +47,7 @@ public class AccountList {
             saveDatabase.println(accountList.get(i).databaseSave());
         }
         for (int i = 0; i < accountList.size(); i++) {
-            saveText.println(accountList.get(i).textSave());
+            saveText.println(accountList.get(i));
         }
         saveDatabase.close();
         saveText.close();

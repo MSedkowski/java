@@ -12,6 +12,10 @@ public class AccountOwner implements Serializable {
     private Scanner input;
     
     AccountOwner() throws PostCodeFormatException, PeselFormatException {
+        
+    }
+    
+    public void setOwner() throws PostCodeFormatException, PeselFormatException {
         System.out.print("Podaj imie wlasciciela: ");
         setName();
         System.out.println("Podaj nazwisko wlasciciela: ");
@@ -82,7 +86,8 @@ public class AccountOwner implements Serializable {
         return input.nextLine();
     }
     
-    public String textSave() {
+    @Override
+    public String toString() {
         StringBuilder sbOwner = new StringBuilder();
         sbOwner.append("Imie i nazwisko: " + name + " " + surname).append(System.getProperty("line.separator")); 
         sbOwner.append("Adres: " + street).append(System.getProperty("line.separator")); 
