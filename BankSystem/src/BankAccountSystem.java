@@ -5,6 +5,7 @@ public class BankAccountSystem {
     int chosenOption;
     static int position;
     static boolean menuOption, transactionOption;
+    private static Scanner input;
     
     BankAccountSystem() {
         showMenu();
@@ -54,7 +55,7 @@ public class BankAccountSystem {
     
     private static int inputInt() {
         try {
-            Scanner input = new Scanner(System.in);
+            input = new Scanner(System.in);
             return input.nextInt();
         } catch (InputMismatchException e) {
             System.out.println("Nalezy podac liczbe!");
@@ -63,7 +64,7 @@ public class BankAccountSystem {
     }
     
     private static String inputStr() {
-        Scanner input = new Scanner(System.in);
+        input = new Scanner(System.in);
         return input.next();
     }
     

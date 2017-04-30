@@ -1,10 +1,13 @@
 import java.util.InputMismatchException;
 import java.util.Scanner;
 import java.io.Serializable;
+
 public class AccountData implements Serializable {
+    private static final long serialVersionUID = 7178247579750074142L;
     private Integer balance;
     private String accountNumber;
     AccountOwner owner;
+    private Scanner input;
     
     AccountData(AccountOwner owner) throws AccountNumberFormatException {
         System.out.print("Podaj stan konta: ");
@@ -33,13 +36,14 @@ public class AccountData implements Serializable {
         this.accountNumber = value;
     }
     
+    @Override
     public String toString() {
         return owner.toString() + "\n Numer konta: " + accountNumber + "\n Stan konta: " + balance;
     }
     
     private int inputInt() {
         try {
-            Scanner input = new Scanner(System.in);
+            input = new Scanner(System.in);
             return input.nextInt();
         } catch (InputMismatchException e) {
             System.out.println("Nalezy podac liczbe!");
@@ -48,7 +52,7 @@ public class AccountData implements Serializable {
     }
     
     private String inputStr() {
-        Scanner input = new Scanner(System.in);
+        input = new Scanner(System.in);
         return input.next();
     }
 

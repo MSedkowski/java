@@ -1,14 +1,15 @@
-import java.util.InputMismatchException;
 import java.util.Scanner;
 import java.io.Serializable;
 
 public class AccountOwner implements Serializable {
+    private static final long serialVersionUID = 4051080129864912795L;
     private String name;
     private String surname;
     private String street;
     private String city;
     private String postCode;
     private String pesel;
+    private Scanner input;
     
     AccountOwner() throws PostCodeFormatException, PeselFormatException {
         System.out.print("Podaj imie wlasciciela: ");
@@ -77,10 +78,11 @@ public class AccountOwner implements Serializable {
     }
     
     private String inputStr() {
-        Scanner input = new Scanner(System.in);
+        input = new Scanner(System.in);
         return input.next();
     }
     
+    @Override
     public String toString() {
         return "Imie i nazwisko: " + name + " " + surname + "\n " + "Adres: " + street + "\n " + postCode + ", " + city
                 + "\n Pesel: " + pesel;
