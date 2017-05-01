@@ -1,54 +1,27 @@
-import java.io.FileNotFoundException;
-import java.io.PrintWriter;
 import java.util.ArrayList;
 import java.util.List;
 
 public class AccountList {
-    private List <AccountData> accountList;
-    
-    public AccountList()
-    {
+    private List<AccountData> accountList;
+
+    public AccountList() {
         accountList = new ArrayList<AccountData>();
     }
-    
-    public void addAccountData(AccountData a)
-    {
+
+    public void addAccountData(AccountData a) {
         accountList.add(a);
     }
-    
-    public void removeAccountData (int number) {
+
+    public void removeAccountData(int number) {
         accountList.remove(number - 1);
     }
-    
-    public List<AccountData> getList()
-    {
+
+    public List<AccountData> getList() {
         return accountList;
     }
 
     public void setAccountData(AccountData newData, int i) {
         accountList.set(i, newData);
     }
-
-    
-    /*public void loadList(){
-         File file = new File("ala.txt");
-         Scanner in = new Scanner(file);
-       
-         accountList.set(i) = in.nextLine();
-    }*/
-    
-    public void saveList() throws FileNotFoundException{
-        PrintWriter saveDatabase = new PrintWriter("accountDatabase.txt");
-        PrintWriter saveText = new PrintWriter("accountText.txt");
-        saveDatabase.println(accountList.size());
-        for (int i = 0; i < accountList.size(); i++) {
-            saveDatabase.println(accountList.get(i).databaseSave());
-        }
-        for (int i = 0; i < accountList.size(); i++) {
-            saveText.println(accountList.get(i));
-        }
-        saveDatabase.close();
-        saveText.close();
-  }
 
 }

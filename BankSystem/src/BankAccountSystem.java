@@ -2,6 +2,7 @@ import java.util.InputMismatchException;
 import java.util.Scanner;
 import java.io.File;
 import java.io.FileNotFoundException;
+import java.io.PrintWriter;
 import java.math.BigDecimal;
 
 public class BankAccountSystem {
@@ -107,7 +108,22 @@ public class BankAccountSystem {
         } catch (FileNotFoundException e) {
             System.out.println("Brak bazy danych. Zostanie stworzona nowa po zakoñczeniu dzia³ania programu.");
         }
+
         return newList;
+    }
+
+    private void saveDatabaseToFile(AccountList newList) throws FileNotFoundException {
+        PrintWriter saveDatabase = new PrintWriter("accountDatabase.txt");
+        PrintWriter saveText = new PrintWriter("accountText.txt");
+        saveDatabase.println(newList.getList().size());
+        for (int i = 0; i < newList.getList().size(); i++) {
+            saveDatabase.println(newList.getList().get(i).databaseSave());
+        }
+        for (int i = 0; i < newList.getList().size(); i++) {
+            saveText.println(newList.getList().get(i));
+        }
+        saveDatabase.close();
+        saveText.close();
     }
 
     public static void main(String[] args)
@@ -280,7 +296,7 @@ public class BankAccountSystem {
             case 0: {
                 setRepeat(false);
             }
-                newList.saveList();
+                newSystem.saveDatabaseToFile(newList);
             }
 
         }
