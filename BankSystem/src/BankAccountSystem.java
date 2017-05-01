@@ -1,31 +1,35 @@
 import java.util.InputMismatchException;
 import java.util.Scanner;
+import java.io.File;
 import java.io.FileNotFoundException;
 import java.math.BigDecimal;
+
 public class BankAccountSystem {
     int chosenOption;
     static int position;
-    static boolean menuOption, transactionOption;
+    static boolean repeatOption, repeatTransactionOption;
     private static Scanner input;
-    
+
     BankAccountSystem() {
-        showMenu();
-        setChosenOption();
     }
-    
+
     private int getChosenOption() {
         return chosenOption;
     }
-    
+
     private void setChosenOption() {
         chosenOption = inputInt();
     }
-    
-    private static void setMenuOption(boolean value) {
-        menuOption = value;
+
+    private static void setRepeat(boolean value) {
+        repeatOption = value;
     }
-    
-    void showMenu() {
+
+    private static void setRepeatTransaction(boolean value) {
+        repeatTransactionOption = value;
+    }
+
+    public void showMenu() {
         System.out.println("[1] Dodaj konto");
         System.out.println("[2] Aktualizuj konto");
         System.out.println("[3] Usun konto");
@@ -35,7 +39,7 @@ public class BankAccountSystem {
         System.out.println("[0] Wyjscie");
     }
 
-    static void showOwnerDataMenu() {
+    public static void showOwnerDataMenu() {
         System.out.println("[1] Imie");
         System.out.println("[2] Nazwisko");
         System.out.println("[3] Ulica");
@@ -46,14 +50,14 @@ public class BankAccountSystem {
         System.out.println("[8] Numer konta");
         System.out.println("[0] Wyjscie");
     }
-    
-    void showTransactionMenu() {
+
+    public static void showTransactionMenu() {
         System.out.println("[1] Wplata");
         System.out.println("[2] Wyplata");
         System.out.println("[3] Transfer miedzy kontami");
         System.out.println("[0] Wyjscie");
     }
-    
+
     private static int inputInt() {
         try {
             input = new Scanner(System.in);
@@ -63,30 +67,61 @@ public class BankAccountSystem {
             return 0;
         }
     }
-    
+
     private static BigDecimal inputBigDecimal() {
         try {
             input = new Scanner(System.in);
             return input.nextBigDecimal();
         } catch (InputMismatchException e) {
             System.out.println("Nalezy podac liczbe!");
-            return null ;
+            return null;
         }
     }
-    
+
     private static String inputStr() {
         input = new Scanner(System.in);
         return input.next();
     }
-    
-    public static void main(String[] args) throws PostCodeFormatException, PeselFormatException, AccountNumberFormatException, FileNotFoundException {
-        menuOption = true;
+
+    private AccountList readDatabaseFromFile(AccountList newList)
+            throws FileNotFoundException, PostCodeFormatException, PeselFormatException, AccountNumberFormatException {
+        try {
+            File databaseFile = new File("accountDatabase.txt");
+            input = new Scanner(databaseFile);
+            AccountOwner newOwner = new AccountOwner();
+            AccountData newData = new AccountData();
+            int zdanie = input.nextInt();
+            input.useDelimiter(System.getProperty("line.separator"));
+            for (; zdanie > 0; zdanie--) {
+                newOwner.setName(input.next());
+                newOwner.setSurname(input.next());
+                newOwner.setStreet(input.next());
+                newOwner.setPostCode(input.next());
+                newOwner.setCity(input.next());
+                newOwner.setPesel(input.next());
+                newData.setOwner(newOwner);
+                newData.setAccountNumber(input.next());
+                newData.setAccountBalance(input.nextBigDecimal());
+                newList.addAccountData(newData);
+            }
+        } catch (FileNotFoundException e) {
+            System.out.println("Brak bazy danych. Zostanie stworzona nowa po zakoñczeniu dzia³ania programu.");
+        }
+        return newList;
+    }
+
+    public static void main(String[] args)
+            throws PostCodeFormatException, PeselFormatException, AccountNumberFormatException, FileNotFoundException {
+        setRepeat(true);
         System.out.println("Witam w programie bankowym");
+        BankAccountSystem newSystem = new BankAccountSystem();
         AccountList newList = new AccountList();
-        while(menuOption) {
-            BankAccountSystem newSystem = new BankAccountSystem();
-            switch(newSystem.getChosenOption()) {
-            
+        newSystem.readDatabaseFromFile(newList);
+        while (repeatOption) {
+            newSystem.showMenu();
+            newSystem.setChosenOption();
+            switch (newSystem.getChosenOption()) {
+
             case 1: {
                 try {
                     AccountOwner newOwner = new AccountOwner();
@@ -122,7 +157,7 @@ public class BankAccountSystem {
                     System.out.println(e.getMessage());
                 }
             }
-            
+
             case 2: {
                 System.out.println("Podaj pozycje do aktualizacji: ");
                 position = inputInt();
@@ -131,50 +166,50 @@ public class BankAccountSystem {
                 System.out.println("Podaj ktore dane chcesz aktualizowac :");
                 showOwnerDataMenu();
                 System.out.println("Twoj wybor: ");
-                switch(inputInt()) {
-                
+                switch (inputInt()) {
+
                 case 1: {
                     newData.owner.setName(inputStr());
                     break;
                 }
-                
+
                 case 2: {
                     newData.owner.setSurname(inputStr());
                     break;
                 }
-                
+
                 case 3: {
                     newData.owner.setStreet(inputStr());
                     break;
                 }
-                
+
                 case 4: {
                     newData.owner.setPostCode(inputStr());
                     break;
                 }
-                
+
                 case 5: {
                     newData.owner.setCity(inputStr());
                     break;
                 }
-                
+
                 case 6: {
                     newData.owner.setPesel(inputStr());
                     break;
                 }
-                
+
                 case 7: {
                     System.out.println("Podaj nowy stan konta: ");
                     newData.setAccountBalance(inputBigDecimal());
                     break;
                 }
-                
+
                 case 8: {
                     System.out.println("Podaj nowy numer konta: ");
                     newData.setAccountNumber(inputStr());
                     break;
                 }
-                
+
                 case 0: {
                     System.out.println("Brak zmian!");
                     break;
@@ -184,32 +219,71 @@ public class BankAccountSystem {
                 newList.setAccountData(newData, position - 1);
                 break;
             }
-            
+
             case 3: {
                 System.out.println("Podaj pozycje do usuniecia: ");
-                newList.removeAccountData(inputInt());
+                newList.removeAccountData(inputInt() - 1);
                 break;
             }
-            
-            case 5: {
-                
+
+            case 4: {
+                setRepeatTransaction(true);
+                while (repeatTransactionOption) {
+                    showTransactionMenu();
+                    System.out.println("Twoj wybor: ");
+                    switch (inputInt()) {
+
+                    case 1: {
+                        System.out.println("Podaj numer klienta");
+                        AccountData newData = newList.getList().get(inputInt() - 1);
+                        newData.toString();
+                        System.out.println("Podaj kwotê do wplaty");
+                        newData.setAccountBalance(newData.getAccountBalance().add(inputBigDecimal()));
+                    }
+
+                    case 2: {
+                        System.out.println("Podaj numer klienta");
+                        AccountData newData = newList.getList().get(inputInt() - 1);
+                        newData.toString();
+                        System.out.println("Podaj kwotê do wplaty");
+                        newData.setAccountBalance(newData.getAccountBalance().subtract(inputBigDecimal()));
+                    }
+
+                    case 3: {
+                        System.out.println("Podaj numer klienta - adresata");
+                        AccountData newAddresseeData = newList.getList().get(inputInt() - 1);
+                        newAddresseeData.toString();
+                        System.out.println("Podaj numer klienta - odbiorcy");
+                        AccountData newRecipientData = newList.getList().get(inputInt() - 1);
+                        newRecipientData.toString();
+                        System.out.println("Podaj kwotê transakcji");
+                        newAddresseeData
+                                .setAccountBalance(newAddresseeData.getAccountBalance().subtract(inputBigDecimal()));
+                        newRecipientData.setAccountBalance(newRecipientData.getAccountBalance().add(inputBigDecimal()));
+                    }
+
+                    case 0: {
+                        setRepeatTransaction(false);
+                    }
+                    }
+                }
                 break;
             }
-            
-            case 6: { 
+
+            case 6: {
                 for (int i = 0; i < newList.getList().size(); i++) {
                     System.out.println(newList.getList().get(i));
                 }
                 break;
             }
-            
+
             case 0: {
-                setMenuOption(false);
+                setRepeat(false);
             }
-            newList.saveList();
+                newList.saveList();
             }
-            
+
         }
     }
-    
+
 }
