@@ -140,6 +140,7 @@ public class BankAccountSystem {
 
             case 1: {
                 try {
+                    clearScreen();
                     AccountOwner newOwner = new AccountOwner();
                     AccountData newData = new AccountData();
                     System.out.print("Podaj imie wlasciciela: ");
@@ -175,6 +176,7 @@ public class BankAccountSystem {
             }
 
             case 2: {
+                clearScreen();
                 System.out.println("Podaj pozycje do aktualizacji: ");
                 position = inputInt();
                 AccountData newData = newList.getList().get(position - 1);
@@ -185,42 +187,64 @@ public class BankAccountSystem {
                 switch (inputInt()) {
 
                 case 1: {
+                    clearScreen();
+                    System.out.println("Imie wlasciciela: " + newData.owner.getName());
+                    System.out.println("Podaj nowe imie: ");
                     newData.owner.setName(inputStr());
                     break;
                 }
 
                 case 2: {
+                    clearScreen();
+                    System.out.println("Nazwisko wlasciciela: " + newData.owner.getSurname());
+                    System.out.println("Podaj nowe nazwisko: ");
                     newData.owner.setSurname(inputStr());
                     break;
                 }
 
                 case 3: {
+                    clearScreen();
+                    System.out.println("Obecny adres - ulica: " + newData.owner.getStreet());
+                    System.out.println("Nowy adres - ulica: ");
                     newData.owner.setStreet(inputStr());
                     break;
                 }
 
                 case 4: {
+                    clearScreen();
+                    System.out.println("Obecny adres - kod pocztowy: " + newData.owner.getPostCode());
+                    System.out.println("Nowy adres - kod pocztowy: ");
                     newData.owner.setPostCode(inputStr());
                     break;
                 }
 
                 case 5: {
+                    clearScreen();
+                    System.out.println("Obecny adres - miasto: " + newData.owner.getCity());
+                    System.out.println("Nowy adres - miasto: ");
                     newData.owner.setCity(inputStr());
                     break;
                 }
 
                 case 6: {
+                    clearScreen();
+                    System.out.println("Obecny PESEL: " + newData.owner.getPesel());
+                    System.out.println("Nowy PESEL: ");
                     newData.owner.setPesel(inputStr());
                     break;
                 }
 
                 case 7: {
+                    clearScreen();
+                    System.out.println("Obecny stan konta: " + newData.getAccountBalance());
                     System.out.println("Podaj nowy stan konta: ");
                     newData.setAccountBalance(inputBigDecimal());
                     break;
                 }
 
                 case 8: {
+                    clearScreen();
+                    System.out.println("Obecny numer konta: " + newData.getAccountNumber());
                     System.out.println("Podaj nowy numer konta: ");
                     newData.setAccountNumber(inputStr());
                     break;
@@ -237,12 +261,14 @@ public class BankAccountSystem {
             }
 
             case 3: {
+                clearScreen();
                 System.out.println("Podaj pozycje do usuniecia: ");
                 newList.removeAccountData(inputInt() - 1);
                 break;
             }
 
             case 4: {
+                clearScreen();
                 setRepeatTransaction(true);
                 while (repeatTransactionOption) {
                     showTransactionMenu();
@@ -250,6 +276,7 @@ public class BankAccountSystem {
                     switch (inputInt()) {
 
                     case 1: {
+                        clearScreen();
                         System.out.println("Podaj numer klienta");
                         AccountData newData = newList.getList().get(inputInt() - 1);
                         newData.toString();
@@ -258,6 +285,7 @@ public class BankAccountSystem {
                     }
 
                     case 2: {
+                        clearScreen();
                         System.out.println("Podaj numer klienta");
                         AccountData newData = newList.getList().get(inputInt() - 1);
                         newData.toString();
@@ -266,6 +294,7 @@ public class BankAccountSystem {
                     }
 
                     case 3: {
+                        clearScreen();
                         System.out.println("Podaj numer klienta - adresata");
                         AccountData newAddresseeData = newList.getList().get(inputInt() - 1);
                         newAddresseeData.toString();
@@ -279,6 +308,8 @@ public class BankAccountSystem {
                     }
 
                     case 0: {
+                        clearScreen();
+                        System.out.println("Koniec transakcji");
                         setRepeatTransaction(false);
                     }
                     }
@@ -287,6 +318,7 @@ public class BankAccountSystem {
             }
 
             case 6: {
+                clearScreen();
                 for (int i = 0; i < newList.getList().size(); i++) {
                     System.out.println(newList.getList().get(i));
                 }
@@ -300,6 +332,11 @@ public class BankAccountSystem {
             }
 
         }
+    }
+    
+    public static void clearScreen() { // Works only on Linux
+        System.out.print("\033[H\033[2J");
+        System.out.flush();
     }
 
 }
