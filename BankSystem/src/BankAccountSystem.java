@@ -126,6 +126,17 @@ public class BankAccountSystem {
         saveText.close();
     }
 
+    public static boolean confirmation() {
+        System.out.println("Czy jestes pewien? - [1] - Tak ");
+        if (inputInt() == 1) {
+            System.out.println("Zmiany potwierdzone i zapisane");
+            return true;
+        } else {
+            System.out.println("Brak potwierdzenia, zmiany nie zostaly wprowadzone");
+            return false;
+        }
+    }
+
     public static void main(String[] args)
             throws PostCodeFormatException, PeselFormatException, AccountNumberFormatException, FileNotFoundException {
         setRepeat(true);
@@ -177,6 +188,8 @@ public class BankAccountSystem {
 
             case 2: {
                 clearScreen();
+                String tempValue;
+                BigDecimal tempValueBigDecimal;
                 System.out.println("Podaj pozycje do aktualizacji: ");
                 position = inputInt();
                 AccountData newData = newList.getList().get(position - 1);
@@ -190,7 +203,10 @@ public class BankAccountSystem {
                     clearScreen();
                     System.out.println("Imie wlasciciela: " + newData.owner.getName());
                     System.out.println("Podaj nowe imie: ");
-                    newData.owner.setName(inputStr());
+                    tempValue = inputStr();
+                    if (confirmation()) {
+                        newData.owner.setName(tempValue);
+                    }
                     break;
                 }
 
@@ -198,7 +214,10 @@ public class BankAccountSystem {
                     clearScreen();
                     System.out.println("Nazwisko wlasciciela: " + newData.owner.getSurname());
                     System.out.println("Podaj nowe nazwisko: ");
-                    newData.owner.setSurname(inputStr());
+                    tempValue = inputStr();
+                    if (confirmation()) {
+                        newData.owner.setSurname(tempValue);
+                    }
                     break;
                 }
 
@@ -206,7 +225,10 @@ public class BankAccountSystem {
                     clearScreen();
                     System.out.println("Obecny adres - ulica: " + newData.owner.getStreet());
                     System.out.println("Nowy adres - ulica: ");
-                    newData.owner.setStreet(inputStr());
+                    tempValue = inputStr();
+                    if (confirmation()) {
+                        newData.owner.setStreet(tempValue);
+                    }
                     break;
                 }
 
@@ -214,7 +236,10 @@ public class BankAccountSystem {
                     clearScreen();
                     System.out.println("Obecny adres - kod pocztowy: " + newData.owner.getPostCode());
                     System.out.println("Nowy adres - kod pocztowy: ");
-                    newData.owner.setPostCode(inputStr());
+                    tempValue = inputStr();
+                    if (confirmation()) {
+                        newData.owner.setPostCode(tempValue);
+                    }
                     break;
                 }
 
@@ -222,7 +247,10 @@ public class BankAccountSystem {
                     clearScreen();
                     System.out.println("Obecny adres - miasto: " + newData.owner.getCity());
                     System.out.println("Nowy adres - miasto: ");
-                    newData.owner.setCity(inputStr());
+                    tempValue = inputStr();
+                    if (confirmation()) {
+                        newData.owner.setCity(tempValue);
+                    }
                     break;
                 }
 
@@ -230,7 +258,10 @@ public class BankAccountSystem {
                     clearScreen();
                     System.out.println("Obecny PESEL: " + newData.owner.getPesel());
                     System.out.println("Nowy PESEL: ");
-                    newData.owner.setPesel(inputStr());
+                    tempValue = inputStr();
+                    if (confirmation()) {
+                        newData.owner.setPesel(tempValue);
+                    }
                     break;
                 }
 
@@ -238,7 +269,10 @@ public class BankAccountSystem {
                     clearScreen();
                     System.out.println("Obecny stan konta: " + newData.getAccountBalance());
                     System.out.println("Podaj nowy stan konta: ");
-                    newData.setAccountBalance(inputBigDecimal());
+                    tempValueBigDecimal = inputBigDecimal();
+                    if (confirmation()) {
+                        newData.setAccountBalance(tempValueBigDecimal);
+                    }
                     break;
                 }
 
@@ -246,7 +280,10 @@ public class BankAccountSystem {
                     clearScreen();
                     System.out.println("Obecny numer konta: " + newData.getAccountNumber());
                     System.out.println("Podaj nowy numer konta: ");
-                    newData.setAccountNumber(inputStr());
+                    tempValue = inputStr();
+                    if (confirmation()) {
+                        newData.setAccountNumber(tempValue);
+                    }
                     break;
                 }
 
@@ -262,8 +299,12 @@ public class BankAccountSystem {
 
             case 3: {
                 clearScreen();
+                int tempValueInt;
                 System.out.println("Podaj pozycje do usuniecia: ");
-                newList.removeAccountData(inputInt() - 1);
+                tempValueInt = inputInt();
+                if (confirmation()) {
+                    newList.removeAccountData(tempValueInt - 1);
+                }
                 break;
             }
 
@@ -272,6 +313,7 @@ public class BankAccountSystem {
                 setRepeatTransaction(true);
                 while (repeatTransactionOption) {
                     showTransactionMenu();
+                    BigDecimal tempValueBigDecimal;
                     System.out.println("Twoj wybor: ");
                     switch (inputInt()) {
 
@@ -281,7 +323,11 @@ public class BankAccountSystem {
                         AccountData newData = newList.getList().get(inputInt() - 1);
                         newData.toString();
                         System.out.println("Podaj kwotê do wplaty");
-                        newData.setAccountBalance(newData.getAccountBalance().add(inputBigDecimal()));
+                        tempValueBigDecimal = inputBigDecimal();
+                        if (confirmation()) {
+                            newData.setAccountBalance(newData.getAccountBalance().add(tempValueBigDecimal));
+                        }
+                        break;
                     }
 
                     case 2: {
@@ -289,8 +335,12 @@ public class BankAccountSystem {
                         System.out.println("Podaj numer klienta");
                         AccountData newData = newList.getList().get(inputInt() - 1);
                         newData.toString();
-                        System.out.println("Podaj kwotê do wplaty");
-                        newData.setAccountBalance(newData.getAccountBalance().subtract(inputBigDecimal()));
+                        System.out.println("Podaj kwotê do wyplaty");
+                        tempValueBigDecimal = inputBigDecimal();
+                        if (confirmation()) {
+                            newData.setAccountBalance(newData.getAccountBalance().subtract(tempValueBigDecimal));
+                        }
+                        break;
                     }
 
                     case 3: {
@@ -302,9 +352,14 @@ public class BankAccountSystem {
                         AccountData newRecipientData = newList.getList().get(inputInt() - 1);
                         newRecipientData.toString();
                         System.out.println("Podaj kwotê transakcji");
-                        newAddresseeData
-                                .setAccountBalance(newAddresseeData.getAccountBalance().subtract(inputBigDecimal()));
-                        newRecipientData.setAccountBalance(newRecipientData.getAccountBalance().add(inputBigDecimal()));
+                        tempValueBigDecimal = inputBigDecimal();
+                        if (confirmation()) {
+                            newAddresseeData.setAccountBalance(
+                                    newAddresseeData.getAccountBalance().subtract(tempValueBigDecimal));
+                            newRecipientData
+                                    .setAccountBalance(newRecipientData.getAccountBalance().add(tempValueBigDecimal));
+                        }
+                        break;
                     }
 
                     case 0: {
@@ -333,7 +388,7 @@ public class BankAccountSystem {
 
         }
     }
-    
+
     public static void clearScreen() { // Works only on Linux
         System.out.print("\033[H\033[2J");
         System.out.flush();
