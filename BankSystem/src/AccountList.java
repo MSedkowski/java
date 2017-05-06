@@ -13,9 +13,13 @@ public class AccountList {
     }
 
     public void removeAccountData(int number) {
-        accountList.remove(number - 1);
+        accountList.remove(number);
     }
 
+    public AccountData getAccountData(int number) {
+        return accountList.get(number);
+    }
+    
     public List<AccountData> getList() {
         return accountList;
     }

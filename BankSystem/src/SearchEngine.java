@@ -1,27 +1,24 @@
 public class SearchEngine {
     
     public int[] compareByName(AccountList newList, String answer) {
-        int[] results = {0};
-        int j = -1;
-        for (int i = 0; i < newList.getList().size(); i++) {
-            AccountData newData = newList.getList().get(i);
+        int[] results = new int[newList.getList().size()];
+        int j = 0;
+        for (int i = 0; i < newList.getList().size(); i++, j++) {
+            AccountData newData = newList.getAccountData(i);
             if (newData.owner.getName().compareToIgnoreCase(answer) == 0) {
-                j++;
                 results[j] = i;
             }
+            else {
+                results[j] = -1;
+            }
         }
-        if (j == -1) {
-            return null;
-        }
-        else {
-            return results;
-        }
+        return results;
     }
     
     public void showResults(AccountList newList, int[] results) {
         System.out.println("Dane konta spelniajace zadane kryteria wyszukiwania: ");
         for(int i = 0; i < results.length; i++) {
-            newList.getList().get(results[i]);
+            if (results[i] != -1) newList.getAccountData(i).toString();
         }
     }
 }

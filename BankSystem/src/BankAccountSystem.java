@@ -81,7 +81,7 @@ public class BankAccountSystem {
 
     private static String inputStr() {
         input = new Scanner(System.in);
-        return input.next();
+        return input.nextLine();
     }
 
     private AccountList readDatabaseFromFile(AccountList newList)
@@ -117,10 +117,10 @@ public class BankAccountSystem {
         PrintWriter saveText = new PrintWriter("accountText.txt");
         saveDatabase.println(newList.getList().size());
         for (int i = 0; i < newList.getList().size(); i++) {
-            saveDatabase.println(newList.getList().get(i).databaseSave());
+            saveDatabase.println(newList.getAccountData(i).databaseSave());
         }
         for (int i = 0; i < newList.getList().size(); i++) {
-            saveText.println(newList.getList().get(i));
+            saveText.println(newList.getAccountData(i));
         }
         saveDatabase.close();
         saveText.close();
@@ -192,7 +192,8 @@ public class BankAccountSystem {
                 BigDecimal tempValueBigDecimal;
                 System.out.println("Podaj pozycje do aktualizacji: ");
                 position = inputInt();
-                AccountData newData = newList.getList().get(position - 1);
+                AccountData newData = newList.getAccountData(position - 1);
+                newList.removeAccountData(position - 1);
                 System.out.println(newData.toString());
                 System.out.println("Podaj ktore dane chcesz aktualizowac :");
                 showOwnerDataMenu();
@@ -293,7 +294,7 @@ public class BankAccountSystem {
                 }
                 }
                 newData.toString();
-                newList.setAccountData(newData, position - 1);
+                newList.addAccountData(newData);
                 break;
             }
 
@@ -320,7 +321,7 @@ public class BankAccountSystem {
                     case 1: {
                         clearScreen();
                         System.out.println("Podaj numer klienta");
-                        AccountData newData = newList.getList().get(inputInt() - 1);
+                        AccountData newData = newList.getAccountData(inputInt() - 1);
                         newData.toString();
                         System.out.println("Podaj kwotê do wplaty");
                         tempValueBigDecimal = inputBigDecimal();
@@ -333,7 +334,7 @@ public class BankAccountSystem {
                     case 2: {
                         clearScreen();
                         System.out.println("Podaj numer klienta");
-                        AccountData newData = newList.getList().get(inputInt() - 1);
+                        AccountData newData = newList.getAccountData(inputInt() - 1);
                         newData.toString();
                         System.out.println("Podaj kwotê do wyplaty");
                         tempValueBigDecimal = inputBigDecimal();
@@ -346,10 +347,10 @@ public class BankAccountSystem {
                     case 3: {
                         clearScreen();
                         System.out.println("Podaj numer klienta - adresata");
-                        AccountData newAddresseeData = newList.getList().get(inputInt() - 1);
+                        AccountData newAddresseeData = newList.getAccountData(inputInt() - 1);
                         newAddresseeData.toString();
                         System.out.println("Podaj numer klienta - odbiorcy");
-                        AccountData newRecipientData = newList.getList().get(inputInt() - 1);
+                        AccountData newRecipientData = newList.getAccountData(inputInt() - 1);
                         newRecipientData.toString();
                         System.out.println("Podaj kwotê transakcji");
                         tempValueBigDecimal = inputBigDecimal();
@@ -394,7 +395,7 @@ public class BankAccountSystem {
             case 6: {
                 clearScreen();
                 for (int i = 0; i < newList.getList().size(); i++) {
-                    System.out.println(newList.getList().get(i));
+                    System.out.println(newList.getAccountData(i));
                 }
                 break;
             }
