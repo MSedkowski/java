@@ -89,11 +89,11 @@ public class BankAccountSystem {
         try {
             File databaseFile = new File("accountDatabase.txt");
             input = new Scanner(databaseFile);
-            AccountOwner newOwner = new AccountOwner();
-            AccountData newData = new AccountData();
             int zdanie = input.nextInt();
             input.useDelimiter(System.getProperty("line.separator"));
             for (; zdanie > 0; zdanie--) {
+                AccountOwner newOwner = new AccountOwner();
+                AccountData newData = new AccountData();
                 newOwner.setName(input.next());
                 newOwner.setSurname(input.next());
                 newOwner.setStreet(input.next());
