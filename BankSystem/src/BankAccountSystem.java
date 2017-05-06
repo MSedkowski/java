@@ -371,6 +371,25 @@ public class BankAccountSystem {
                 }
                 break;
             }
+            
+            case 5: {
+                clearScreen();
+                System.out.println("Podaj kryterium wyszukiwania: ");
+                showOwnerDataMenu();
+                System.out.println("Twoj wybor: ");
+                switch (inputInt()) {
+                case 1: {
+                    System.out.println("Wyszukiwanie po imieniu");
+                    System.out.println("Podaj wartosc do wyszukania: ");
+                    String searchingName = inputStr();
+                    SearchEngine newSearch = new SearchEngine();
+                    int[] answer = newSearch.compareByName(newList, searchingName);
+                    newSearch.showResults(newList, answer);
+                    break; 
+                }
+                
+                }
+            }
 
             case 6: {
                 clearScreen();
