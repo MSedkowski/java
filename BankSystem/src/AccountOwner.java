@@ -35,7 +35,7 @@ public class AccountOwner implements Serializable {
     }
 
     public void setPesel(String value) throws PeselFormatException {
-        if (!value.matches("[0-9]{11}"))
+        if (!value.matches("[0-9]{2}[0-1]{1}[0-9]{1}[0-3]{1}[0-9]{6}"))
             throw new PeselFormatException();
         this.pesel = value;
     }
