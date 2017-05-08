@@ -136,6 +136,320 @@ public class BankAccountSystem {
         }
     }
 
+    private AccountData addNewClient() {
+        try {
+            clearScreen();
+            AccountOwner newOwner = new AccountOwner();
+            AccountData newData = new AccountData();
+            System.out.print("Podaj imie wlasciciela: ");
+            newOwner.setName(inputStr());
+            System.out.println("Podaj nazwisko wlasciciela: ");
+            newOwner.setSurname(inputStr());
+            System.out.println("Podaj adres wlasciciela: ");
+            System.out.println("Ulica: ");
+            newOwner.setStreet(inputStr());
+            System.out.println("Kod pocztowy: ");
+            newOwner.setPostCode(inputStr());
+            System.out.println("Miasto: ");
+            newOwner.setCity(inputStr());
+            System.out.println("Pesel: ");
+            newOwner.setPesel(inputStr());
+            newData.setOwner(newOwner);
+            System.out.println("Podaj stan konta: ");
+            newData.setAccountBalance(inputBigDecimal());
+            System.out.println("Podaj numer konta: ");
+            newData.setAccountNumber(inputStr());
+            newData.toString();
+            return newData;
+        } catch (PostCodeFormatException e) {
+            System.out.println(e.getMessage());
+            System.out.println("Podane dane nie zostaly zapisane");
+            return null;
+        } catch (PeselFormatException e) {
+            System.out.println(e.getMessage());
+            System.out.println("Podane dane nie zostaly zapisane");
+            return null;
+        } catch (AccountNumberFormatException e) {
+            System.out.println(e.getMessage());
+            System.out.println("Podane dane nie zostaly zapisane");
+            return null;
+        }
+
+    }
+
+    private void updateClient(AccountList newList) {
+        clearScreen();
+        String tempValue;
+        BigDecimal tempValueBigDecimal;
+        try {
+            System.out.println("Podaj pozycje do aktualizacji: ");
+            position = inputInt();
+            AccountData newData = newList.getAccountData(position - 1);
+            System.out.println(newData.toString());
+            System.out.println("Podaj ktore dane chcesz aktualizowac :");
+            showOwnerDataMenu();
+            System.out.println("Twoj wybor: ");
+            switch (inputInt()) {
+
+            case 1: {
+                clearScreen();
+                System.out.println("Imie wlasciciela: " + newData.owner.getName());
+                System.out.println("Podaj nowe imie: ");
+                tempValue = inputStr();
+                if (confirmation()) {
+                    newData.owner.setName(tempValue);
+                }
+                break;
+            }
+
+            case 2: {
+                clearScreen();
+                System.out.println("Nazwisko wlasciciela: " + newData.owner.getSurname());
+                System.out.println("Podaj nowe nazwisko: ");
+                tempValue = inputStr();
+                if (confirmation()) {
+                    newData.owner.setSurname(tempValue);
+                }
+                break;
+            }
+
+            case 3: {
+                clearScreen();
+                System.out.println("Obecny adres - ulica: " + newData.owner.getStreet());
+                System.out.println("Nowy adres - ulica: ");
+                tempValue = inputStr();
+                if (confirmation()) {
+                    newData.owner.setStreet(tempValue);
+                }
+                break;
+            }
+
+            case 4: {
+                clearScreen();
+                System.out.println("Obecny adres - kod pocztowy: " + newData.owner.getPostCode());
+                System.out.println("Nowy adres - kod pocztowy: ");
+                tempValue = inputStr();
+                if (confirmation()) {
+                    newData.owner.setPostCode(tempValue);
+                }
+                break;
+            }
+
+            case 5: {
+                clearScreen();
+                System.out.println("Obecny adres - miasto: " + newData.owner.getCity());
+                System.out.println("Nowy adres - miasto: ");
+                tempValue = inputStr();
+                if (confirmation()) {
+                    newData.owner.setCity(tempValue);
+                }
+                break;
+            }
+
+            case 6: {
+                clearScreen();
+                System.out.println("Obecny PESEL: " + newData.owner.getPesel());
+                System.out.println("Nowy PESEL: ");
+                tempValue = inputStr();
+                if (confirmation()) {
+                    newData.owner.setPesel(tempValue);
+                }
+                break;
+            }
+
+            case 7: {
+                clearScreen();
+                System.out.println("Obecny stan konta: " + newData.getAccountBalance());
+                System.out.println("Podaj nowy stan konta: ");
+                tempValueBigDecimal = inputBigDecimal();
+                if (confirmation()) {
+                    newData.setAccountBalance(tempValueBigDecimal);
+                }
+                break;
+            }
+
+            case 8: {
+                clearScreen();
+                System.out.println("Obecny numer konta: " + newData.getAccountNumber());
+                System.out.println("Podaj nowy numer konta: ");
+                tempValue = inputStr();
+                if (confirmation()) {
+                    newData.setAccountNumber(tempValue);
+                }
+                break;
+            }
+
+            case 0: {
+                System.out.println("Brak zmian!");
+                break;
+            }
+            }
+            newData.toString();
+        } catch (PostCodeFormatException e) {
+            System.out.println(e.getMessage());
+            System.out.println("Podane dane nie zostaly zapisane");
+        } catch (PeselFormatException e) {
+            System.out.println(e.getMessage());
+            System.out.println("Podane dane nie zostaly zapisane");
+        } catch (AccountNumberFormatException e) {
+            System.out.println(e.getMessage());
+            System.out.println("Podane dane nie zostaly zapisane");
+        } catch (IndexOutOfBoundsException e) {
+            System.out.println("Podany numer klienta nie istnieje");
+            System.out.println("Obecnie w bazie jest " + newList.getList().size() + " klientow");
+        }
+    }
+
+    private void removeClient(AccountList newList) {
+        clearScreen();
+        try {
+            int tempValueInt;
+            System.out.println("Podaj pozycje do usuniecia: ");
+            tempValueInt = inputInt();
+            if (confirmation()) {
+                newList.removeAccountData(tempValueInt - 1);
+            }
+        } catch (IndexOutOfBoundsException e) {
+            System.out.println("Podany numer klienta nie istnieje");
+            System.out.println("Obecnie w bazie jest " + newList.getList().size() + " klientow");
+        }
+    }
+
+    private void makeTransactionBetweenClients(AccountList newList) {
+        clearScreen();
+        try {
+            setRepeatTransaction(true);
+            while (repeatTransactionOption) {
+                showTransactionMenu();
+                BigDecimal tempValueBigDecimal;
+                System.out.println("Twoj wybor: ");
+                switch (inputInt()) {
+
+                case 1: {
+                    clearScreen();
+                    System.out.println("Podaj numer klienta");
+                    AccountData newData = newList.getAccountData(inputInt() - 1);
+                    newData.toString();
+                    System.out.println("Podaj kwotê do wplaty");
+                    tempValueBigDecimal = inputBigDecimal();
+                    if (confirmation()) {
+                        newData.setAccountBalance(newData.getAccountBalance().add(tempValueBigDecimal));
+                    }
+                    break;
+                }
+
+                case 2: {
+                    clearScreen();
+                    System.out.println("Podaj numer klienta");
+                    AccountData newData = newList.getAccountData(inputInt() - 1);
+                    newData.toString();
+                    System.out.println("Podaj kwotê do wyplaty");
+                    tempValueBigDecimal = inputBigDecimal();
+                    if (confirmation()) {
+                        newData.setAccountBalance(newData.getAccountBalance().subtract(tempValueBigDecimal));
+                    }
+                    break;
+                }
+
+                case 3: {
+                    clearScreen();
+                    System.out.println("Podaj numer klienta - adresata");
+                    AccountData newAddresseeData = newList.getAccountData(inputInt() - 1);
+                    newAddresseeData.toString();
+                    System.out.println("Podaj numer klienta - odbiorcy");
+                    AccountData newRecipientData = newList.getAccountData(inputInt() - 1);
+                    newRecipientData.toString();
+                    System.out.println("Podaj kwotê transakcji");
+                    tempValueBigDecimal = inputBigDecimal();
+                    if (confirmation()) {
+                        newAddresseeData
+                                .setAccountBalance(newAddresseeData.getAccountBalance().subtract(tempValueBigDecimal));
+                        newRecipientData
+                                .setAccountBalance(newRecipientData.getAccountBalance().add(tempValueBigDecimal));
+                    }
+                    break;
+                }
+
+                case 0: {
+                    clearScreen();
+                    System.out.println("Koniec transakcji");
+                    setRepeatTransaction(false);
+                }
+                }
+            }
+        } catch (IndexOutOfBoundsException e) {
+            System.out.println("Podany numer klienta nie istnieje");
+            System.out.println("Obecnie w bazie jest " + newList.getList().size() + " klientow");
+        }
+    }
+
+    private void searchClientsInDatabase(AccountList newList) {
+        clearScreen();
+        int[] answer;
+        int tempValue;
+        showOwnerDataMenu();
+        System.out.println("Podaj kryterium wyszukiwania: ");
+        tempValue = inputInt();
+        System.out.println("Podaj wartosc do wyszukania: ");
+        String searchingName = inputStr();
+        SearchEngine newSearch = new SearchEngine();
+        switch (tempValue) {
+        case 1: {
+            System.out.println("Wyszukiwanie po imieniu");
+            answer = newSearch.compareByName(newList, searchingName);
+            newSearch.showResults(newList, answer);
+            break;
+        }
+
+        case 2: {
+            System.out.println("Wyszukiwanie po nazwisku");
+            answer = newSearch.compareBySurname(newList, searchingName);
+            newSearch.showResults(newList, answer);
+            break;
+        }
+
+        case 3: {
+            System.out.println("Wyszukiwanie po adresie - ulica");
+            answer = newSearch.compareByCity(newList, searchingName);
+            newSearch.showResults(newList, answer);
+            break;
+        }
+
+        case 4: {
+            System.out.println("Wyszukiwanie po adresie - kod pocztowy");
+            answer = newSearch.compareByPostCode(newList, searchingName);
+            newSearch.showResults(newList, answer);
+            break;
+        }
+
+        case 5: {
+            System.out.println("Wyszukiwanie po adresie - miasto");
+            answer = newSearch.compareByCity(newList, searchingName);
+            newSearch.showResults(newList, answer);
+            break;
+        }
+
+        case 6: {
+            System.out.println("Wyszukiwanie po numerze pesel");
+            answer = newSearch.compareByPesel(newList, searchingName);
+            newSearch.showResults(newList, answer);
+            break;
+        }
+
+        case 7: {
+            System.out.println("Wyszukiwanie po numerze konta");
+            answer = newSearch.compareByAccountNumber(newList, searchingName);
+            newSearch.showResults(newList, answer);
+            break;
+        }
+
+        case 0: {
+            System.out.println("Koniec wyszukiwania");
+            break;
+        }
+        }
+    }
+
     public static void main(String[] args)
             throws PostCodeFormatException, PeselFormatException, AccountNumberFormatException, FileNotFoundException {
         setRepeat(true);
@@ -149,326 +463,28 @@ public class BankAccountSystem {
             switch (newSystem.getChosenOption()) {
 
             case 1: {
-                try {
-                    clearScreen();
-                    AccountOwner newOwner = new AccountOwner();
-                    AccountData newData = new AccountData();
-                    System.out.print("Podaj imie wlasciciela: ");
-                    newOwner.setName(inputStr());
-                    System.out.println("Podaj nazwisko wlasciciela: ");
-                    newOwner.setSurname(inputStr());
-                    System.out.println("Podaj adres wlasciciela: ");
-                    System.out.println("Ulica: ");
-                    newOwner.setStreet(inputStr());
-                    System.out.println("Kod pocztowy: ");
-                    newOwner.setPostCode(inputStr());
-                    System.out.println("Miasto: ");
-                    newOwner.setCity(inputStr());
-                    System.out.println("Pesel: ");
-                    newOwner.setPesel(inputStr());
-                    newData.setOwner(newOwner);
-                    System.out.println("Podaj stan konta: ");
-                    newData.setAccountBalance(inputBigDecimal());
-                    System.out.println("Podaj numer konta: ");
-                    newData.setAccountNumber(inputStr());
-                    newList.addAccountData(newData);
-                    newData.toString();
-                    break;
-                } catch (PostCodeFormatException e) {
-                    System.out.println(e.getMessage());
-                    System.out.println("Podane dane nie zostaly zapisane");
-                    break;
-                } catch (PeselFormatException e) {
-                    System.out.println(e.getMessage());
-                    System.out.println("Podane dane nie zostaly zapisane");
-                    break;
-                } catch (AccountNumberFormatException e) {
-                    System.out.println(e.getMessage());
-                    System.out.println("Podane dane nie zostaly zapisane");
-                    break;
-                }
+                newList.addAccountData(newSystem.addNewClient());
+                break;
             }
 
             case 2: {
-                clearScreen();
-                String tempValue;
-                BigDecimal tempValueBigDecimal;
-                try {
-                System.out.println("Podaj pozycje do aktualizacji: ");
-                position = inputInt();
-                AccountData newData = newList.getAccountData(position - 1);
-                System.out.println(newData.toString());
-                System.out.println("Podaj ktore dane chcesz aktualizowac :");
-                showOwnerDataMenu();
-                System.out.println("Twoj wybor: ");
-                switch (inputInt()) {
-
-                case 1: {
-                    clearScreen();
-                    System.out.println("Imie wlasciciela: " + newData.owner.getName());
-                    System.out.println("Podaj nowe imie: ");
-                    tempValue = inputStr();
-                    if (confirmation()) {
-                        newData.owner.setName(tempValue);
-                    }
-                    break;
-                }
-
-                case 2: {
-                    clearScreen();
-                    System.out.println("Nazwisko wlasciciela: " + newData.owner.getSurname());
-                    System.out.println("Podaj nowe nazwisko: ");
-                    tempValue = inputStr();
-                    if (confirmation()) {
-                        newData.owner.setSurname(tempValue);
-                    }
-                    break;
-                }
-
-                case 3: {
-                    clearScreen();
-                    System.out.println("Obecny adres - ulica: " + newData.owner.getStreet());
-                    System.out.println("Nowy adres - ulica: ");
-                    tempValue = inputStr();
-                    if (confirmation()) {
-                        newData.owner.setStreet(tempValue);
-                    }
-                    break;
-                }
-
-                case 4: {
-                    clearScreen();
-                    System.out.println("Obecny adres - kod pocztowy: " + newData.owner.getPostCode());
-                    System.out.println("Nowy adres - kod pocztowy: ");
-                    tempValue = inputStr();
-                    if (confirmation()) {
-                        newData.owner.setPostCode(tempValue);
-                    }
-                    break;
-                }
-
-                case 5: {
-                    clearScreen();
-                    System.out.println("Obecny adres - miasto: " + newData.owner.getCity());
-                    System.out.println("Nowy adres - miasto: ");
-                    tempValue = inputStr();
-                    if (confirmation()) {
-                        newData.owner.setCity(tempValue);
-                    }
-                    break;
-                }
-
-                case 6: {
-                    clearScreen();
-                    System.out.println("Obecny PESEL: " + newData.owner.getPesel());
-                    System.out.println("Nowy PESEL: ");
-                    tempValue = inputStr();
-                    if (confirmation()) {
-                        newData.owner.setPesel(tempValue);
-                    }
-                    break;
-                }
-
-                case 7: {
-                    clearScreen();
-                    System.out.println("Obecny stan konta: " + newData.getAccountBalance());
-                    System.out.println("Podaj nowy stan konta: ");
-                    tempValueBigDecimal = inputBigDecimal();
-                    if (confirmation()) {
-                        newData.setAccountBalance(tempValueBigDecimal);
-                    }
-                    break;
-                }
-
-                case 8: {
-                    clearScreen();
-                    System.out.println("Obecny numer konta: " + newData.getAccountNumber());
-                    System.out.println("Podaj nowy numer konta: ");
-                    tempValue = inputStr();
-                    if (confirmation()) {
-                        newData.setAccountNumber(tempValue);
-                    }
-                    break;
-                }
-
-                case 0: {
-                    System.out.println("Brak zmian!");
-                    break;
-                }
-                }
-                newData.toString();
+                newSystem.updateClient(newList);
                 break;
-            }  catch (PostCodeFormatException e) {
-                System.out.println(e.getMessage());
-                System.out.println("Podane dane nie zostaly zapisane");
-                break;
-            } catch (PeselFormatException e) {
-                System.out.println(e.getMessage());
-                System.out.println("Podane dane nie zostaly zapisane");
-                break;
-            } catch (AccountNumberFormatException e) {
-                System.out.println(e.getMessage());
-                System.out.println("Podane dane nie zostaly zapisane");
-                break;
-            } catch (IndexOutOfBoundsException e) {
-                System.out.println("Podany numer klienta nie istnieje");
-                System.out.println("Obecnie w bazie jest " + newList.getList().size() + " klientow");
-                break;
-            }
             }
 
             case 3: {
-                clearScreen();
-                try {
-                int tempValueInt;
-                System.out.println("Podaj pozycje do usuniecia: ");
-                tempValueInt = inputInt();
-                if (confirmation()) {
-                    newList.removeAccountData(tempValueInt - 1);
-                }
+                newSystem.removeClient(newList);
                 break;
-            } catch(IndexOutOfBoundsException e) {
-                System.out.println("Podany numer klienta nie istnieje");
-                System.out.println("Obecnie w bazie jest " + newList.getList().size() + " klientow");
-                break;
-            }
             }
 
             case 4: {
-                clearScreen();
-                try {
-                setRepeatTransaction(true);
-                while (repeatTransactionOption) {
-                    showTransactionMenu();
-                    BigDecimal tempValueBigDecimal;
-                    System.out.println("Twoj wybor: ");
-                    switch (inputInt()) {
-
-                    case 1: {
-                        clearScreen();
-                        System.out.println("Podaj numer klienta");
-                        AccountData newData = newList.getAccountData(inputInt() - 1);
-                        newData.toString();
-                        System.out.println("Podaj kwotê do wplaty");
-                        tempValueBigDecimal = inputBigDecimal();
-                        if (confirmation()) {
-                            newData.setAccountBalance(newData.getAccountBalance().add(tempValueBigDecimal));
-                        }
-                        break;
-                    }
-
-                    case 2: {
-                        clearScreen();
-                        System.out.println("Podaj numer klienta");
-                        AccountData newData = newList.getAccountData(inputInt() - 1);
-                        newData.toString();
-                        System.out.println("Podaj kwotê do wyplaty");
-                        tempValueBigDecimal = inputBigDecimal();
-                        if (confirmation()) {
-                            newData.setAccountBalance(newData.getAccountBalance().subtract(tempValueBigDecimal));
-                        }
-                        break;
-                    }
-
-                    case 3: {
-                        clearScreen();
-                        System.out.println("Podaj numer klienta - adresata");
-                        AccountData newAddresseeData = newList.getAccountData(inputInt() - 1);
-                        newAddresseeData.toString();
-                        System.out.println("Podaj numer klienta - odbiorcy");
-                        AccountData newRecipientData = newList.getAccountData(inputInt() - 1);
-                        newRecipientData.toString();
-                        System.out.println("Podaj kwotê transakcji");
-                        tempValueBigDecimal = inputBigDecimal();
-                        if (confirmation()) {
-                            newAddresseeData.setAccountBalance(
-                                    newAddresseeData.getAccountBalance().subtract(tempValueBigDecimal));
-                            newRecipientData
-                                    .setAccountBalance(newRecipientData.getAccountBalance().add(tempValueBigDecimal));
-                        }
-                        break;
-                    }
-
-                    case 0: {
-                        clearScreen();
-                        System.out.println("Koniec transakcji");
-                        setRepeatTransaction(false);
-                    }
-                    }
-                }
+                newSystem.makeTransactionBetweenClients(newList);
                 break;
-                } catch (IndexOutOfBoundsException e) {
-                    System.out.println("Podany numer klienta nie istnieje");
-                    System.out.println("Obecnie w bazie jest " + newList.getList().size() + " klientow");
-                    break;
-                }
             }
-            
+
             case 5: {
-                clearScreen();
-                int[] answer;
-                int tempValue;
-                showOwnerDataMenu();
-                System.out.println("Podaj kryterium wyszukiwania: ");
-                tempValue = inputInt();
-                System.out.println("Podaj wartosc do wyszukania: ");
-                String searchingName = inputStr();
-                SearchEngine newSearch = new SearchEngine();
-                switch (tempValue) {
-                case 1: {
-                    System.out.println("Wyszukiwanie po imieniu");
-                    answer = newSearch.compareByName(newList, searchingName);
-                    newSearch.showResults(newList, answer);
-                    break; 
-                }
-                
-                case 2: {
-                    System.out.println("Wyszukiwanie po nazwisku");
-                    answer = newSearch.compareBySurname(newList, searchingName);
-                    newSearch.showResults(newList, answer);
-                    break; 
-                }
-                
-                case 3: {
-                    System.out.println("Wyszukiwanie po adresie - ulica");
-                    answer = newSearch.compareByCity(newList, searchingName);
-                    newSearch.showResults(newList, answer);
-                    break; 
-                }
-                
-                case 4: {
-                    System.out.println("Wyszukiwanie po adresie - kod pocztowy");
-                    answer = newSearch.compareByPostCode(newList, searchingName);
-                    newSearch.showResults(newList, answer);
-                    break; 
-                }
-                
-                case 5: {
-                    System.out.println("Wyszukiwanie po adresie - miasto");
-                    answer = newSearch.compareByCity(newList, searchingName);
-                    newSearch.showResults(newList, answer);
-                    break; 
-                }
-                
-                case 6: {
-                    System.out.println("Wyszukiwanie po numerze pesel");
-                    answer = newSearch.compareByPesel(newList, searchingName);
-                    newSearch.showResults(newList, answer);
-                    break; 
-                }
-                
-                case 7: {
-                    System.out.println("Wyszukiwanie po numerze konta");
-                    answer = newSearch.compareByAccountNumber(newList, searchingName);
-                    newSearch.showResults(newList, answer);
-                    break; 
-                }
-                
-                case 0: {
-                    System.out.println("Koniec wyszukiwania");
-                    break; 
-                }
-                }
+                newSystem.searchClientsInDatabase(newList);
+                break;
             }
 
             case 6: {
