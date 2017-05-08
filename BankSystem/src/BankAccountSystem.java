@@ -64,7 +64,7 @@ public class BankAccountSystem {
             input = new Scanner(System.in);
             return input.nextInt();
         } catch (InputMismatchException e) {
-            System.out.println("Nalezy podac liczbe!");
+            System.out.println("Nalezy podac liczbe.");
             return 0;
         }
     }
@@ -74,7 +74,7 @@ public class BankAccountSystem {
             input = new Scanner(System.in);
             return input.nextBigDecimal();
         } catch (InputMismatchException e) {
-            System.out.println("Nalezy podac liczbe!");
+            System.out.println("Nalezy podac liczbe.");
             return null;
         }
     }
@@ -129,7 +129,6 @@ public class BankAccountSystem {
     public static boolean confirmation() {
         System.out.println("Czy jestes pewien? - [1] - Tak ");
         if (inputInt() == 1) {
-            System.out.println("Zmiany potwierdzone i zapisane");
             return true;
         } else {
             System.out.println("Brak potwierdzenia, zmiany nie zostaly wprowadzone");
@@ -177,12 +176,16 @@ public class BankAccountSystem {
                     break;
                 } catch (PostCodeFormatException e) {
                     System.out.println(e.getMessage());
-                    e.printStackTrace();
+                    System.out.println("Podane dane nie zostaly zapisane");
+                    break;
                 } catch (PeselFormatException e) {
                     System.out.println(e.getMessage());
-                    e.printStackTrace();
+                    System.out.println("Podane dane nie zostaly zapisane");
+                    break;
                 } catch (AccountNumberFormatException e) {
                     System.out.println(e.getMessage());
+                    System.out.println("Podane dane nie zostaly zapisane");
+                    break;
                 }
             }
 
@@ -190,10 +193,10 @@ public class BankAccountSystem {
                 clearScreen();
                 String tempValue;
                 BigDecimal tempValueBigDecimal;
+                try {
                 System.out.println("Podaj pozycje do aktualizacji: ");
                 position = inputInt();
                 AccountData newData = newList.getAccountData(position - 1);
-                newList.removeAccountData(position - 1);
                 System.out.println(newData.toString());
                 System.out.println("Podaj ktore dane chcesz aktualizowac :");
                 showOwnerDataMenu();
@@ -294,12 +297,29 @@ public class BankAccountSystem {
                 }
                 }
                 newData.toString();
-                newList.addAccountData(newData);
                 break;
+            }  catch (PostCodeFormatException e) {
+                System.out.println(e.getMessage());
+                System.out.println("Podane dane nie zostaly zapisane");
+                break;
+            } catch (PeselFormatException e) {
+                System.out.println(e.getMessage());
+                System.out.println("Podane dane nie zostaly zapisane");
+                break;
+            } catch (AccountNumberFormatException e) {
+                System.out.println(e.getMessage());
+                System.out.println("Podane dane nie zostaly zapisane");
+                break;
+            } catch (IndexOutOfBoundsException e) {
+                System.out.println("Podany numer klienta nie istnieje");
+                System.out.println("Obecnie w bazie jest " + newList.getList().size() + " klientow");
+                break;
+            }
             }
 
             case 3: {
                 clearScreen();
+                try {
                 int tempValueInt;
                 System.out.println("Podaj pozycje do usuniecia: ");
                 tempValueInt = inputInt();
@@ -307,10 +327,16 @@ public class BankAccountSystem {
                     newList.removeAccountData(tempValueInt - 1);
                 }
                 break;
+            } catch(IndexOutOfBoundsException e) {
+                System.out.println("Podany numer klienta nie istnieje");
+                System.out.println("Obecnie w bazie jest " + newList.getList().size() + " klientow");
+                break;
+            }
             }
 
             case 4: {
                 clearScreen();
+                try {
                 setRepeatTransaction(true);
                 while (repeatTransactionOption) {
                     showTransactionMenu();
@@ -371,24 +397,77 @@ public class BankAccountSystem {
                     }
                 }
                 break;
+                } catch (IndexOutOfBoundsException e) {
+                    System.out.println("Podany numer klienta nie istnieje");
+                    System.out.println("Obecnie w bazie jest " + newList.getList().size() + " klientow");
+                    break;
+                }
             }
             
             case 5: {
                 clearScreen();
-                System.out.println("Podaj kryterium wyszukiwania: ");
+                int[] answer;
+                int tempValue;
                 showOwnerDataMenu();
-                System.out.println("Twoj wybor: ");
-                switch (inputInt()) {
+                System.out.println("Podaj kryterium wyszukiwania: ");
+                tempValue = inputInt();
+                System.out.println("Podaj wartosc do wyszukania: ");
+                String searchingName = inputStr();
+                SearchEngine newSearch = new SearchEngine();
+                switch (tempValue) {
                 case 1: {
                     System.out.println("Wyszukiwanie po imieniu");
-                    System.out.println("Podaj wartosc do wyszukania: ");
-                    String searchingName = inputStr();
-                    SearchEngine newSearch = new SearchEngine();
-                    int[] answer = newSearch.compareByName(newList, searchingName);
+                    answer = newSearch.compareByName(newList, searchingName);
                     newSearch.showResults(newList, answer);
                     break; 
                 }
                 
+                case 2: {
+                    System.out.println("Wyszukiwanie po nazwisku");
+                    answer = newSearch.compareBySurname(newList, searchingName);
+                    newSearch.showResults(newList, answer);
+                    break; 
+                }
+                
+                case 3: {
+                    System.out.println("Wyszukiwanie po adresie - ulica");
+                    answer = newSearch.compareByCity(newList, searchingName);
+                    newSearch.showResults(newList, answer);
+                    break; 
+                }
+                
+                case 4: {
+                    System.out.println("Wyszukiwanie po adresie - kod pocztowy");
+                    answer = newSearch.compareByPostCode(newList, searchingName);
+                    newSearch.showResults(newList, answer);
+                    break; 
+                }
+                
+                case 5: {
+                    System.out.println("Wyszukiwanie po adresie - miasto");
+                    answer = newSearch.compareByCity(newList, searchingName);
+                    newSearch.showResults(newList, answer);
+                    break; 
+                }
+                
+                case 6: {
+                    System.out.println("Wyszukiwanie po numerze pesel");
+                    answer = newSearch.compareByPesel(newList, searchingName);
+                    newSearch.showResults(newList, answer);
+                    break; 
+                }
+                
+                case 7: {
+                    System.out.println("Wyszukiwanie po numerze konta");
+                    answer = newSearch.compareByAccountNumber(newList, searchingName);
+                    newSearch.showResults(newList, answer);
+                    break; 
+                }
+                
+                case 0: {
+                    System.out.println("Koniec wyszukiwania");
+                    break; 
+                }
                 }
             }
 
