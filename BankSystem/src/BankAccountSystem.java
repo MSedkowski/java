@@ -106,7 +106,7 @@ public class BankAccountSystem {
                 newList.addAccountData(newData);
             }
         } catch (FileNotFoundException e) {
-            System.out.println("Brak bazy danych. Zostanie stworzona nowa po zakoñczeniu dzia³ania programu.");
+            System.out.println("Brak bazy danych. Zostanie stworzona nowa po zakonczeniu dzialania programu.");
         }
 
         return newList;
@@ -330,7 +330,7 @@ public class BankAccountSystem {
                     System.out.println("Podaj numer klienta");
                     AccountData newData = newList.getAccountData(inputInt() - 1);
                     newData.toString();
-                    System.out.println("Podaj kwotê do wplaty");
+                    System.out.println("Podaj kwote do wplaty");
                     tempValueBigDecimal = inputBigDecimal();
                     if (confirmation()) {
                         newData.setAccountBalance(newData.getAccountBalance().add(tempValueBigDecimal));
@@ -343,7 +343,7 @@ public class BankAccountSystem {
                     System.out.println("Podaj numer klienta");
                     AccountData newData = newList.getAccountData(inputInt() - 1);
                     newData.toString();
-                    System.out.println("Podaj kwotê do wyplaty");
+                    System.out.println("Podaj kwote do wyplaty");
                     tempValueBigDecimal = inputBigDecimal();
                     if (confirmation()) {
                         newData.setAccountBalance(newData.getAccountBalance().subtract(tempValueBigDecimal));
@@ -359,7 +359,7 @@ public class BankAccountSystem {
                     System.out.println("Podaj numer klienta - odbiorcy");
                     AccountData newRecipientData = newList.getAccountData(inputInt() - 1);
                     newRecipientData.toString();
-                    System.out.println("Podaj kwotê transakcji");
+                    System.out.println("Podaj kwote transakcji");
                     tempValueBigDecimal = inputBigDecimal();
                     if (confirmation()) {
                         newAddresseeData
