@@ -108,7 +108,7 @@ public class SearchEngine {
     public void showResults(AccountList newList, int[] results) {
         System.out.println("Dane konta spelniajace zadane kryteria wyszukiwania: ");
         for(int i = 0; i < results.length; i++) {
-            if (results[i] != -1) newList.getAccountData(i).toString();
+            if (results[i] != -1) System.out.println(newList.getAccountData(i).toString());
         }
     }
 }

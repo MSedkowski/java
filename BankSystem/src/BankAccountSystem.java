@@ -74,8 +74,8 @@ public class BankAccountSystem {
             input = new Scanner(System.in);
             return input.nextBigDecimal();
         } catch (InputMismatchException e) {
-            System.out.println("Nalezy podac liczbe.");
-            return null;
+            System.out.println("Nalezy podac liczbe. Brak zmian.");
+            return BigDecimal.ZERO;
         }
     }
 
@@ -361,7 +361,7 @@ public class BankAccountSystem {
                     newRecipientData.toString();
                     System.out.println("Podaj kwote transakcji");
                     tempValueBigDecimal = inputBigDecimal();
-                    if (confirmation()) {
+                    if (confirmation() && newAddresseeData.getAccountBalance().compareTo(tempValueBigDecimal) > -1) {
                         newAddresseeData
                                 .setAccountBalance(newAddresseeData.getAccountBalance().subtract(tempValueBigDecimal));
                         newRecipientData
