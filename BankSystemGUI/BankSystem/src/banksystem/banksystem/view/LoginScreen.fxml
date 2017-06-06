@@ -9,8 +9,8 @@
 
 <AnchorPane maxHeight="175.0" maxWidth="222.0" prefHeight="175.0" prefWidth="222.0" xmlns="http://javafx.com/javafx/8.0.102" xmlns:fx="http://javafx.com/fxml/1" fx:controller="banksystem.view.LoginScreenController">
    <children>
-      <Button layoutX="11.0" layoutY="138.0" mnemonicParsing="false" onAction="#handleOk" text="Logowanie" textAlignment="CENTER" />
-      <Button layoutX="136.0" layoutY="138.0" mnemonicParsing="false" text="Rejestracja" />
+      <Button layoutX="11.0" layoutY="138.0" mnemonicParsing="false" onAction="#handleLogin" text="Logowanie" textAlignment="CENTER" />
+      <Button layoutX="136.0" layoutY="138.0" mnemonicParsing="false" onAction="#handleRegister" text="Rejestracja" />
       <PasswordField fx:id="passwordField" layoutX="61.0" layoutY="92.0" prefHeight="15.0" prefWidth="149.0" promptText="Wprowadź hasło" AnchorPane.leftAnchor="61.0" AnchorPane.rightAnchor="11.0" />
       <TextField fx:id="accountNameField" layoutX="61.0" layoutY="55.0" promptText="Wprowadź login" AnchorPane.leftAnchor="61.0" AnchorPane.rightAnchor="11.0" />
       <Label layoutX="11.0" layoutY="55.0" text="Login: " AnchorPane.leftAnchor="11.0" AnchorPane.rightAnchor="162.0">

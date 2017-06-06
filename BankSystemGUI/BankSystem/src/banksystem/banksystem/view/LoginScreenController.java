@@ -6,7 +6,8 @@ import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
 import javafx.stage.Stage;
-import banksystem.model.AccountData;
+import java.sql.*;
+import banksystem.LoadSaveDatabase;
 
 public class LoginScreenController {
 
@@ -16,9 +17,9 @@ public class LoginScreenController {
     private PasswordField passwordField;
 
     private Stage loginStage;
-    private AccountData account;
     private boolean loginClicked = false;
     private boolean registerClicked = false;
+    private boolean loginOK = false;
 
     @FXML
     private void initialize() {
@@ -35,15 +36,35 @@ public class LoginScreenController {
     public boolean isRegisterClicked() {
         return registerClicked ;
     }
+    
+    public boolean getLoginOK() {
+        return loginOK;
+    }
 
     @FXML
-    private void handleOk() {
+    private boolean handleLogin() throws SQLException {
         if (isInputValid()) {
-            // TODO funkcje sprawdzaj¹c¹ dane wpisane z tymi w bazie
+            if (LoadSaveDatabase.loginMethod(accountNameField.getText(), passwordField.getText())) {
+                loginOK = true;
+                loginStage.close();
+            }
+            else {
+                Alert alert = new Alert(AlertType.ERROR);
+                alert.initOwner(loginStage);
+                alert.setTitle("Bledne dane");
+                alert.setHeaderText("Podany login i haslo sa nieprawidlowe");
 
-            loginClicked = true;
-            loginStage.close();
+                alert.showAndWait();
+                loginOK = false;
+            }
         }
+        return loginClicked;
+    }
+    
+    @FXML
+    private void handleRegister() {
+        registerClicked = true; 
+        loginStage.close();
     }
 
     private boolean isInputValid() {
