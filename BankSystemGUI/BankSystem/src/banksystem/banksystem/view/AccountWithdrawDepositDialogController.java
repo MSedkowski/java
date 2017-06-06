@@ -6,11 +6,16 @@ import java.sql.SQLException;
 import banksystem.model.AccountData;
 import banksystem.model.AccountRepository;
 import javafx.fxml.FXML;
+import javafx.scene.Node;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Label;
+import javafx.scene.control.MenuButton;
+import javafx.scene.control.RadioButton;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
+import javafx.scene.control.ToggleGroup;
 import javafx.scene.control.Alert.AlertType;
+import javafx.scene.control.ComboBox;
 import javafx.stage.Stage;
 
 public class AccountWithdrawDepositDialogController {
@@ -18,6 +23,9 @@ public class AccountWithdrawDepositDialogController {
     @FXML
     private Label balanceLabel;    
     
+    @FXML
+    private ComboBox<String> accountOperation;
+     
     @FXML
     private TextField accountBalanceField;
     
@@ -27,7 +35,15 @@ public class AccountWithdrawDepositDialogController {
     
     
     @FXML
-    private void initialize() {
+    public void initialize()
+    {
+        accountOperation.getItems().addAll
+        (
+            "Wp³ata",
+            "Wyp³ata"
+        );   
+
+        accountOperation.setValue("Wp³ata");
     }
     
     public void setDialogStage(Stage dialogStage) {
@@ -37,7 +53,6 @@ public class AccountWithdrawDepositDialogController {
     public void setAccountBalance(AccountData accountData) {
         this.accountData = accountData;
         balanceLabel.setText(accountData.getAccountBalance().toString());
-        accountBalanceField.setText(accountData.getAccountBalance().toString());
     }
     
     public boolean isOkClicked() {
@@ -46,9 +61,15 @@ public class AccountWithdrawDepositDialogController {
     
     @FXML
     private void handleOk() {
-        if (isInputValid()) {
-            accountData.setAccountBalance(new BigDecimal(accountBalanceField.getText()));
-
+        String wybor = new String(accountOperation.getValue());
+        if (isInputValid(wybor)) {
+            
+            if (wybor.equals("Wp³ata")) {
+            accountData.setAccountBalance(accountData.getAccountBalance().add(new BigDecimal(accountBalanceField.getText())));
+            }
+            if (wybor.equals("Wyp³ata")) {
+            accountData.setAccountBalance(accountData.getAccountBalance().subtract(new BigDecimal(accountBalanceField.getText())));
+            }
             okClicked = true;
             dialogStage.close();
         }
@@ -59,11 +80,15 @@ public class AccountWithdrawDepositDialogController {
         dialogStage.close();
     }
     
-    private boolean isInputValid() {
+    private boolean isInputValid(String wybor) {
         String errorMessage = "";
 
         if (accountBalanceField.getText() == null || accountBalanceField.getText().length() == 0) {
             errorMessage += "No valid account balance!\n"; 
+        }
+        
+        if (new BigDecimal(accountBalanceField.getText()).compareTo(accountData.getAccountBalance()) == 1 && wybor.equals("Wyp³ata")) {
+            errorMessage += "You need more founds!\n";
         }
 
         if (errorMessage.length() == 0) {

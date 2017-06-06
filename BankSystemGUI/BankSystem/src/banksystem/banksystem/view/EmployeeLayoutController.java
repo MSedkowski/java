@@ -58,6 +58,7 @@ public class EmployeeLayoutController {
         this.accountRepository = accountRepository;
         
         // Add observable list data to the table
+        accountTable.getItems().clear();
         LoadSaveDatabase.loadData(this.accountRepository);
         accountTable.setItems(this.accountRepository.getAccountList());
     }
@@ -162,5 +163,21 @@ public class EmployeeLayoutController {
 
             alert.showAndWait();
         }
+    }
+    
+    @FXML 
+    private void handleSearch() throws SQLException {
+        accountTable.getItems().clear();
+        boolean okClicked = mainApp.showSearch();
+        if (okClicked) {
+            
+        }
+    }
+    
+    @FXML
+    private void handleEverything() throws SQLException {
+        accountTable.getItems().clear();
+        LoadSaveDatabase.loadData(this.accountRepository);
+        accountTable.setItems(this.accountRepository.getAccountList());
     }
 }

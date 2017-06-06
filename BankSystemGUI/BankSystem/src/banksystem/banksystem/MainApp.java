@@ -10,6 +10,7 @@ import banksystem.view.AccountEditDialogController;
 import banksystem.view.AccountWithdrawDepositDialogController;
 import banksystem.view.EmployeeLayoutController;
 import banksystem.view.LoginScreenController;
+import banksystem.view.SearchDialogController;
 import javafx.application.Application;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXMLLoader;
@@ -73,7 +74,6 @@ public class MainApp extends Application {
             // Set the person into the controller.
             LoginScreenController controller = loader.getController();
             controller.setLoginStage(loginStage);
-            // controller.setAccount(account);
 
             // Show the dialog and wait until the user closes it
             loginStage.showAndWait();
@@ -206,5 +206,34 @@ public class MainApp extends Application {
 
     public static void main(String[] args) throws SQLException {
         launch(args);
+    }
+
+    public boolean showSearch() {
+        try {
+            // Load the fxml file and create a new stage for the popup dialog.
+            FXMLLoader loader = new FXMLLoader();
+            loader.setLocation(MainApp.class.getResource("view/SearchDialog.fxml"));
+            AnchorPane page = (AnchorPane) loader.load();
+
+            // Create the dialog Stage.
+            Stage dialogStage = new Stage();
+            dialogStage.setTitle("Search Operation");
+            dialogStage.initModality(Modality.WINDOW_MODAL);
+            dialogStage.initOwner(primaryStage);
+            Scene scene = new Scene(page);
+            dialogStage.setScene(scene);
+
+            // Set the person into the controller.
+            SearchDialogController controller = loader.getController();
+            controller.setDialogStage(dialogStage);
+            controller.setAccountRepository(accountRepository);
+            // Show the dialog and wait until the user closes it
+            dialogStage.showAndWait();
+
+            return controller.isOkClicked();
+        } catch (IOException e) {
+            e.printStackTrace();
+            return false;
+        }
     }
 }

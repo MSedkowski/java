@@ -102,4 +102,34 @@ public class LoadSaveDatabase  {
         }
     }
     }
+
+    public static void loadSpecificData(String columnName, String search, AccountRepository accountRepository) throws SQLException {
+        java.sql.Statement stmt = null;
+        ResultSet rs = null;
+        dbConnection = (Connection) DriverManager.getConnection(jdbcConnectionString, user, password);
+        String query = "SELECT * FROM accountData WHERE " + columnName + " = " + "'" + search + "'";
+        stmt = dbConnection.createStatement();
+        rs = stmt.executeQuery(query);
+        String name, surname, street, post, city, pesel, accountNumber, login, password, accountType;
+        BigDecimal accountBalance;
+        Boolean isAdmin;
+        while (rs.next()) {
+            name = rs.getString("name");
+            surname = rs.getString("surname");
+            street = rs.getString("street");
+            post = rs.getString("post");
+            city = rs.getString("city");
+            pesel = rs.getString("PESEL");
+            accountNumber = rs.getString("accountNumber");
+            accountBalance = rs.getBigDecimal("accountBalance");
+            login = rs.getString("accountName");
+            password = rs.getString("accountPassword");
+            accountType = rs.getString("accountType");
+            isAdmin = rs.getBoolean("isAdmin");
+            accountRepository.addAccount(new AccountData(name, surname, street, post, city, pesel, accountNumber, 
+                                                     accountBalance, login, password, accountType, isAdmin));
+        }
+    }
+        
+    
 }

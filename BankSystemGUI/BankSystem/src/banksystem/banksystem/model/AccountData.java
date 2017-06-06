@@ -122,7 +122,7 @@ public class AccountData {
     public BigDecimal getAccountBalance() {
         return accountBalance;
     }
-
+    
     public void setAccountBalance(BigDecimal accountBalance) {
         this.accountBalance = accountBalance;
     }
