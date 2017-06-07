@@ -93,13 +93,13 @@ public class EmployeeLayoutController {
         if (selectedIndex >= 0) accountTable.getItems().remove(selectedIndex);
         else {
                 // Nothing selected.
-                Alert alert = new Alert(AlertType.WARNING);
-                alert.initOwner(mainApp.getPrimaryStage());
-                alert.setTitle("No Selection");
-                alert.setHeaderText("No Person Selected");
-                alert.setContentText("Please select a person in the table.");
+            Alert alert = new Alert(AlertType.WARNING);
+            alert.initOwner(mainApp.getPrimaryStage());
+            alert.setTitle("Brak wyboru");
+            alert.setHeaderText("Nie wybrano konta");
+            alert.setContentText("Proszê wybraæ konto z tablicy");
 
-                alert.showAndWait();
+            alert.showAndWait();
         }
     }
     
@@ -125,9 +125,9 @@ public class EmployeeLayoutController {
             // Nothing selected.
             Alert alert = new Alert(AlertType.WARNING);
             alert.initOwner(mainApp.getPrimaryStage());
-            alert.setTitle("No Selection");
-            alert.setHeaderText("No Account Selected");
-            alert.setContentText("Please select an account in the table.");
+            alert.setTitle("Brak wyboru");
+            alert.setHeaderText("Nie wybrano konta");
+            alert.setContentText("Proszê wybraæ konto z tablicy");
 
             alert.showAndWait();
         }
@@ -157,9 +157,9 @@ public class EmployeeLayoutController {
             // Nothing selected.
             Alert alert = new Alert(AlertType.WARNING);
             alert.initOwner(mainApp.getPrimaryStage());
-            alert.setTitle("No Selection");
-            alert.setHeaderText("No Account Selected");
-            alert.setContentText("Please select an account in the table.");
+            alert.setTitle("Brak wyboru");
+            alert.setHeaderText("Nie wybrano konta");
+            alert.setContentText("Proszê wybraæ konto z tablicy");
 
             alert.showAndWait();
         }

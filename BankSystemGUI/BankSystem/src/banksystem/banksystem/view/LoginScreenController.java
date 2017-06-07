@@ -8,6 +8,7 @@ import javafx.scene.control.TextField;
 import javafx.stage.Stage;
 import java.sql.*;
 import banksystem.LoadSaveDatabase;
+import banksystem.MainApp;
 
 public class LoginScreenController {
 
@@ -19,7 +20,7 @@ public class LoginScreenController {
     private Stage loginStage;
     private boolean loginClicked = false;
     private boolean registerClicked = false;
-    private boolean loginOK = false;
+    private int loginOK = 0;
 
     @FXML
     private void initialize() {
@@ -37,15 +38,22 @@ public class LoginScreenController {
         return registerClicked ;
     }
     
-    public boolean getLoginOK() {
+    public int getLoginOK() {
         return loginOK;
     }
 
     @FXML
     private boolean handleLogin() throws SQLException {
         if (isInputValid()) {
-            if (LoadSaveDatabase.loginMethod(accountNameField.getText(), passwordField.getText())) {
-                loginOK = true;
+            int rodzaj = LoadSaveDatabase.loginMethod(accountNameField.getText(), passwordField.getText());
+            if (rodzaj == 1) {
+                MainApp.accountName = accountNameField.getText();
+                loginOK = 1;
+                loginStage.close();
+            }
+            if (rodzaj == 2) {
+                MainApp.accountName = accountNameField.getText();
+                loginOK = 2;
                 loginStage.close();
             }
             else {
@@ -55,7 +63,7 @@ public class LoginScreenController {
                 alert.setHeaderText("Podany login i haslo sa nieprawidlowe");
 
                 alert.showAndWait();
-                loginOK = false;
+                loginOK = 0;
             }
         }
         return loginClicked;
@@ -71,10 +79,10 @@ public class LoginScreenController {
         String errorMessage = "";
 
         if (accountNameField.getText() == null || accountNameField.getText().length() == 0) {
-            errorMessage += "No valid account name!\n";
+            errorMessage += "Z³y login! Pole nie mo¿e byæ puste!\n";
         }
         if (passwordField.getText() == null || passwordField.getText().length() == 0) {
-            errorMessage += "No valid password!\n";
+            errorMessage += "Z³e has³o! Pole nie mo¿e byæ puste!\n";
         }
 
         if (errorMessage.length() == 0) {
@@ -83,8 +91,8 @@ public class LoginScreenController {
             // Show the error message.
             Alert alert = new Alert(AlertType.ERROR);
             alert.initOwner(loginStage);
-            alert.setTitle("Invalid Fields");
-            alert.setHeaderText("Please correct invalid fields");
+            alert.setTitle("Niepoprawnie wype³nione pola");
+            alert.setHeaderText("Proszê poprawiæ: ");
             alert.setContentText(errorMessage);
 
             alert.showAndWait();

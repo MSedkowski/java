@@ -161,9 +161,8 @@
                                  </font>
                               </Button>
                               <Button layoutX="265.0" layoutY="14.0" mnemonicParsing="false" onAction="#handleDepositWithdraw" prefWidth="150.0" text="Wpłata / Wypłata" />
-                              <Button layoutX="8.0" layoutY="54.0" mnemonicParsing="false" onAction="#handleDeleteAccount" prefWidth="75.0" text="Przelew" />
-                              <Button alignment="CENTER" layoutX="95.0" layoutY="54.0" mnemonicParsing="false" onAction="#handleSearch" prefHeight="25.0" prefWidth="75.0" text="Wyszukaj" />
-                              <Button layoutX="180.0" layoutY="54.0" mnemonicParsing="false" onAction="#handleEverything" prefHeight="25.0" prefWidth="75.0" text="Wszystko" />
+                              <Button alignment="CENTER" layoutX="8.0" layoutY="54.0" mnemonicParsing="false" onAction="#handleSearch" prefHeight="25.0" prefWidth="75.0" text="Wyszukaj" />
+                              <Button layoutX="95.0" layoutY="54.0" mnemonicParsing="false" onAction="#handleEverything" prefHeight="25.0" prefWidth="75.0" text="Wszystko" />
                            </children></AnchorPane>
                     </items>
                   </SplitPane>

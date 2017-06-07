@@ -85,7 +85,7 @@ public class SearchDialogController {
         String errorMessage = "";
 
         if (searchField.getText() == null || searchField.getText().length() == 0) {
-            errorMessage += "No valid search!\n"; 
+            errorMessage += "Pole wyszukiwania nie mo¿e byæ puste!\n"; 
         }
 
         if (errorMessage.length() == 0) {
@@ -94,8 +94,8 @@ public class SearchDialogController {
             // Show the error message.
             Alert alert = new Alert(AlertType.ERROR);
             alert.initOwner(dialogStage);
-            alert.setTitle("Invalid Fields");
-            alert.setHeaderText("Please correct invalid fields");
+            alert.setTitle("Niepoprawnie wype³nione pola");
+            alert.setHeaderText("Proszê poprawiæ:");
             alert.setContentText(errorMessage);
 
             alert.showAndWait();

@@ -100,6 +100,7 @@ public class AccountEditDialogController {
             accountData.setAccountBalance(new BigDecimal(accountBalanceField.getText()));
             accountData.setLogin(loginField.getText());
             accountData.setPassword(passwordField.getText());
+            accountData.setAccountType("Customer");
 
             okClicked = true;
             dialogStage.close();
@@ -123,41 +124,45 @@ public class AccountEditDialogController {
         String errorMessage = "";
 
         if (firstNameField.getText() == null || firstNameField.getText().length() == 0) {
-            errorMessage += "No valid first name!\n"; 
+            errorMessage += "B³êdne imie! Pole nie mo¿e byæ puste!\n"; 
         }
         if (lastNameField.getText() == null || lastNameField.getText().length() == 0) {
-            errorMessage += "No valid last name!\n"; 
+            errorMessage += "B³êdne nazwisko! Pole nie mo¿e byæ puste!\n"; 
         }
         if (streetField.getText() == null || streetField.getText().length() == 0) {
-            errorMessage += "No valid street!\n"; 
+            errorMessage += "B³êdny adres! Pole ulica nie mo¿e byæ puste!\n"; 
         }
 
-        if (postalCodeField.getText() == null || postalCodeField.getText().length() == 0) {
-            errorMessage += "No valid post code!\n"; 
+        if (postalCodeField.getText() == null || postalCodeField.getText().length() == 0
+            || !postalCodeField.getText().matches("[0-9]{2}-[0-9]{3}")) {
+            errorMessage += "Niepoprawny kod pocztowy! Proszê u¿yæ formatu xx-xxx\n"; 
         }
 
         if (cityField.getText() == null || cityField.getText().length() == 0) {
-            errorMessage += "No valid city!\n"; 
+            errorMessage += "Brak podanego miasta! Pole nie mo¿e byæ puste!\n"; 
         }
         
-        if (peselField.getText() == null || peselField.getText().length() == 0) {
-            errorMessage += "No valid pesel!\n"; 
+        if (peselField.getText() == null || peselField.getText().length() == 0
+            || !peselField.getText().matches("[0-9]{2}[0-1]{1}[0-9]{1}[0-3]{1}[0-9]{6}")) {
+            errorMessage += "B³êdny numer pesel!\n"; 
         }
         
-        if (accountNumberField.getText() == null || accountNumberField.getText().length() == 0) {
-            errorMessage += "No valid account number!\n"; 
+        if (accountNumberField.getText() == null || accountNumberField.getText().length() == 0
+            || !accountNumberField.getText().matches("[0-9]{26}")) {
+            errorMessage += "B³êdny numer konta! Podaj 26 cyfrowy numer konta\n"; 
         }
         
-        if (accountBalanceField.getText() == null || accountBalanceField.getText().length() == 0) {
-            errorMessage += "No valid account balance!\n"; 
+        if (accountBalanceField.getText() == null || accountBalanceField.getText().length() == 0
+            || !accountBalanceField.getText().matches("[0-9]+.[0-9]+")) {
+            errorMessage += "B³êdne saldo! Pole nie mo¿e byæ puste!\n"; 
         }
         
         if (loginField.getText() == null || loginField.getText().length() == 0) {
-            errorMessage += "No valid login!\n"; 
+            errorMessage += "B³êdny login! Pole nie mo¿e byæ puste!\n"; 
         }
         
         if (passwordField.getText() == null || passwordField.getText().length() == 0) {
-            errorMessage += "No valid password!\n"; 
+            errorMessage += "B³êdne has³o! Pole nie mo¿e byæ puste!\n"; 
         }
 
         if (errorMessage.length() == 0) {
@@ -166,8 +171,8 @@ public class AccountEditDialogController {
             // Show the error message.
             Alert alert = new Alert(AlertType.ERROR);
             alert.initOwner(dialogStage);
-            alert.setTitle("Invalid Fields");
-            alert.setHeaderText("Please correct invalid fields");
+            alert.setTitle("Niepoprawnie wype³nione pola");
+            alert.setHeaderText("Proszê poprawiæ: ");
             alert.setContentText(errorMessage);
 
             alert.showAndWait();

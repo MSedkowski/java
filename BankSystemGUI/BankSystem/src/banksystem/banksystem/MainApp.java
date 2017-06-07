@@ -8,6 +8,7 @@ import banksystem.model.AccountData;
 import banksystem.model.AccountRepository;
 import banksystem.view.AccountEditDialogController;
 import banksystem.view.AccountWithdrawDepositDialogController;
+import banksystem.view.CustomerLayoutController;
 import banksystem.view.EmployeeLayoutController;
 import banksystem.view.LoginScreenController;
 import banksystem.view.SearchDialogController;
@@ -24,7 +25,7 @@ public class MainApp extends Application {
 
     private Stage primaryStage;
     private BorderPane rootLayout;
-
+    public static String accountName;
     private AccountRepository accountRepository;
     
     @Override
@@ -33,9 +34,14 @@ public class MainApp extends Application {
         this.primaryStage = primaryStage;
         this.primaryStage.setTitle("BankSystem");
 
-        if(showLoginScreen()) {
+        if(showLoginScreen() == 1) {
             initRootLayout();
             showEmployeeLayout();
+        }
+        
+        if (showLoginScreen() == 2) {
+            initRootLayout();
+            showCustomerLayout();
         }
         
     }
@@ -56,7 +62,7 @@ public class MainApp extends Application {
         }
     }
 
-    public boolean showLoginScreen() {
+    public int showLoginScreen() {
         try {
             // Load person overview.
             FXMLLoader loader = new FXMLLoader();
@@ -81,38 +87,7 @@ public class MainApp extends Application {
             return controller.getLoginOK();
         } catch (IOException e) {
             e.printStackTrace();
-            return false;
-        }
-
-    }
-    
-    public boolean showSignUpScreen() {
-        try {
-            // Load person overview.
-            FXMLLoader loader = new FXMLLoader();
-            loader.setLocation(MainApp.class.getResource("view/SignUpScreen.fxml"));
-            AnchorPane registerScreen = (AnchorPane) loader.load();
-
-            // Create the dialog Stage.
-            Stage registerStage = new Stage();
-            registerStage.setTitle("Sign up");
-            registerStage.initModality(Modality.WINDOW_MODAL);
-            registerStage.initOwner(primaryStage);
-            Scene scene = new Scene(registerScreen);
-            registerStage.setScene(scene);
-
-            // Set the person into the controller.
-            /*LoginScreenController controller = loader.getController();
-            controller.setLoginStage(loginStage);
-            // controller.setAccount(account);*/
-
-            // Show the dialog and wait until the user closes it
-            registerStage.showAndWait();
-
-            return true; //controller.isRegisterClicked();
-        } catch (IOException e) {
-            e.printStackTrace();
-            return false;
+            return 0;
         }
 
     }
@@ -234,6 +209,25 @@ public class MainApp extends Application {
         } catch (IOException e) {
             e.printStackTrace();
             return false;
+        }
+    }
+    
+    public void showCustomerLayout() throws SQLException {
+        try {
+            // Load person overview.
+            FXMLLoader loader = new FXMLLoader();
+            loader.setLocation(MainApp.class.getResource("view/CustomerLayout.fxml"));
+            AnchorPane customerLayout = (AnchorPane) loader.load();
+
+            // Set person overview into the center of root layout.
+            rootLayout.setCenter(customerLayout);
+
+           // Give the controller access to the main app.
+            CustomerLayoutController controller = loader.getController();
+            controller.setMainApp(this, accountName, accountRepository);
+
+        } catch (IOException e) {
+            e.printStackTrace();
         }
     }
 }
