@@ -16,7 +16,7 @@ public class LoadSaveDatabase  {
     static private String jdbcConnectionString = 
         "jdbc:mysql://localhost:3306/" + databaseName + "?useSSL=false";
     
-    public static int loginMethod(String login, String pass) throws SQLException {
+    public static boolean loginMethod(String login, String pass) throws SQLException {
         java.sql.Statement stmt = null;
         ResultSet rs = null;
         dbConnection = (Connection) DriverManager.getConnection(jdbcConnectionString, user, password);
@@ -24,10 +24,16 @@ public class LoadSaveDatabase  {
         stmt = dbConnection.createStatement();
         rs = stmt.executeQuery(query);
         if (rs.next()) {
-            if (rs.getString("accountType").equals("Employee")) return 1;
-            else return 2;
+            if (rs.getString("accountType").equals("Employee"))  {
+                MainApp.accountName = "Employee";
+                return true;
+            }
+            if (rs.getString("accountType").equals("Customer"))  {
+                MainApp.accountName = "Customer";
+                return true;
+            }
         }
-        return 0;
+        return false;
     }
     
     public static void loadData(AccountRepository accountRepository) throws SQLException {

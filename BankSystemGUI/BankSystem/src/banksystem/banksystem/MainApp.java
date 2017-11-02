@@ -34,15 +34,19 @@ public class MainApp extends Application {
         this.primaryStage = primaryStage;
         this.primaryStage.setTitle("BankSystem");
 
-        if(showLoginScreen() == 1) {
+        if(showLoginScreen()) {
             initRootLayout();
             showEmployeeLayout();
         }
         
-        if (showLoginScreen() == 2) {
+        /*if(showLoginScreen() && accountName.equals("Employee")) {
+            initRootLayout();
+            showEmployeeLayout();
+        }
+        if (showLoginScreen() && accountName.equals("Customer")) {
             initRootLayout();
             showCustomerLayout();
-        }
+        }*/
         
     }
 
@@ -62,7 +66,7 @@ public class MainApp extends Application {
         }
     }
 
-    public int showLoginScreen() {
+    public boolean showLoginScreen() {
         try {
             // Load person overview.
             FXMLLoader loader = new FXMLLoader();
@@ -87,7 +91,7 @@ public class MainApp extends Application {
             return controller.getLoginOK();
         } catch (IOException e) {
             e.printStackTrace();
-            return 0;
+            return false;
         }
 
     }

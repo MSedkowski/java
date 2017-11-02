@@ -20,7 +20,7 @@ public class LoginScreenController {
     private Stage loginStage;
     private boolean loginClicked = false;
     private boolean registerClicked = false;
-    private int loginOK = 0;
+    private boolean loginOK = false;
 
     @FXML
     private void initialize() {
@@ -38,22 +38,17 @@ public class LoginScreenController {
         return registerClicked ;
     }
     
-    public int getLoginOK() {
+    public boolean getLoginOK() {
         return loginOK;
     }
 
     @FXML
     private boolean handleLogin() throws SQLException {
         if (isInputValid()) {
-            int rodzaj = LoadSaveDatabase.loginMethod(accountNameField.getText(), passwordField.getText());
-            if (rodzaj == 1) {
+            
+            if (LoadSaveDatabase.loginMethod(accountNameField.getText(), passwordField.getText())) {
                 MainApp.accountName = accountNameField.getText();
-                loginOK = 1;
-                loginStage.close();
-            }
-            if (rodzaj == 2) {
-                MainApp.accountName = accountNameField.getText();
-                loginOK = 2;
+                loginOK = true;
                 loginStage.close();
             }
             else {
@@ -63,7 +58,7 @@ public class LoginScreenController {
                 alert.setHeaderText("Podany login i haslo sa nieprawidlowe");
 
                 alert.showAndWait();
-                loginOK = 0;
+                loginOK = false;
             }
         }
         return loginClicked;

@@ -1,0 +1,19 @@
+.custom-button {
+    //-fx-background-image: url('marble.jpg');
+    -fx-background-color: rgba(0,0,0,0);
+    -fx-font: 24px "Serif";
+    -fx-text-fill: gold;
+    -fx-padding: 10;
+    
+}
+.custom-button .text {
+    -fx-stroke: black;
+    -fx-stroke-width: 0.75;
+}
+.pane {
+    -fx-background-image: url('background1.jpg');
+}
+
+.custom-label .text{
+    -fx-text-weight: italic;
+}
