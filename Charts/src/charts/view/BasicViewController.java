@@ -29,11 +29,13 @@ public class BasicViewController {
     private ToggleGroup chartType;
 
     private ListOfChartData listOfChartData;
+    private final String labelXAxis = "Numer linii";
+    private final String labelYAxis = "Liczba znaków";
 
     @FXML
     public void initialize() {
         scatterChartButton.setSelected(true);
-        
+
     }
 
     public void setMainApp(Charts main, ListOfChartData listOfChartData) {
@@ -49,70 +51,66 @@ public class BasicViewController {
             lineChart.setVisible(false);
             barChart.setVisible(false);
             scatterChart.setVisible(true);
-        }
-        else if (chartType.getSelectedToggle().equals(lineChartButton)) {
+        } else if (chartType.getSelectedToggle().equals(lineChartButton)) {
             scatterChart.setVisible(false);
             barChart.setVisible(false);
             lineChart.setVisible(true);
-        }
-        else if (chartType.getSelectedToggle().equals(barChartButton)) {
+        } else if (chartType.getSelectedToggle().equals(barChartButton)) {
             lineChart.setVisible(false);
             scatterChart.setVisible(false);
             barChart.setVisible(true);
         }
-   }
+    }
+
     private void createLineChart() {
         int numberOfSeries = 1;
-        for (ChartData e : listOfChartData.getListOfChartData()) {
-        XYChart.Series<String, Integer> series = createChartDataSeries(e, numberOfSeries);
-        lineChart.getData().add(series);
-        numberOfSeries++;
+        for (ChartData chartData : listOfChartData.getListOfChartData()) {
+            XYChart.Series<String, Integer> series = createChartDataSeries(chartData, numberOfSeries);
+            lineChart.getData().add(series);
+            numberOfSeries++;
         }
-        lineChart.getXAxis().setLabel("Numer linii");
-        lineChart.getYAxis().setLabel("Ilość znaków");
+        lineChart.getXAxis().setLabel(labelXAxis);
+        lineChart.getYAxis().setLabel(labelYAxis);
 
     }
-    
+
     private void createBarChart() {
         int numberOfSeries = 1;
-        for (ChartData e : listOfChartData.getListOfChartData()) {
-        XYChart.Series<String, Integer> series = createChartDataSeries(e, numberOfSeries);
-        barChart.getData().add(series);
-        numberOfSeries++;
+        for (ChartData chartData : listOfChartData.getListOfChartData()) {
+            XYChart.Series<String, Integer> series = createChartDataSeries(chartData, numberOfSeries);
+            barChart.getData().add(series);
+            numberOfSeries++;
         }
-        barChart.getXAxis().setLabel("Numer linii");
-        barChart.getYAxis().setLabel("Ilość znaków");
+        barChart.getXAxis().setLabel(labelXAxis);
+        barChart.getYAxis().setLabel(labelYAxis);
 
     }
-    
+
     private void createScatterChart() {
         int numberOfSeries = 1;
-        for (ChartData e : listOfChartData.getListOfChartData()) {
-        XYChart.Series<String, Integer> series = createChartDataSeries(e, numberOfSeries);
-        scatterChart.getData().add(series);
-        numberOfSeries++;
+        for (ChartData chartData : listOfChartData.getListOfChartData()) {
+            XYChart.Series<String, Integer> series = createChartDataSeries(chartData, numberOfSeries);
+            scatterChart.getData().add(series);
+            numberOfSeries++;
         }
-        scatterChart.getXAxis().setLabel("Numer linii");
-        scatterChart.getYAxis().setLabel("Ilość znaków");
+        scatterChart.getXAxis().setLabel(labelXAxis);
+        scatterChart.getYAxis().setLabel(labelYAxis);
 
     }
-    
+
     @FXML
-    public void handleChartSelection(){
+    public void handleChartSelection() {
         showChart();
     }
-    
-    private XYChart.Series<String, Integer> createChartDataSeries(ChartData e, int numberOfSeries) {
+
+    private XYChart.Series<String, Integer> createChartDataSeries(ChartData chartData, int numberOfSeries) {
         XYChart.Series<String, Integer> series = new XYChart.Series<String, Integer>();
-            for (int i = 0; i < e.getListOfLines().size() - 1; i++) {
-                XYChart.Data<String, Integer> chartData = new XYChart.Data<String, Integer>(String.valueOf(i+1), e.getListOfLines().get(i));
-                series.getData().add(chartData);
-                series.setName("Plik " + numberOfSeries);
-            }
+        for (int i = 0; i < chartData.getListOfLines().size() - 1; i++) {
+            XYChart.Data<String, Integer> data = new XYChart.Data<String, Integer>(String.valueOf(i + 1), chartData.getListOfLines().get(i));
+            series.getData().add(data);
+            series.setName("Plik " + numberOfSeries);
+        }
         return series;
     }
-    
-    
-    
 
 }

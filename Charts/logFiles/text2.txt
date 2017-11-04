@@ -1,10 +1,47 @@
-0000000000
-111111111
-22222222
-3333333
-444444
-55555
-6666
-777
-88
-9
+﻿info: Oct-8 11:02:52.540 [SOCKET-MANAGER] Changing from never_connected to prov_connect
+info: Oct-8 11:02:52.650 [SOCKET-MANAGER] will stay in prov_connect state for up to 10000 ms
+info: Oct-8 11:02:52.660 [SOCKET-MANAGER] Changing from prov_connect to prov_connecting
+warn: 🐶 CSS check: no cssRules or rules defined?
+info: Oct-8 11:02:52.540 [SOCKET-MANAGER] Changing from never_connected to prov_connect
+info: Oct-8 11:02:52.650 [SOCKET-MANAGER] will stay in prov_connect state for up to 10000 ms
+info: Oct-8 11:02:52.660 [SOCKET-MANAGER] Changing from prov_connect to prov_connecting
+info: Oct-8 11:02:52.660 [SOCKET-MANAGER] will stay in prov_connecting state for up to 20000 ms
+info: 2017/10/8 11:02:52.730  Starting non-incremental boot
+info: Oct-8 11:02:52.652 [SOCKET-MANAGER] Changing from prov_connecting to prov_connected
+info: Oct-8 11:02:52.653 [SOCKET-MANAGER] will stay in prov_connected state for up to 60000 ms
+info: Oct-8 11:02:54.855 [SOCKET-MANAGER] Changing from prov_connected to prov_finalize
+info: Oct-8 11:02:54.855 [SOCKET-MANAGER] will stay in prov_finalize state for up to 10000 ms
+info: Oct-8 11:02:54.855 [SOCKET-MANAGER] Changing from prov_finalize to prov_finalizing
+info: Oct-8 11:02:54.856 [SOCKET-MANAGER] will stay in prov_finalizing state for up to 10000 ms
+info: Oct-8 11:02:54.857 [SOCKET-MANAGER] Changing from prov_finalizing to connected
+info: Oct-8 11:02:54.858 [SOCKET-MANAGER] will stay in connected state for up to Infinity ms
+error: 2017/10/8 11:02:55.123 logging e: [object Object] subtype: api_call_error desc: api call "promo.banner" not ok
+warn: 2017/10/8 11:02:55.125  args/data logging skipped, run with ?log_api_failures=1 to enable full logging
+warn: %cUnhandled rejection Error: API call "promo.banner" not ok
+    at e (https://a.slack-edge.com/bv1-1/rollup-secondary_a_required.7e2cff55d7da7b72b6ed.min.js:1:150239)
+    at Object.e [as handler] (https://a.slack-edge.com/bv1-1/rollup-secondary_a_required.7e2cff55d7da7b72b6ed.min.js:1:150803)
+    at e (https://a.slack-edge.com/bv1-1/rollup-secondary_a_required.7e2cff55d7da7b72b6ed.min.js:1:146504)
+    at e (https://a.slack-edge.com/bv1-1/rollup-secondary_a_required.7e2cff55d7da7b72b6ed.min.js:1:148542)
+    at e (https://a.slack-edge.com/bv1-1/rollup-secondary_a_required.7e2cff55d7da7b72b6ed.min.js:1:142208)
+    at e (https://a.slack-edge.com/bv1-1/rollup-secondary_a_required.7e2cff55d7da7b72b6ed.min.js:1:142727)
+    at XMLHttpRequest.m.onreadystatechange (https://a.slack-edge.com/bv1-1/rollup-secondary_a_required.7e2cff55d7da7b72b6ed.min.js:1:144470)
+info: 2017/10/8 11:02:55.320  Finished processing users.counts
+info: 2017/10/8 11:02:55.321  0 IMs with unreads, 0 total dm_count
+warn: 2017/10/8 11:02:56.750  getOldestValidTs(D7F2RCWQ2): none found. msgs.length = -1
+info: Oct-8 11:03:00.995 [HISTORY] Not loading scrollback in D7F2RCWQ2: There are NOT older messages than these.
+info: 2017/10/8 11:04:02.108  U7G5A9Z0F joined the team
+info: 2017/10/8 11:04:02.181  U7G5A9Z0F joined channel C7EGXSPNV
+info: 2017/10/8 11:04:02.255  U7G5A9Z0F joined channel C7F0HK9C3
+warn: 2017/10/8 11:04:02.992  getOldestValidTs(D7G5AA0BZ): none found. msgs.length = -1
+info: 2017/10/8 11:04:28.617  B7EGYKDCH was added
+info: 2017/10/8 11:04:28.698  B7F0JC067 was added
+info: 2017/10/8 11:04:28.767  U7EGYKDEV joined the team
+info: 2017/10/8 11:04:29.480  B7F0JC0GK was added
+warn: 2017/10/8 11:04:29.120  getOldestValidTs(D7FUTBEQN): none found. msgs.length = -1
+info: Oct-8 11:04:40.850 [ACTION:CHANNEL-SIDEBAR] Selected D7FUTBEQN
+info: Oct-8 11:04:41.135 [HISTORY] Not loading scrollback in D7FUTBEQN: There are NOT older messages than these.
+info: Oct-8 11:04:46.803 [ACTION:CHANNEL-SIDEBAR] Selected D7F0J5TEX
+warn: 2017/10/8 11:04:47.180  getOldestValidTs(D7F0J5TEX): none found. msgs.length = -1
+info: Oct-8 11:05:24.153 [ACTION:CHANNEL-SIDEBAR] Selected D7G5AA0BZ
+info: Oct-8 11:05:27.599 [ACTION:CHANNEL-SIDEBAR] Selected C7EGXSPNV
+info: Oct-8 11:05:27.775 [HISTORY] Not loading scrollback in C7EGXSPNV: We have the oldest msg: 1507452973.000012. is_limited:undefined

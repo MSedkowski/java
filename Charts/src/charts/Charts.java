@@ -21,7 +21,7 @@ public class Charts extends Application {
     private ListOfChartData listOfChartData;
     private AnchorPane rootLayout;
     private Stage primaryStage;
-    
+
     @Override
     public void start(Stage primaryStage) throws IOException {
         this.primaryStage = primaryStage;
@@ -44,7 +44,7 @@ public class Charts extends Application {
     public static void main(String[] args) {
         launch(args);
     }
-    
+
     private void initRootLayout(ListOfChartData listOfChartData) {
         try {
             FXMLLoader loader = new FXMLLoader();

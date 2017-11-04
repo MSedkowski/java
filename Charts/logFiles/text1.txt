@@ -1,10 +1,40 @@
-1
-22
-333
-4444
-55555
-666666
-7777777
-88888888
-999999999
-0000000000
+﻿[10/08/17, 10:59:39:275] info: ╔══════════════════════════════════════════════════════════════════════════╗
+[10/08/17, 10:59:39:315] info: ║      Slack 2.8.1, win32 10.0.15063 on x64 at 10/08/17, 10:59:39:249      ║
+[10/08/17, 10:59:39:317] info: ╚══════════════════════════════════════════════════════════════════════════╝
+[10/08/17, 10:59:39:975] info: Initializing local storage instance at path: C:\Users\Mateusz\AppData\Roaming\Slack\local-settings.json
+[10/08/17, 10:59:51:137] info: Window is unloading, winssb is no longer accessible
+[10/08/17, 10:59:51:329] info: Window is unloading, winssb is no longer accessible
+[10/08/17, 10:59:53:180] info: ╔══════════════════════════════════════════════════════════════════════════╗
+[10/08/17, 10:59:53:218] info: ║      Slack 2.8.1, win32 10.0.15063 on x64 at 10/08/17, 10:59:53:111      ║
+[10/08/17, 10:59:53:220] info: ╚══════════════════════════════════════════════════════════════════════════╝
+[10/08/17, 10:59:53:886] info: Initializing local storage instance at path: C:\Users\Mateusz\AppData\Roaming\Slack\local-settings.json
+[10/08/17, 11:00:31:767] info: Window is unloading, winssb is no longer accessible
+[10/08/17, 11:00:33:257] info: ╔══════════════════════════════════════════════════════════════════════════╗
+[10/08/17, 11:00:33:260] info: ║      Slack 2.8.1, win32 10.0.15063 on x64 at 10/08/17, 11:00:33:248      ║
+[10/08/17, 11:00:33:262] info: ╚══════════════════════════════════════════════════════════════════════════╝
+[10/08/17, 11:00:33:794] info: Initializing local storage instance at path: C:\Users\Mateusz\AppData\Roaming\Slack\local-settings.json
+[10/08/17, 11:00:42:535] info: Window is unloading, winssb is no longer accessible
+[10/08/17, 11:00:43:600] info: ╔══════════════════════════════════════════════════════════════════════════╗
+[10/08/17, 11:00:43:641] info: ║      Slack 2.8.1, win32 10.0.15063 on x64 at 10/08/17, 11:00:43:594      ║
+[10/08/17, 11:00:43:644] info: ╚══════════════════════════════════════════════════════════════════════════╝
+[10/08/17, 11:00:43:901] info: Initializing local storage instance at path: C:\Users\Mateusz\AppData\Roaming\Slack\local-settings.json
+[10/08/17, 11:00:52:251] info: Window is unloading, winssb is no longer accessible
+[10/08/17, 11:00:53:089] info: ╔══════════════════════════════════════════════════════════════════════════╗
+[10/08/17, 11:00:53:091] info: ║      Slack 2.8.1, win32 10.0.15063 on x64 at 10/08/17, 11:00:53:084      ║
+[10/08/17, 11:00:53:093] info: ╚══════════════════════════════════════════════════════════════════════════╝
+[10/08/17, 11:00:53:439] info: Initializing local storage instance at path: C:\Users\Mateusz\AppData\Roaming\Slack\local-settings.json
+[10/08/17, 11:01:00:053] info: Window is unloading, winssb is no longer accessible
+[10/08/17, 11:01:01:170] info: ╔══════════════════════════════════════════════════════════════════════════╗
+[10/08/17, 11:01:01:172] info: ║      Slack 2.8.1, win32 10.0.15063 on x64 at 10/08/17, 11:01:01:165      ║
+[10/08/17, 11:01:01:173] info: ╚══════════════════════════════════════════════════════════════════════════╝
+[10/08/17, 11:01:01:421] info: Initializing local storage instance at path: C:\Users\Mateusz\AppData\Roaming\Slack\local-settings.json
+[10/08/17, 11:01:06:440] info: Window is unloading, winssb is no longer accessible
+[10/08/17, 11:01:07:297] info: ╔══════════════════════════════════════════════════════════════════════════╗
+[10/08/17, 11:01:07:300] info: ║      Slack 2.8.1, win32 10.0.15063 on x64 at 10/08/17, 11:01:07:293      ║
+[10/08/17, 11:01:07:301] info: ╚══════════════════════════════════════════════════════════════════════════╝
+[10/08/17, 11:01:07:689] info: Initializing local storage instance at path: C:\Users\Mateusz\AppData\Roaming\Slack\local-settings.json
+[10/08/17, 11:01:12:258] info: Window is unloading, winssb is no longer accessible
+[10/08/17, 11:01:13:412] info: ╔══════════════════════════════════════════════════════════════════════════╗
+[10/08/17, 11:01:13:446] info: ║      Slack 2.8.1, win32 10.0.15063 on x64 at 10/08/17, 11:01:13:357      ║
+[10/08/17, 11:01:13:448] info: ╚══════════════════════════════════════════════════════════════════════════╝
+[10/08/17, 11:01:14:023] info: Initializing local storage instance at path: C:\Users\Mateusz\AppData\Roaming\Slack\local-settings.json
