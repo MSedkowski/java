@@ -1,5 +1,4 @@
 .custom-button {
-    //-fx-background-image: url('marble.jpg');
     -fx-background-color: rgba(0,0,0,0);
     -fx-font: 24px "Serif";
     -fx-text-fill: gold;
