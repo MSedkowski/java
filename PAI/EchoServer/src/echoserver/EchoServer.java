@@ -1,21 +1,44 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package echoserver;
 
-/**
- *
- * @author Mateusz
- */
+import java.net.*;
+import java.io.*;
+ 
 public class EchoServer {
-
-    /**
-     * @param args the command line arguments
-     */
-    public static void main(String[] args) {
-        // TODO code application logic here
-    }
     
+    public static void main(String[] args){
+         
+        if (args.length != 1) {
+            System.err.println("Usage: java EchoServer <port number>");
+            System.exit(1);
+        }
+ 
+        int portNumber = Integer.parseInt(args[0]);
+ 
+        try ( 
+            ServerSocket serverSocket = new ServerSocket(portNumber);
+            Socket clientSocket = serverSocket.accept();
+            PrintWriter out =
+                new PrintWriter(clientSocket.getOutputStream(), true);
+            BufferedReader in = new BufferedReader(
+                new InputStreamReader(clientSocket.getInputStream()));
+        ) {
+         
+            String inputLine, outputLine;
+             
+            // Initiate conversation with client
+            outputLine = "Connected to server";
+            out.println(outputLine);
+ 
+            while ((inputLine = in.readLine()) != null) {
+                outputLine = inputLine;
+                out.println(outputLine);
+                if (outputLine.equals("Bye."))
+                    break;
+            }
+        } catch (IOException e) {
+            System.out.println("Exception caught when trying to listen on port "
+                + portNumber + " or listening for a connection");
+            System.out.println(e.getMessage());
+        }
+    }
 }
