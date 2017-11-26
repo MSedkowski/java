@@ -1,9 +1,9 @@
-package timemanagment;
+package timeManagementClient;
 
 import java.io.*;
 import java.net.*;
 
-public class TimeManagement {
+public class TimeManagementClient {
 
     public static void main(String[] args) {
         if (args.length != 2) {

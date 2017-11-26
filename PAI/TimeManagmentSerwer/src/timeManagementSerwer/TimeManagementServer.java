@@ -1,4 +1,4 @@
-package timemanagmentserwer;
+package timeManagementSerwer;
 
 import java.net.*;
 import java.io.*;

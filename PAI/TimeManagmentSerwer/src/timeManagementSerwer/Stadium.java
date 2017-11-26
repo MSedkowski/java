@@ -1,5 +1,5 @@
 
-package timemanagmentserwer;
+package timeManagementSerwer;
 
 import java.io.DataInputStream;
 import java.util.ArrayList;
@@ -51,7 +51,7 @@ public class Stadium {
                 reservation.append(reservationItem.getEndHour());
                 reservation.append("\t usługa: ");
                 reservation.append(reservationItem.getActivity());
-                reservation.append("\t rezerwacja dla: ");
+                reservation.append("\t rezerwacja dla ID: ");
                 reservation.append(reservationItem.getClientName());
                 reservation.append("\n");
                 i++;
