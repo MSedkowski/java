@@ -50,7 +50,6 @@ class Connected extends Thread {
                         out.writeUTF("Zły wybór");
                         break;
                     }
-                    
                 }
                 returnToMainMenu(out, in, clientSocket);
             }
@@ -58,6 +57,7 @@ class Connected extends Thread {
             e.printStackTrace();
         }
     }
+    
     private static void returnToMainMenu(DataOutputStream out, DataInputStream in,
             Socket clientSocket) throws IOException {
         while (true) {
@@ -75,6 +75,7 @@ class Connected extends Thread {
                     }
                 }
     }
+    
     private static void showMenu(DataOutputStream out) throws IOException {
         StringBuilder menu = new StringBuilder();
         menu.append("Witamy na serwerze czasu\n");
@@ -122,6 +123,7 @@ class Connected extends Thread {
     private static void createReservation(DataOutputStream out, DataInputStream in) throws IOException {
         Integer customerSelection = showReservation(out, in);
         String startTimeString, endTimeString, activityName;
+        boolean reserved = false;
         out.writeUTF("Podaj godzinę rozpoczęcia: ");
         out.flush();
         if ((startTimeString = in.readUTF()).equalsIgnoreCase("")) {
@@ -137,10 +139,24 @@ class Connected extends Thread {
         if ((activityName = in.readUTF()).equalsIgnoreCase("")) {
             activityName = in.readUTF();
         }
+        for (Stadium stadium : listOfStadiums) {
+            for (Reservation reservation : stadium.getListOfReservation()){
+                if (reservation.getActivity().equalsIgnoreCase(activityName) &&
+                        (startTimeString.compareTo(reservation.getStartHour()) != -1 && 
+                        startTimeString.compareTo(reservation.getEndHour()) != 1 ||
+                        endTimeString.compareTo(reservation.getEndHour()) != 1 && 
+                        endTimeString.compareTo(reservation.getStartHour()) != -1)) {
+                    out.writeUTF("Wybrana usługa jest już zarezerwowana");
+                    reserved = true;
+                }
+            }
+        }
+        if (!reserved){
         listOfStadiums.get(customerSelection).getListOfReservation()
                 .add(new Reservation(new String().format("%d", clientId), startTimeString, endTimeString, activityName));
         out.writeUTF("Zapisano");
         out.flush();
+        }
     }
 
     public void deleteReservation(DataOutputStream out, DataInputStream in) throws IOException {
