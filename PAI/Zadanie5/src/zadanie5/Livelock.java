@@ -65,8 +65,8 @@ public class Livelock extends Thread {
 
         while (!isInterrupted());
 
-        //t1.interrupt();
-        //t2.interrupt();
+        t1.interrupt();
+        t2.interrupt();
 
         System.out.println("Koniec pracy!");
     }
