@@ -47,30 +47,34 @@ class Connected extends Thread {
                         break;
                     }
                     default: {
-                        while (true) {
-                            out.writeUTF("Zły wybór!\n 'M' - Powrót do głównego menu\n 'Z' - Zakończ połączenie");
-                            String option;
-                            if ((option = in.readUTF()).equalsIgnoreCase("")) {
-                                option = in.readUTF();
-                            }
-                            if (option.equalsIgnoreCase("M")) {
-                                showMenu(out);
-                                break;
-                            }
-                            if (option.equalsIgnoreCase("Z")) {
-                                clientSocket.close();
-                            }
-                        }
+                        out.writeUTF("Zły wybór");
                         break;
                     }
+                    
                 }
-
+                returnToMainMenu(out, in, clientSocket);
             }
         } catch (IOException e) {
             e.printStackTrace();
         }
     }
-
+    private static void returnToMainMenu(DataOutputStream out, DataInputStream in,
+            Socket clientSocket) throws IOException {
+        while (true) {
+                    out.writeUTF("'M' - Powrót do głównego menu\n 'Z' - Zakończ połączenie");
+                    String option;
+                    if ((option = in.readUTF()).equalsIgnoreCase("")) {
+                        option = in.readUTF();
+                    }
+                    if (option.equalsIgnoreCase("M")) {
+                        showMenu(out);
+                        break;
+                    }
+                    if (option.equalsIgnoreCase("Z")) {
+                        clientSocket.close();
+                    }
+                }
+    }
     private static void showMenu(DataOutputStream out) throws IOException {
         StringBuilder menu = new StringBuilder();
         menu.append("Witamy na serwerze czasu\n");
