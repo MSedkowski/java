@@ -50,6 +50,8 @@ public class Stadium {
                 reservation.append("\t do: ");
                 reservation.append(reservationItem.getEndHour());
                 reservation.append("\t usługa: ");
+                reservation.append(reservationItem.getActivity());
+                reservation.append("\t rezerwacja dla: ");
                 reservation.append(reservationItem.getClientName());
                 reservation.append("\n");
                 i++;

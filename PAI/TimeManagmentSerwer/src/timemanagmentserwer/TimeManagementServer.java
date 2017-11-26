@@ -9,10 +9,15 @@ class Connected extends Thread {
 
     private Socket clientSocket;
     private static List<Stadium> listOfStadiums;
+    private static ArrayList clients;
+    private static int clientId;
 
-    public Connected(Socket clientSocket, List<Stadium> listOfStadiums) {
+    public Connected(Socket clientSocket, List<Stadium> listOfStadiums,
+            ArrayList clients, int clientId) {
         this.clientSocket = clientSocket;
         Connected.listOfStadiums = listOfStadiums;
+        Connected.clients = clients;
+        Connected.clientId = clientId;
     }
 
     public void run() {
@@ -77,7 +82,7 @@ class Connected extends Thread {
         out.flush();
     }
 
-    private static void showReservationMenu(DataOutputStream out) throws IOException {
+    private static void showListOfStadiums(DataOutputStream out) throws IOException {
         StringBuilder reservationMenu = new StringBuilder();
         reservationMenu.append("Wybierz interesujący Cię obiekt:\n");
         reservationMenu.append("1 - Stadion Olimpia\n");
@@ -89,11 +94,10 @@ class Connected extends Thread {
 
     private static int showReservation(DataOutputStream out, DataInputStream in) throws IOException {
         while (true) {
-            showReservationMenu(out);
+            showListOfStadiums(out);
             String choosenStadium;
-            if(!(choosenStadium = in.readUTF()).equalsIgnoreCase("")) {
-            }
-            else {
+            if (!(choosenStadium = in.readUTF()).equalsIgnoreCase("")) {
+            } else {
                 choosenStadium = in.readUTF();
             }
             if (choosenStadium.equals("1")) {
@@ -110,72 +114,78 @@ class Connected extends Thread {
             }
         }
     }
-    
+
     private static void createReservation(DataOutputStream out, DataInputStream in) throws IOException {
-            Integer customerSelection = showReservation(out,in);
-            String startTimeString, endTimeString, name; 
-            out.writeUTF("Podaj godzinę rozpoczęcia: ");
-            out.flush();
-            if ((startTimeString = in.readUTF()).equalsIgnoreCase("")) {
-                startTimeString = in.readUTF();
-            } 
-            out.writeUTF("Podaj godzinę zakończenia: ");
-            out.flush();
-            if ((endTimeString = in.readUTF()).equalsIgnoreCase("")) {
-                endTimeString = in.readUTF();
-            } 
-            out.writeUTF("Podaj nazwę usługi");
-            out.flush();
-            if ((name = in.readUTF()).equalsIgnoreCase("")) {
-                name = in.readUTF();
-            } 
-            listOfStadiums.get(customerSelection).getListOfReservation()
-                    .add(new Reservation(name, startTimeString, endTimeString));
-            out.writeUTF("Zapisano");
-            out.flush();
+        Integer customerSelection = showReservation(out, in);
+        String startTimeString, endTimeString, activityName;
+        out.writeUTF("Podaj godzinę rozpoczęcia: ");
+        out.flush();
+        if ((startTimeString = in.readUTF()).equalsIgnoreCase("")) {
+            startTimeString = in.readUTF();
+        }
+        out.writeUTF("Podaj godzinę zakończenia: ");
+        out.flush();
+        if ((endTimeString = in.readUTF()).equalsIgnoreCase("")) {
+            endTimeString = in.readUTF();
+        }
+        out.writeUTF("Podaj nazwę usługi");
+        out.flush();
+        if ((activityName = in.readUTF()).equalsIgnoreCase("")) {
+            activityName = in.readUTF();
+        }
+        listOfStadiums.get(customerSelection).getListOfReservation()
+                .add(new Reservation(new String().format("%d", clientId), startTimeString, endTimeString, activityName));
+        out.writeUTF("Zapisano");
+        out.flush();
     }
-    
+
     public void deleteReservation(DataOutputStream out, DataInputStream in) throws IOException {
-            Integer customerSelection = showReservation(out,in);
-            String reservationNumber, confirmation;
-            while(true) {
+        Integer customerSelection = showReservation(out, in);
+        String reservationNumber, confirmation;
+        while (true) {
             out.writeUTF("Podaj numer rezerwacji do usunięcia: ");
             out.flush();
             if ((reservationNumber = in.readUTF()).equalsIgnoreCase("")) {
                 reservationNumber = in.readUTF();
-            } 
+            }
             int reservation = Integer.parseInt(reservationNumber);
             while (true) {
-            out.writeUTF("Wybrana pozycja to: " + reservationNumber);
-            out.writeUTF("Czy jesteś pewien?");
-            if ((confirmation = in.readUTF()).equalsIgnoreCase("")) {
-                confirmation = in.readUTF();
-            } 
-            if (confirmation.equalsIgnoreCase("T")) {
-                listOfStadiums.get(customerSelection).getListOfReservation()
-                        .remove(reservation-1);
-                out.writeUTF("Rezerwacja usunięta!");
+                if (listOfStadiums.get(customerSelection).getListOfReservation()
+                        .get(reservation - 1).getClientName().equals(clientId)) {
+                    out.writeUTF("Wybrana pozycja to: " + reservationNumber);
+                    out.writeUTF("Czy jesteś pewien?");
+                    if ((confirmation = in.readUTF()).equalsIgnoreCase("")) {
+                        confirmation = in.readUTF();
+                    }
+                    if (confirmation.equalsIgnoreCase("T")) {
+                        listOfStadiums.get(customerSelection).getListOfReservation()
+                                .remove(reservation - 1);
+                        out.writeUTF("Rezerwacja usunięta!");
+                        break;
+                    } else if (confirmation.equalsIgnoreCase("N")) {
+                        out.writeUTF("Rezerwacja nieusunięta!");
+                        break;
+                    } else {
+                        out.writeUTF("Błędny wybór: ");
+                    }
+                } else {
+                    out.writeUTF("To nie Twoja rezerwacja!");
+                }
+                out.writeUTF("Usuwamy jeszcze? N - Wyjście");
+                if ((confirmation = in.readUTF()).equalsIgnoreCase("")) {
+                    confirmation = in.readUTF();
+                }
+                if (confirmation.equalsIgnoreCase("N")) {
+                    out.writeUTF("Kończymy!");
+                    break;
+                } else {
+                    break;
+                }
+            }
+            if (confirmation.equalsIgnoreCase("n")) {
                 break;
             }
-            else if (confirmation.equalsIgnoreCase("N")) {
-                out.writeUTF("Rezerwacja nieusunięta!");
-                break;
-            }
-            else {
-                out.writeUTF("Błędny wybór: ");
-            }
-            }
-            out.writeUTF("Usuwamy jeszcze? N - Wyjście");
-            if ((confirmation = in.readUTF()).equalsIgnoreCase("")) {
-                confirmation = in.readUTF();
-            } 
-            if (confirmation.equalsIgnoreCase("N")) {
-                out.writeUTF("Kończymy!");
-                break;
-            }
-            else {
-            }
-            }
+        }
     }
 }
 
@@ -183,6 +193,8 @@ public class TimeManagementServer {
 
     private static int portNumber;
     private List<Stadium> listofStadiums = new ArrayList();
+    private ArrayList clients = new ArrayList();
+    private int clientId = 0;
 
     public void run() {
         listofStadiums.add(new Stadium("Olimpia"));
@@ -193,7 +205,9 @@ public class TimeManagementServer {
             ServerSocket serverSocket = new ServerSocket(portNumber);
             while (true) {
                 Socket clientSocket = serverSocket.accept();
-                new Connected(clientSocket, listofStadiums).start();
+                clients.add(clientId);
+                new Connected(clientSocket, listofStadiums, clients, clientId).start();
+                clientId++;
             }
 
         } catch (IOException e) {

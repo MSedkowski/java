@@ -10,12 +10,13 @@ package timemanagmentserwer;
  * @author Mateusz
  */
 public class Reservation {
-    private String clientName, startHour, endHour;
+    private String clientName, startHour, endHour, activity;
 
-    public Reservation(String clientName, String startHour, String endHour) {
+    public Reservation(String clientName, String startHour, String endHour, String activity) {
         this.clientName = clientName;
         this.startHour = startHour;
         this.endHour = endHour;
+        this.activity = activity;
     }
 
     public String getClientName() {
@@ -40,6 +41,14 @@ public class Reservation {
 
     public void setEndHour(String endHour) {
         this.endHour = endHour;
+    }
+
+    public String getActivity() {
+        return activity;
+    }
+
+    public void setActivity(String activity) {
+        this.activity = activity;
     }
     
     
