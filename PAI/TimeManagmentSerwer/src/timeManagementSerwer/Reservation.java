@@ -10,21 +10,22 @@ package timeManagementSerwer;
  * @author Mateusz
  */
 public class Reservation {
-    private String clientName, startHour, endHour, activity;
+    private String startHour, endHour, activity;
+    private Integer clientID;
 
-    public Reservation(String clientName, String startHour, String endHour, String activity) {
-        this.clientName = clientName;
+    public Reservation(Integer clientID, String startHour, String endHour, String activity) {
+        this.clientID = clientID;
         this.startHour = startHour;
         this.endHour = endHour;
         this.activity = activity;
     }
 
-    public String getClientName() {
-        return clientName;
+    public Integer getClientID() {
+        return clientID;
     }
 
-    public void setClientName(String clientName) {
-        this.clientName = clientName;
+    public void setClientID(Integer clientID) {
+        this.clientID = clientID;
     }
 
     public String getStartHour() {
