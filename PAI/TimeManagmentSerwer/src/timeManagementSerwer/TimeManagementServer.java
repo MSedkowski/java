@@ -23,39 +23,44 @@ class Connected extends Thread {
             DataOutputStream out = new DataOutputStream(clientSocket.getOutputStream());
             DataInputStream in = new DataInputStream(clientSocket.getInputStream());
             String inputLine;
-
+            int selection;
             // Initiate conversation with client
             showMenu(out);
             while ((inputLine = in.readUTF()) != null) {
                 if (inputLine.equals("Bye.")) {
                     break;
                 }
-                switch (inputLine) {
-                    case "1": {
-                        showReservation(out, in);
-                        break;
+                try {
+                    selection = Integer.parseInt(inputLine);
+                    switch (selection) {
+                        case 1: {
+                            showReservation(out, in);
+                            break;
+                        }
+                        case 2: {
+                            createReservation(out, in);
+                            break;
+                        }
+                        case 3: {
+                            deleteReservation(out, in);
+                            break;
+                        }
+                        case 4: {
+                            showCanceledReservation(out, in);
+                            break;
+                        }
+                        case 0: {
+                            clientSocket.close();
+                        }
+                        default: {
+                            out.writeUTF("Zły wybór");
+                            break;
+                        }
                     }
-                    case "2": {
-                        createReservation(out, in);
-                        break;
-                    }
-                    case "3": {
-                        deleteReservation(out, in);
-                        break;
-                    }
-                    case "4": {
-                        showCanceledReservation(out, in);
-                        break;
-                    }
-                    case "0": {
-                        clientSocket.close();
-                    }
-                    default: {
-                        out.writeUTF("Zły wybór");
-                        break;
-                    }
+                    returnToMainMenu(out, in, clientSocket);
+                } catch (NumberFormatException ex) {
+                    out.writeUTF("Podano nieprawidłowy znak, należy podać cyfrę.");
                 }
-                returnToMainMenu(out, in, clientSocket);
             }
         } catch (IOException e) {
             e.printStackTrace();
@@ -90,7 +95,6 @@ class Connected extends Thread {
         menu.append("4 - Wycofane rezerwacje\n");
         menu.append("0 - Zakończ połączenie\n");
         out.writeUTF(menu.toString());
-        out.flush();
     }
 
     private static void showListOfStadiums(DataOutputStream out) throws IOException {
@@ -100,68 +104,79 @@ class Connected extends Thread {
         reservationMenu.append("2 - Stadion Elana\n");
         reservationMenu.append("3 - Stadion Iskra\n");
         out.writeUTF(reservationMenu.toString());
-        out.flush();
     }
 
     private static int showReservation(DataOutputStream out, DataInputStream in) throws IOException {
+        int choosenStadium;
         while (true) {
-            showListOfStadiums(out);
-            String choosenStadium;
-            if (!(choosenStadium = in.readUTF()).equalsIgnoreCase("")) {
-            } else {
-                choosenStadium = in.readUTF();
-            }
-            if (choosenStadium.equals("1")) {
-                out.writeUTF(listOfStadiums.get(0).showStadiumReservation());
-                return 0;
-            } else if (choosenStadium.equals("2")) {
-                out.writeUTF(listOfStadiums.get(1).showStadiumReservation());
-                return 1;
-            } else if (choosenStadium.equals("3")) {
-                out.writeUTF(listOfStadiums.get(2).showStadiumReservation());
-                return 2;
-            } else {
-                out.writeUTF("Nie znaleziono obiektu, wybierz jeszcze raz.");
+            try {
+                showListOfStadiums(out);
+                choosenStadium = Integer.parseInt(in.readUTF().toString());
+                out.writeUTF(listOfStadiums.get(choosenStadium - 1).showStadiumReservation());
+                return choosenStadium - 1;
+
+            } catch (NumberFormatException ex) {
+                out.writeUTF("Podano nieprawidłowy znak, należy podać liczbę.");
+
+            } catch (IndexOutOfBoundsException ex) {
+                out.writeUTF("Podana pozycja nie istnieje.");
             }
         }
     }
 
     private static int showCanceledReservation(DataOutputStream out, DataInputStream in) throws IOException {
+        int choosenStadium;
         while (true) {
-            showListOfStadiums(out);
-            String choosenStadium;
-            if (!(choosenStadium = in.readUTF()).equalsIgnoreCase("")) {
-            } else {
-                choosenStadium = in.readUTF();
-            }
-            if (choosenStadium.equals("1")) {
-                out.writeUTF(listOfStadiums.get(0).showCanceledStadiumReservation());
-                return 0;
-            } else if (choosenStadium.equals("2")) {
-                out.writeUTF(listOfStadiums.get(1).showCanceledStadiumReservation());
-                return 1;
-            } else if (choosenStadium.equals("3")) {
-                out.writeUTF(listOfStadiums.get(2).showCanceledStadiumReservation());
-                return 2;
-            } else {
-                out.writeUTF("Nie znaleziono obiektu, wybierz jeszcze raz.");
+            try {
+                showListOfStadiums(out);
+                choosenStadium = Integer.parseInt(in.readUTF().toString());
+                out.writeUTF(listOfStadiums.get(choosenStadium - 1).showCanceledStadiumReservation());
+                return choosenStadium - 1;
+
+            } catch (NumberFormatException ex) {
+                out.writeUTF("Podano nieprawidłowy znak, należy podać liczbę.");
+
+            } catch (IndexOutOfBoundsException ex) {
+                out.writeUTF("Podana pozycja nie istnieje.");
             }
         }
     }
 
     private static void createReservation(DataOutputStream out, DataInputStream in) throws IOException {
         Integer customerSelection = showReservation(out, in);
+        Integer start = 0, end = 0;
         String startTimeString, endTimeString, activityName;
-        boolean reserved = false;
-        out.writeUTF("Podaj godzinę rozpoczęcia: ");
-        out.flush();
-        if ((startTimeString = in.readUTF()).equalsIgnoreCase("")) {
-            startTimeString = in.readUTF();
+        boolean reserved = false, status = true;
+        while (status) {
+            try {
+                out.writeUTF("Podaj godzinę rozpoczęcia: ");
+                out.flush();
+                startTimeString = in.readUTF();
+                while (startTimeString.equalsIgnoreCase("")) {
+                    out.writeUTF("Należy podać godzinę rozpoczęcia!");
+                    startTimeString = in.readUTF();
+                }
+                    start = Integer.parseInt(startTimeString);
+                    status = false;
+            } catch (NumberFormatException ex) {
+                out.writeUTF("Należy podać pełną godzinę rozpoczęcia");
+            }
         }
-        out.writeUTF("Podaj godzinę zakończenia: ");
-        out.flush();
-        if ((endTimeString = in.readUTF()).equalsIgnoreCase("")) {
-            endTimeString = in.readUTF();
+        status = true;
+        while (status) {
+            try {
+                out.writeUTF("Podaj godzinę zakończenia: ");
+                out.flush();
+                endTimeString = in.readUTF();
+                while (endTimeString.equalsIgnoreCase("")) {
+                    out.writeUTF("Należy podać godzinę zakończenia!");
+                    endTimeString = in.readUTF();
+                }
+                    end = Integer.parseInt(endTimeString);
+                    status = false;
+            } catch (NumberFormatException ex) {
+                out.writeUTF("Należy podać pełną godzinę zakończenia");
+            }
         }
         out.writeUTF("Podaj nazwę usługi");
         out.flush();
@@ -171,10 +186,10 @@ class Connected extends Thread {
         for (Stadium stadium : listOfStadiums) {
             for (Reservation reservation : stadium.getListOfReservation()) {
                 if (reservation.getActivity().equalsIgnoreCase(activityName)
-                        && !(startTimeString.compareTo(reservation.getStartHour()) != -1
-                        && startTimeString.compareTo(reservation.getEndHour()) != 1
-                        || endTimeString.compareTo(reservation.getEndHour()) != 1
-                        && endTimeString.compareTo(reservation.getStartHour()) != -1)) {
+                        && !(start >= reservation.getStartHour()
+                        && start <= reservation.getEndHour()
+                        || end >= reservation.getStartHour()
+                        && end <= reservation.getEndHour())) {
                     out.writeUTF("Wybrana usługa jest już zarezerwowana");
                     reserved = true;
                 }
@@ -182,7 +197,7 @@ class Connected extends Thread {
         }
         if (!reserved) {
             listOfStadiums.get(customerSelection).getListOfReservation()
-                    .add(new Reservation(clientId, startTimeString, endTimeString, activityName));
+                    .add(new Reservation(clientId, start, end, activityName));
             out.writeUTF("Zapisano");
             out.flush();
         }
@@ -196,26 +211,32 @@ class Connected extends Thread {
         if ((reservationNumber = in.readUTF()).equalsIgnoreCase("")) {
             reservationNumber = in.readUTF();
         }
-        int reservation = Integer.parseInt(reservationNumber);
-        if (listOfStadiums.get(customerSelection).getListOfReservation()
-                .get(reservation - 1).getClientID() == clientId) {
-            out.writeUTF("Wybrana pozycja to: " + reservationNumber);
-            out.writeUTF("Czy jesteś pewien? T - Tak");
-            if ((confirmation = in.readUTF()).equalsIgnoreCase("")) {
-                confirmation = in.readUTF();
-            }
-            if (confirmation.equalsIgnoreCase("T")) {
-                listOfStadiums.get(customerSelection).getListOfCanceledReservation()
-                        .add(listOfStadiums.get(customerSelection).getListOfReservation()
-                                .get(reservation - 1));
-                listOfStadiums.get(customerSelection).getListOfReservation()
-                        .remove(reservation - 1);
-                out.writeUTF("Rezerwacja usunięta!");
+        try {
+            int reservation = Integer.parseInt(reservationNumber);
+            if (listOfStadiums.get(customerSelection).getListOfReservation()
+                    .get(reservation - 1).getClientID() == clientId) {
+                out.writeUTF("Wybrana pozycja to: " + reservationNumber);
+                out.writeUTF("Czy jesteś pewien? T - Tak");
+                if ((confirmation = in.readUTF()).equalsIgnoreCase("")) {
+                    confirmation = in.readUTF();
+                }
+                if (confirmation.equalsIgnoreCase("T")) {
+                    listOfStadiums.get(customerSelection).getListOfCanceledReservation()
+                            .add(listOfStadiums.get(customerSelection).getListOfReservation()
+                                    .get(reservation - 1));
+                    listOfStadiums.get(customerSelection).getListOfReservation()
+                            .remove(reservation - 1);
+                    out.writeUTF("Rezerwacja usunięta!");
+                } else {
+                    out.writeUTF("Rezerwacja nieusunięta!");
+                }
             } else {
-                out.writeUTF("Rezerwacja nieusunięta!");
+                out.writeUTF("To nie Twoja rezerwacja!");
             }
-        } else {
-            out.writeUTF("To nie Twoja rezerwacja!");
+        } catch (NumberFormatException ex) {
+            out.writeUTF("Podano nieprawidłowy znak, należy podać liczbę.");
+        } catch (IndexOutOfBoundsException ex) {
+            out.writeUTF("Podana pozycja nie istnieje.");
         }
 
     }
