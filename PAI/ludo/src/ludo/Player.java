@@ -14,8 +14,9 @@ public class Player {
     private boolean isMyTurn = false;
     private String name;
 
-    public Player(String name) {
+    public Player(String name, String color) {
         this.name = name;
+        this.color = color;
         this.tokenList = new ArrayList<>(); //Tworzę nową listę pionków
         //Dodaję cztery pionki do listy
         for (int i = 0; i < 4; i++) {

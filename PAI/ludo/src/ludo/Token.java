@@ -1,5 +1,6 @@
 package ludo;
 
+import static java.lang.Math.abs;
 import java.util.Random;
 
 /**
@@ -13,11 +14,12 @@ public class Token {
     private boolean isOnWinningField = false;
     private int counter;
     private int fieldNumber;
+    private static int referenceCounter = 0;
 
     public Token() {
         this.counter = 0;
-        Random rand = new Random();
-        this.id = rand.nextInt();
+        this.id = referenceCounter;
+        referenceCounter++;
     }
 
     public int getId() {
@@ -68,10 +70,28 @@ public class Token {
         this.fieldNumber = fieldNumber;
     }
     
-    public void setOnStartField(int fieldNumber) {
-        this.fieldNumber = fieldNumber;
+    public void setOnStartField(String color) {
+        switch(color){
+            case "blue": {
+                this.fieldNumber = 0;
+                break;
+            }
+            case "green": {
+                this.fieldNumber = 10;
+                break;
+            }
+            case "yellow":{
+                this.fieldNumber = 20;
+                break;
+            }
+            case "red": {
+                this.fieldNumber = 30;
+                break;
+            }
+        }
         this.setIsOnTheField(true);
         this.setIsInGarage(false);
+        this.counter = 0;
     }
     
     

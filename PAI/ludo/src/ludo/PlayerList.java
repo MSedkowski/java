@@ -9,7 +9,7 @@ import java.util.List;
  * @author Mateusz
  */
 public class PlayerList {
-    private List<Player> playerList;
+    private List<Player> playerList = new ArrayList<>();
     
     public PlayerList(){
         

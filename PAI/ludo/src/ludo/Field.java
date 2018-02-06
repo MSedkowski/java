@@ -10,10 +10,14 @@ public class Field {
     private boolean isYellowStartField = false;
     private boolean isRedStartField = false;
     private boolean isBlueStartField = false;
+    private boolean isBlueEndField = false;
     private boolean isGreenEndField = false;
     private boolean isYellowEndField = false;
     private boolean isRedEndField = false;
-    private boolean isBlueEndField = false;
+    private boolean isBlueGarageField = false;
+    private boolean isGreenGarageField = false;
+    private boolean isYellowGarageField = false;
+    private boolean isRedGarageField = false;
     
     private boolean isOccupied = false;
     private int number;
@@ -56,6 +60,22 @@ public class Field {
             }
             case 8: {
                 setIsYellowEndField(true);
+                break;
+            }
+            case 9: {
+                setIsBlueGarageField(true);
+                break;
+            }
+            case 10: {
+                setIsGreenGarageField(true);
+                break;
+            }
+            case 11: {
+                setIsRedGarageField(true);
+                break;
+            }
+            case 12: {
+                setIsYellowGarageField(true);
                 break;
             }
             default : {
@@ -151,6 +171,39 @@ public class Field {
     public void setTokenID(int tokenID) {
         this.tokenID = tokenID;
     }
+
+    public boolean isIsBlueGarageField() {
+        return isBlueGarageField;
+    }
+
+    public void setIsBlueGarageField(boolean isBlueGarageField) {
+        this.isBlueGarageField = isBlueGarageField;
+    }
+
+    public boolean isIsGreenGarageField() {
+        return isGreenGarageField;
+    }
+
+    public void setIsGreenGarageField(boolean isGreenGarageField) {
+        this.isGreenGarageField = isGreenGarageField;
+    }
+
+    public boolean isIsYellowGarageField() {
+        return isYellowGarageField;
+    }
+
+    public void setIsYellowGarageField(boolean isYellowGarageField) {
+        this.isYellowGarageField = isYellowGarageField;
+    }
+
+    public boolean isIsRedGarageField() {
+        return isRedGarageField;
+    }
+
+    public void setIsRedGarageField(boolean isRedGarageField) {
+        this.isRedGarageField = isRedGarageField;
+    }
+    
     
     
 }
