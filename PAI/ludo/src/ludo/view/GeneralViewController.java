@@ -12,15 +12,13 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
-import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
-import javafx.scene.layout.Background;
-import javafx.scene.layout.Border;
 import ludo.Board;
 import ludo.Chinczyk;
 import ludo.Field;
 import ludo.Player;
 import ludo.PlayerList;
+import ludo.Token;
 
 /**
  * FXML Controller class
@@ -29,6 +27,8 @@ import ludo.PlayerList;
  */
 public class GeneralViewController {
  
+    @FXML
+    private Button diceRollButton;
     @FXML 
     private Label rollDiceLabel;
     
@@ -327,8 +327,7 @@ public class GeneralViewController {
             listOfButtons.get(i).opacityProperty().set(0);
             listOfButtons.get(i).setDisable(true);
         }
-        setTokens();
-        
+        setTokens();  
     }
     
     public void setTokens()
@@ -372,6 +371,7 @@ public class GeneralViewController {
     {
         this.diceRoll = board.rollDice();
         this.rollDiceLabel.setText("" + diceRoll);
+        this.diceRollButton.setDisable(true);
     }
     
     public void handleSkipTurn(ActionEvent event)
@@ -387,6 +387,54 @@ public class GeneralViewController {
             }
         }
         setActive(color);
+    }
+    
+    public void handleMakeMove(ActionEvent event)
+    {
+        Button source = (Button)event.getSource();
+        Field sourceField = buttonMap.get(source);
+        int index = board.getListOfFields().indexOf(sourceField) + diceRoll;
+        int tokenID = sourceField.getTokenID();
+        Player sourcePlayer = null;
+        Token sourceToken = null;
+        for (Player player : listOfPlayers.getPlayerList())
+        {
+            sourcePlayer = player;
+            sourceToken = player.getTokenById(tokenID);
+            if(sourceToken != null) break;
+        }
+        
+        sourceToken.setCounter(sourceToken.getCounter() + diceRoll);
+        source.setDisable(true);
+        source.setOpacity(0);
+        sourceField.setIsOccupied(false);
+        listOfButtons.get(index).setDisable(false);
+        listOfButtons.get(index).setOpacity(1);
+        switch(sourcePlayer.getColor()) {
+            case "blue": {
+                listOfButtons.get(index).setStyle("-fx-base: #0090FF; "
+                    + "-fx-background-radius: 50%;");
+                break;
+            }
+            case "green": {
+                listOfButtons.get(index).setStyle("-fx-base: #00B200; "
+                    + "-fx-background-radius: 50%;");
+                break;
+            }
+            case "yellow": {
+                listOfButtons.get(index).setStyle("-fx-base: #F6C900; "
+                    + "-fx-background-radius: 50%;");
+                break;
+            }
+            case "red": {
+                listOfButtons.get(index).setStyle("-fx-base: #DE0600; "
+                    + "-fx-background-radius: 50%;");
+                break;
+            }
+        }
+        buttonMap.get(listOfButtons.get(index)).setTokenID(tokenID);
+        buttonMap.get(listOfButtons.get(index)).setIsOccupied(true);
+        
     }
     
     public void setActive(String color)

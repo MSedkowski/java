@@ -53,7 +53,7 @@
                                     <Image url="@pole.png" />
                                  </image>
                               </ImageView>
-                              <Button fx:id="button38" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" mnemonicParsing="false" />
+                              <Button fx:id="button38" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#handleMakeMove" />
                            </children>
                         </StackPane>
                         <StackPane layoutX="226.0" layoutY="10.0" GridPane.columnIndex="4" GridPane.rowIndex="1">
@@ -63,7 +63,7 @@
                                     <Image url="@pole.png" />
                                  </image>
                               </ImageView>
-                              <Button fx:id="button37" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" mnemonicParsing="false" />
+                              <Button fx:id="button37" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#handleMakeMove" />
                            </children>
                         </StackPane>
                         <StackPane layoutX="226.0" layoutY="65.0" GridPane.columnIndex="4" GridPane.rowIndex="2">
@@ -73,7 +73,7 @@
                                     <Image url="@pole.png" />
                                  </image>
                               </ImageView>
-                              <Button fx:id="button36" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" mnemonicParsing="false" />
+                              <Button fx:id="button36" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#handleMakeMove" />
                            </children>
                         </StackPane>
                         <StackPane layoutX="226.0" layoutY="120.0" GridPane.columnIndex="4" GridPane.rowIndex="3">
@@ -83,7 +83,7 @@
                                     <Image url="@pole.png" />
                                  </image>
                               </ImageView>
-                              <Button fx:id="button35" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" mnemonicParsing="false" />
+                              <Button fx:id="button35" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#handleMakeMove" />
                            </children>
                         </StackPane>
                         <StackPane layoutX="226.0" layoutY="175.0" GridPane.columnIndex="4" GridPane.rowIndex="4">
@@ -93,7 +93,7 @@
                                     <Image url="@pole.png" />
                                  </image>
                               </ImageView>
-                              <Button fx:id="button34" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" mnemonicParsing="false" />
+                              <Button fx:id="button34" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#handleMakeMove" />
                            </children>
                         </StackPane>
                         <StackPane layoutX="226.0" layoutY="175.0" GridPane.columnIndex="3" GridPane.rowIndex="4">
@@ -103,7 +103,7 @@
                                     <Image url="@pole.png" />
                                  </image>
                               </ImageView>
-                              <Button fx:id="button33" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" mnemonicParsing="false" />
+                              <Button fx:id="button33" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#handleMakeMove" />
                            </children>
                         </StackPane>
                         <StackPane layoutX="226.0" layoutY="230.0" GridPane.columnIndex="2" GridPane.rowIndex="4">
@@ -113,7 +113,7 @@
                                     <Image url="@pole.png" />
                                  </image>
                               </ImageView>
-                              <Button fx:id="button32" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" mnemonicParsing="false" />
+                              <Button fx:id="button32" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#handleMakeMove" />
                            </children>
                         </StackPane>
                         <StackPane layoutX="226.0" layoutY="175.0" GridPane.columnIndex="1" GridPane.rowIndex="4">
@@ -123,7 +123,7 @@
                                     <Image url="@pole.png" />
                                  </image>
                               </ImageView>
-                              <Button fx:id="button31" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" mnemonicParsing="false" />
+                              <Button fx:id="button31" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#handleMakeMove" />
                            </children>
                         </StackPane>
                         <StackPane layoutX="226.0" layoutY="10.0" GridPane.columnIndex="5">
@@ -133,7 +133,7 @@
                                     <Image url="@pole.png" />
                                  </image>
                               </ImageView>
-                              <Button fx:id="button39" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" mnemonicParsing="false" />
+                              <Button fx:id="button39" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#handleMakeMove" />
                            </children>
                         </StackPane>
                         <StackPane layoutX="226.0" layoutY="120.0" GridPane.columnIndex="6" GridPane.rowIndex="1">
@@ -143,7 +143,7 @@
                                     <Image url="@pole.png" />
                                  </image>
                               </ImageView>
-                              <Button fx:id="button1" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" mnemonicParsing="false" />
+                              <Button fx:id="button1" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#handleMakeMove" />
                            </children>
                         </StackPane>
                         <StackPane layoutX="172.0" layoutY="230.0" GridPane.columnIndex="6" GridPane.rowIndex="2">
@@ -153,7 +153,7 @@
                                     <Image url="@pole.png" />
                                  </image>
                               </ImageView>
-                              <Button fx:id="button2" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" mnemonicParsing="false" />
+                              <Button fx:id="button2" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#handleMakeMove" />
                            </children>
                         </StackPane>
                         <StackPane layoutX="226.0" layoutY="175.0" GridPane.columnIndex="6" GridPane.rowIndex="3">
@@ -163,7 +163,7 @@
                                     <Image url="@pole.png" />
                                  </image>
                               </ImageView>
-                              <Button fx:id="button3" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" mnemonicParsing="false" />
+                              <Button fx:id="button3" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#handleMakeMove" />
                            </children>
                         </StackPane>
                         <StackPane layoutX="226.0" layoutY="230.0" GridPane.columnIndex="6" GridPane.rowIndex="4">
@@ -173,7 +173,7 @@
                                     <Image url="@pole.png" />
                                  </image>
                               </ImageView>
-                              <Button fx:id="button4" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" mnemonicParsing="false" />
+                              <Button fx:id="button4" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#handleMakeMove" />
                            </children>
                         </StackPane>
                         <StackPane layoutX="172.0" layoutY="230.0" GridPane.columnIndex="7" GridPane.rowIndex="4">
@@ -183,7 +183,7 @@
                                     <Image url="@pole.png" />
                                  </image>
                               </ImageView>
-                              <Button fx:id="button5" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" mnemonicParsing="false" />
+                              <Button fx:id="button5" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#handleMakeMove" />
                            </children>
                         </StackPane>
                         <StackPane layoutX="64.0" layoutY="230.0" GridPane.rowIndex="5">
@@ -193,7 +193,7 @@
                                     <Image url="@pole.png" />
                                  </image>
                               </ImageView>
-                              <Button fx:id="button29" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" mnemonicParsing="false" />
+                              <Button fx:id="button29" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#handleMakeMove" />
                            </children>
                         </StackPane>
                         <StackPane layoutX="64.0" layoutY="230.0" GridPane.rowIndex="6">
@@ -203,7 +203,7 @@
                                     <Image url="@pole.png" />
                                  </image>
                               </ImageView>
-                              <Button fx:id="button28" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" mnemonicParsing="false" />
+                              <Button fx:id="button28" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#handleMakeMove" />
                            </children>
                         </StackPane>
                         <StackPane layoutX="64.0" layoutY="230.0" GridPane.columnIndex="8" GridPane.rowIndex="4">
@@ -213,7 +213,7 @@
                                     <Image url="@pole.png" />
                                  </image>
                               </ImageView>
-                              <Button fx:id="button6" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" mnemonicParsing="false" />
+                              <Button fx:id="button6" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#handleMakeMove" />
                            </children>
                         </StackPane>
                         <StackPane layoutX="280.0" layoutY="10.0" GridPane.columnIndex="9" GridPane.rowIndex="4">
@@ -223,7 +223,7 @@
                                     <Image url="@pole.png" />
                                  </image>
                               </ImageView>
-                              <Button fx:id="button7" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" mnemonicParsing="false" />
+                              <Button fx:id="button7" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#handleMakeMove" />
                            </children>
                         </StackPane>
                         <StackPane layoutX="280.0" layoutY="10.0" GridPane.columnIndex="10" GridPane.rowIndex="4">
@@ -233,7 +233,7 @@
                                     <Image url="@pole.png" />
                                  </image>
                               </ImageView>
-                              <Button fx:id="button8" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" mnemonicParsing="false" />
+                              <Button fx:id="button8" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#handleMakeMove" />
                            </children>
                         </StackPane>
                         <StackPane layoutX="334.0" layoutY="65.0" GridPane.columnIndex="10" GridPane.rowIndex="5">
@@ -243,7 +243,7 @@
                                     <Image url="@pole.png" />
                                  </image>
                               </ImageView>
-                              <Button fx:id="button9" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" mnemonicParsing="false" />
+                              <Button fx:id="button9" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#handleMakeMove" />
                            </children>
                         </StackPane>
                         <StackPane layoutX="334.0" layoutY="120.0" GridPane.columnIndex="1" GridPane.rowIndex="6">
@@ -253,7 +253,7 @@
                                     <Image url="@pole.png" />
                                  </image>
                               </ImageView>
-                              <Button fx:id="button27" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" mnemonicParsing="false" />
+                              <Button fx:id="button27" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#handleMakeMove" />
                            </children>
                         </StackPane>
                         <StackPane layoutX="334.0" layoutY="175.0" GridPane.columnIndex="2" GridPane.rowIndex="6">
@@ -263,7 +263,7 @@
                                     <Image url="@pole.png" />
                                  </image>
                               </ImageView>
-                              <Button fx:id="button26" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" mnemonicParsing="false" />
+                              <Button fx:id="button26" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#handleMakeMove" />
                            </children>
                         </StackPane>
                         <StackPane layoutX="334.0" layoutY="230.0" GridPane.columnIndex="3" GridPane.rowIndex="6">
@@ -273,7 +273,7 @@
                                     <Image url="@pole.png" />
                                  </image>
                               </ImageView>
-                              <Button fx:id="button25" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" mnemonicParsing="false" />
+                              <Button fx:id="button25" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#handleMakeMove" />
                            </children>
                         </StackPane>
                         <StackPane layoutX="388.0" layoutY="230.0" GridPane.columnIndex="4" GridPane.rowIndex="6">
@@ -283,7 +283,7 @@
                                     <Image url="@pole.png" />
                                  </image>
                               </ImageView>
-                              <Button fx:id="button24" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" mnemonicParsing="false" />
+                              <Button fx:id="button24" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#handleMakeMove" />
                            </children>
                         </StackPane>
                         <StackPane layoutX="10.0" layoutY="284.0" GridPane.columnIndex="4" GridPane.rowIndex="7">
@@ -293,7 +293,7 @@
                                     <Image url="@pole.png" />
                                  </image>
                               </ImageView>
-                              <Button fx:id="button23" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" mnemonicParsing="false" />
+                              <Button fx:id="button23" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#handleMakeMove" />
                            </children>
                         </StackPane>
                         <StackPane layoutX="442.0" layoutY="230.0" GridPane.columnIndex="4" GridPane.rowIndex="8">
@@ -303,7 +303,7 @@
                                     <Image url="@pole.png" />
                                  </image>
                               </ImageView>
-                              <Button fx:id="button22" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" mnemonicParsing="false" />
+                              <Button fx:id="button22" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#handleMakeMove" />
                            </children>
                         </StackPane>
                         <StackPane layoutX="496.0" layoutY="230.0" GridPane.columnIndex="4" GridPane.rowIndex="9">
@@ -313,7 +313,7 @@
                                     <Image url="@pole.png" />
                                  </image>
                               </ImageView>
-                              <Button fx:id="button21" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" mnemonicParsing="false" />
+                              <Button fx:id="button21" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#handleMakeMove" />
                            </children>
                         </StackPane>
                         <StackPane layoutX="551.0" layoutY="284.0" GridPane.columnIndex="5" GridPane.rowIndex="10">
@@ -323,7 +323,7 @@
                                     <Image url="@pole.png" />
                                  </image>
                               </ImageView>
-                              <Button fx:id="button19" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" mnemonicParsing="false" />
+                              <Button fx:id="button19" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#handleMakeMove" />
                            </children>
                         </StackPane>
                         <StackPane layoutX="64.0" layoutY="338.0" GridPane.columnIndex="6" GridPane.rowIndex="10">
@@ -333,7 +333,7 @@
                                     <Image url="@pole.png" />
                                  </image>
                               </ImageView>
-                              <Button fx:id="button18" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" mnemonicParsing="false" />
+                              <Button fx:id="button18" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#handleMakeMove" />
                            </children>
                         </StackPane>
                         <StackPane layoutX="64.0" layoutY="338.0" GridPane.columnIndex="6" GridPane.rowIndex="9">
@@ -343,7 +343,7 @@
                                     <Image url="@pole.png" />
                                  </image>
                               </ImageView>
-                              <Button fx:id="button17" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" mnemonicParsing="false" />
+                              <Button fx:id="button17" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#handleMakeMove" />
                            </children>
                         </StackPane>
                         <StackPane layoutX="172.0" layoutY="338.0" GridPane.columnIndex="6" GridPane.rowIndex="8">
@@ -353,7 +353,7 @@
                                     <Image url="@pole.png" />
                                  </image>
                               </ImageView>
-                              <Button fx:id="button16" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" mnemonicParsing="false" />
+                              <Button fx:id="button16" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#handleMakeMove" />
                            </children>
                         </StackPane>
                         <StackPane layoutX="172.0" layoutY="338.0" GridPane.columnIndex="6" GridPane.rowIndex="7">
@@ -363,7 +363,7 @@
                                     <Image url="@pole.png" />
                                  </image>
                               </ImageView>
-                              <Button fx:id="button15" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" mnemonicParsing="false" />
+                              <Button fx:id="button15" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#handleMakeMove" />
                            </children>
                         </StackPane>
                         <StackPane layoutX="226.0" layoutY="338.0" GridPane.columnIndex="6" GridPane.rowIndex="6">
@@ -373,7 +373,7 @@
                                     <Image url="@pole.png" />
                                  </image>
                               </ImageView>
-                              <Button fx:id="button14" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" mnemonicParsing="false" />
+                              <Button fx:id="button14" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#handleMakeMove" />
                            </children>
                         </StackPane>
                         <StackPane layoutX="226.0" layoutY="392.0" GridPane.columnIndex="7" GridPane.rowIndex="6">
@@ -383,7 +383,7 @@
                                     <Image url="@pole.png" />
                                  </image>
                               </ImageView>
-                              <Button fx:id="button13" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" mnemonicParsing="false" />
+                              <Button fx:id="button13" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#handleMakeMove" />
                            </children>
                         </StackPane>
                         <StackPane layoutX="226.0" layoutY="446.0" GridPane.columnIndex="8" GridPane.rowIndex="6">
@@ -393,7 +393,7 @@
                                     <Image url="@pole.png" />
                                  </image>
                               </ImageView>
-                              <Button fx:id="button12" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" mnemonicParsing="false" />
+                              <Button fx:id="button12" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#handleMakeMove" />
                            </children>
                         </StackPane>
                         <StackPane layoutX="226.0" layoutY="500.0" GridPane.columnIndex="9" GridPane.rowIndex="6">
@@ -403,7 +403,7 @@
                                     <Image url="@pole.png" />
                                  </image>
                               </ImageView>
-                              <Button fx:id="button11" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" mnemonicParsing="false" />
+                              <Button fx:id="button11" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#handleMakeMove" />
                            </children>
                         </StackPane>
                         <StackPane layoutX="280.0" layoutY="554.0" GridPane.columnIndex="6">
@@ -413,7 +413,7 @@
                                     <Image url="@niebieski.png" />
                                  </image>
                               </ImageView>
-                              <Button fx:id="button0" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" mnemonicParsing="false" />
+                              <Button fx:id="button0" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#handleMakeMove" />
                            </children>
                         </StackPane>
                         <StackPane layoutX="334.0" layoutY="10.0" GridPane.columnIndex="10" GridPane.rowIndex="6">
@@ -423,7 +423,7 @@
                                     <Image url="@zielony.png" />
                                  </image>
                               </ImageView>
-                              <Button fx:id="button10" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" mnemonicParsing="false" />
+                              <Button fx:id="button10" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#handleMakeMove" />
                            </children>
                         </StackPane>
                         <StackPane layoutX="551.0" layoutY="338.0" GridPane.columnIndex="4" GridPane.rowIndex="10">
@@ -433,7 +433,7 @@
                                     <Image url="@zolty.png" />
                                  </image>
                               </ImageView>
-                              <Button fx:id="button20" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" mnemonicParsing="false" />
+                              <Button fx:id="button20" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#handleMakeMove" />
                            </children>
                         </StackPane>
                         <StackPane layoutX="226.0" layoutY="554.0" GridPane.rowIndex="4">
@@ -443,7 +443,7 @@
                                     <Image url="@czerwony.png" />
                                  </image>
                               </ImageView>
-                              <Button fx:id="button30" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" mnemonicParsing="false" />
+                              <Button fx:id="button30" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#handleMakeMove" />
                            </children>
                         </StackPane>
                         <StackPane layoutX="10.0" layoutY="230.0" GridPane.columnIndex="1" GridPane.rowIndex="5">
@@ -453,7 +453,7 @@
                                     <Image url="@czerwony.png" />
                                  </image>
                               </ImageView>
-                              <Button fx:id="button52" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" mnemonicParsing="false" />
+                              <Button fx:id="button52" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#handleMakeMove" />
                            </children>
                         </StackPane>
                         <StackPane layoutX="64.0" layoutY="284.0" GridPane.columnIndex="2" GridPane.rowIndex="5">
@@ -463,7 +463,7 @@
                                     <Image url="@czerwony.png" />
                                  </image>
                               </ImageView>
-                              <Button fx:id="button53" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" mnemonicParsing="false" />
+                              <Button fx:id="button53" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#handleMakeMove" />
                            </children>
                         </StackPane>
                         <StackPane layoutX="118.0" layoutY="284.0" GridPane.columnIndex="3" GridPane.rowIndex="5">
@@ -473,7 +473,7 @@
                                     <Image url="@czerwony.png" />
                                  </image>
                               </ImageView>
-                              <Button fx:id="button54" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" mnemonicParsing="false" />
+                              <Button fx:id="button54" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#handleMakeMove" />
                            </children>
                         </StackPane>
                         <StackPane layoutX="172.0" layoutY="284.0" GridPane.columnIndex="4" GridPane.rowIndex="5">
@@ -483,7 +483,7 @@
                                     <Image url="@czerwony.png" />
                                  </image>
                               </ImageView>
-                              <Button fx:id="button55" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" mnemonicParsing="false" />
+                              <Button fx:id="button55" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#handleMakeMove" />
                            </children>
                         </StackPane>
                         <StackPane layoutX="226.0" layoutY="284.0" GridPane.columnIndex="2" GridPane.rowIndex="1">
@@ -493,7 +493,7 @@
                                     <Image url="@czerwony.png" />
                                  </image>
                               </ImageView>
-                              <Button fx:id="button71" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" mnemonicParsing="false" />
+                              <Button fx:id="button71" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#handleMakeMove" />
                            </children>
                         </StackPane>
                         <StackPane layoutX="64.0" layoutY="446.0" GridPane.columnIndex="1" GridPane.rowIndex="1">
@@ -503,7 +503,7 @@
                                     <Image url="@czerwony.png" />
                                  </image>
                               </ImageView>
-                              <Button fx:id="button70" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" mnemonicParsing="false" />
+                              <Button fx:id="button70" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#handleMakeMove" />
                            </children>
                         </StackPane>
                         <StackPane layoutX="118.0" layoutY="446.0" GridPane.columnIndex="1" GridPane.rowIndex="2">
@@ -513,7 +513,7 @@
                                     <Image url="@czerwony.png" />
                                  </image>
                               </ImageView>
-                              <Button fx:id="button68" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" mnemonicParsing="false" />
+                              <Button fx:id="button68" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#handleMakeMove" />
                            </children>
                         </StackPane>
                         <StackPane layoutX="64.0" layoutY="500.0" GridPane.columnIndex="2" GridPane.rowIndex="2">
@@ -523,7 +523,7 @@
                                     <Image url="@czerwony.png" />
                                  </image>
                               </ImageView>
-                              <Button fx:id="button69" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" mnemonicParsing="false" />
+                              <Button fx:id="button69" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#handleMakeMove" />
                            </children>
                         </StackPane>
                         <StackPane layoutX="118.0" layoutY="500.0" GridPane.columnIndex="5" GridPane.rowIndex="1">
@@ -533,7 +533,7 @@
                                     <Image url="@niebieski.png" />
                                  </image>
                               </ImageView>
-                              <Button fx:id="button40" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" mnemonicParsing="false" />
+                              <Button fx:id="button40" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#handleMakeMove" />
                            </children>
                         </StackPane>
                         <StackPane layoutX="280.0" layoutY="65.0" GridPane.columnIndex="5" GridPane.rowIndex="2">
@@ -543,7 +543,7 @@
                                     <Image url="@niebieski.png" />
                                  </image>
                               </ImageView>
-                              <Button fx:id="button41" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" mnemonicParsing="false" />
+                              <Button fx:id="button41" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#handleMakeMove" />
                            </children>
                         </StackPane>
                         <StackPane layoutX="280.0" layoutY="120.0" GridPane.columnIndex="5" GridPane.rowIndex="3">
@@ -553,7 +553,7 @@
                                     <Image url="@niebieski.png" />
                                  </image>
                               </ImageView>
-                              <Button fx:id="button42" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" mnemonicParsing="false" />
+                              <Button fx:id="button42" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#handleMakeMove" />
                            </children>
                         </StackPane>
                         <StackPane layoutX="280.0" layoutY="175.0" GridPane.columnIndex="5" GridPane.rowIndex="4">
@@ -563,7 +563,7 @@
                                     <Image url="@niebieski.png" />
                                  </image>
                               </ImageView>
-                              <Button fx:id="button43" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" mnemonicParsing="false" />
+                              <Button fx:id="button43" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#handleMakeMove" />
                            </children>
                         </StackPane>
                         <StackPane layoutX="280.0" layoutY="230.0" GridPane.columnIndex="8" GridPane.rowIndex="1">
@@ -573,7 +573,7 @@
                                     <Image url="@niebieski.png" />
                                  </image>
                               </ImageView>
-                              <Button fx:id="button56" layoutX="10.0" layoutY="10.0" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" mnemonicParsing="false" />
+                              <Button fx:id="button56" layoutX="10.0" layoutY="10.0" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#handleMakeMove" />
                            </children>
                         </StackPane>
                         <StackPane layoutX="442.0" layoutY="65.0" GridPane.columnIndex="9" GridPane.rowIndex="1">
@@ -583,7 +583,7 @@
                                     <Image url="@niebieski.png" />
                                  </image>
                               </ImageView>
-                              <Button fx:id="button57" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" mnemonicParsing="false" />
+                              <Button fx:id="button57" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#handleMakeMove" />
                            </children>
                         </StackPane>
                         <StackPane layoutX="496.0" layoutY="65.0" GridPane.columnIndex="8" GridPane.rowIndex="2">
@@ -593,7 +593,7 @@
                                     <Image url="@niebieski.png" />
                                  </image>
                               </ImageView>
-                              <Button fx:id="button58" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" mnemonicParsing="false" />
+                              <Button fx:id="button58" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#handleMakeMove" />
                            </children>
                         </StackPane>
                         <StackPane layoutX="442.0" layoutY="120.0" GridPane.columnIndex="9" GridPane.rowIndex="2">
@@ -603,7 +603,7 @@
                                     <Image url="@niebieski.png" />
                                  </image>
                               </ImageView>
-                              <Button fx:id="button59" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" mnemonicParsing="false" />
+                              <Button fx:id="button59" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#handleMakeMove" />
                            </children>
                         </StackPane>
                         <StackPane layoutX="496.0" layoutY="120.0" GridPane.columnIndex="9" GridPane.rowIndex="5">
@@ -613,7 +613,7 @@
                                     <Image url="@zielony.png" />
                                  </image>
                               </ImageView>
-                              <Button fx:id="button44" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" mnemonicParsing="false" />
+                              <Button fx:id="button44" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#handleMakeMove" />
                            </children>
                         </StackPane>
                         <StackPane layoutX="496.0" layoutY="284.0" GridPane.columnIndex="8" GridPane.rowIndex="5">
@@ -623,7 +623,7 @@
                                     <Image url="@zielony.png" />
                                  </image>
                               </ImageView>
-                              <Button fx:id="button45" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" mnemonicParsing="false" />
+                              <Button fx:id="button45" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#handleMakeMove" />
                            </children>
                         </StackPane>
                         <StackPane layoutX="442.0" layoutY="284.0" GridPane.columnIndex="7" GridPane.rowIndex="5">
@@ -633,7 +633,7 @@
                                     <Image url="@zielony.png" />
                                  </image>
                               </ImageView>
-                              <Button fx:id="button46" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" mnemonicParsing="false" />
+                              <Button fx:id="button46" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#handleMakeMove" />
                            </children>
                         </StackPane>
                         <StackPane layoutX="388.0" layoutY="284.0" GridPane.columnIndex="6" GridPane.rowIndex="5">
@@ -643,7 +643,7 @@
                                     <Image url="@zielony.png" />
                                  </image>
                               </ImageView>
-                              <Button fx:id="button47" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" mnemonicParsing="false" />
+                              <Button fx:id="button47" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#handleMakeMove" />
                            </children>
                         </StackPane>
                         <StackPane layoutX="334.0" layoutY="284.0" GridPane.columnIndex="9" GridPane.rowIndex="8">
@@ -653,7 +653,7 @@
                                     <Image url="@zielony.png" />
                                  </image>
                               </ImageView>
-                              <Button fx:id="button60" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" mnemonicParsing="false" />
+                              <Button fx:id="button60" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#handleMakeMove" />
                            </children>
                         </StackPane>
                         <StackPane layoutX="496.0" layoutY="446.0" GridPane.columnIndex="8" GridPane.rowIndex="8">
@@ -663,7 +663,7 @@
                                     <Image url="@zielony.png" />
                                  </image>
                               </ImageView>
-                              <Button fx:id="button63" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" mnemonicParsing="false" />
+                              <Button fx:id="button63" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#handleMakeMove" />
                            </children>
                         </StackPane>
                         <StackPane layoutX="442.0" layoutY="446.0" GridPane.columnIndex="9" GridPane.rowIndex="9">
@@ -673,7 +673,7 @@
                                     <Image url="@zielony.png" />
                                  </image>
                               </ImageView>
-                              <Button fx:id="button61" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" mnemonicParsing="false" />
+                              <Button fx:id="button61" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#handleMakeMove" />
                            </children>
                         </StackPane>
                         <StackPane layoutX="496.0" layoutY="500.0" GridPane.columnIndex="8" GridPane.rowIndex="9">
@@ -683,7 +683,7 @@
                                     <Image url="@zielony.png" />
                                  </image>
                               </ImageView>
-                              <Button fx:id="button62" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" mnemonicParsing="false" />
+                              <Button fx:id="button62" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#handleMakeMove" />
                            </children>
                         </StackPane>
                         <StackPane layoutX="442.0" layoutY="500.0" GridPane.columnIndex="5" GridPane.rowIndex="9">
@@ -693,7 +693,7 @@
                                     <Image url="@zolty.png" />
                                  </image>
                               </ImageView>
-                              <Button fx:id="button48" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" mnemonicParsing="false" />
+                              <Button fx:id="button48" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#handleMakeMove" />
                            </children>
                         </StackPane>
                         <StackPane layoutX="280.0" layoutY="500.0" GridPane.columnIndex="5" GridPane.rowIndex="8">
@@ -703,7 +703,7 @@
                                     <Image url="@zolty.png" />
                                  </image>
                               </ImageView>
-                              <Button fx:id="button49" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" mnemonicParsing="false" />
+                              <Button fx:id="button49" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#handleMakeMove" />
                            </children>
                         </StackPane>
                         <StackPane layoutX="280.0" layoutY="446.0" GridPane.columnIndex="5" GridPane.rowIndex="7">
@@ -713,7 +713,7 @@
                                     <Image url="@zolty.png" />
                                  </image>
                               </ImageView>
-                              <Button fx:id="button50" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" mnemonicParsing="false" />
+                              <Button fx:id="button50" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#handleMakeMove" />
                            </children>
                         </StackPane>
                         <StackPane layoutX="280.0" layoutY="392.0" GridPane.columnIndex="5" GridPane.rowIndex="6">
@@ -723,7 +723,7 @@
                                     <Image url="@zolty.png" />
                                  </image>
                               </ImageView>
-                              <Button fx:id="button51" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" mnemonicParsing="false" />
+                              <Button fx:id="button51" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#handleMakeMove" />
                            </children>
                         </StackPane>
                         <StackPane layoutX="280.0" layoutY="338.0" GridPane.columnIndex="2" GridPane.rowIndex="9">
@@ -733,7 +733,7 @@
                                     <Image url="@zolty.png" />
                                  </image>
                               </ImageView>
-                              <Button fx:id="button64" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" mnemonicParsing="false" />
+                              <Button fx:id="button64" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#handleMakeMove" />
                            </children>
                         </StackPane>
                         <StackPane layoutX="118.0" layoutY="500.0" GridPane.columnIndex="1" GridPane.rowIndex="9">
@@ -743,7 +743,7 @@
                                     <Image url="@zolty.png" />
                                  </image>
                               </ImageView>
-                              <Button fx:id="button65" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" mnemonicParsing="false" />
+                              <Button fx:id="button65" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#handleMakeMove" />
                            </children>
                         </StackPane>
                         <StackPane layoutX="64.0" layoutY="500.0" GridPane.columnIndex="2" GridPane.rowIndex="8">
@@ -753,7 +753,7 @@
                                     <Image url="@zolty.png" />
                                  </image>
                               </ImageView>
-                              <Button fx:id="button66" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" mnemonicParsing="false" />
+                              <Button fx:id="button66" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#handleMakeMove" />
                            </children>
                         </StackPane>
                         <StackPane layoutX="118.0" layoutY="446.0" GridPane.columnIndex="1" GridPane.rowIndex="8">
@@ -763,7 +763,7 @@
                                     <Image url="@zolty.png" />
                                  </image>
                               </ImageView>
-                              <Button fx:id="button67" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" mnemonicParsing="false" />
+                              <Button fx:id="button67" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#handleMakeMove" />
                            </children>
                         </StackPane>
                         <ImageView pickOnBounds="true" preserveRatio="true" GridPane.columnIndex="5" GridPane.rowIndex="5">
@@ -836,7 +836,7 @@
                         </ImageView>
                      </children>
                   </GridPane>
-                  <Button layoutY="491.0" mnemonicParsing="false" onAction="#handleRollDiceButton" text="Rzut kością">
+                  <Button fx:id="diceRollButton" layoutY="491.0" mnemonicParsing="false" onAction="#handleRollDiceButton" text="Rzut kością">
                      <font>
                         <Font size="16.0" />
                      </font>
