@@ -1,8 +1,3 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package ludo.view;
 
 import java.util.ArrayList;
@@ -194,17 +189,20 @@ public class GeneralViewController {
     @FXML 
     private Button button71;
 
-    
-    
-    
     private Board board;
     private PlayerList listOfPlayers;
-    private int diceRoll;
+    private Integer diceRoll;
     private Chinczyk chinczyk;
     private HashMap<Button, Field> buttonMap;
     private List<Button> listOfButtons;
-    
-    
+    private final int blueTokens[] = {0,57,58,59};
+    private final int greenTokens[] = {10,61,62,63};
+    private final int yellowTokens[] = {20,65,66,67};
+    private final int redTokens[] = {30,69,70,71};
+    private final List<Button> blueButtons = new ArrayList<>();
+    private final List<Button> greenButtons = new ArrayList<>();
+    private final List<Button> yellowButtons = new ArrayList<>();
+    private final List<Button> redButtons = new ArrayList<>();
     public void initialize() {
         
     }    
@@ -213,6 +211,22 @@ public class GeneralViewController {
         this.chinczyk = chinczyk;
         this.board = board;
         this.listOfPlayers = listOfPlayers;
+        this.blueButtons.add(button56);
+        this.blueButtons.add(button57);
+        this.blueButtons.add(button58);
+        this.blueButtons.add(button59);
+        this.greenButtons.add(button60);
+        this.greenButtons.add(button61);
+        this.greenButtons.add(button62);
+        this.greenButtons.add(button63);
+        this.yellowButtons.add(button64);
+        this.yellowButtons.add(button65);
+        this.yellowButtons.add(button66);
+        this.yellowButtons.add(button67);
+        this.redButtons.add(button68);
+        this.redButtons.add(button69);
+        this.redButtons.add(button70);
+        this.redButtons.add(button71);
         createListOfButtons();
         initializeListOfPlayers();
         initializeListOfFields();
@@ -332,10 +346,7 @@ public class GeneralViewController {
     
     public void setTokens()
     {
-        int blueTokens[] = {0,57,58,59};
-        int greenTokens[] = {10,61,62,63};
-        int yellowTokens[] = {20,65,66,67};
-        int redTokens[] = {30,69,70,71};
+        
         for(int i = 0; i < 4; i++)
         {
             listOfButtons.get(blueTokens[i]).setStyle("-fx-base: #0090FF; "
@@ -386,7 +397,9 @@ public class GeneralViewController {
                 break;
             }
         }
+        this.diceRoll = null;
         setActive(color);
+        this.diceRollButton.setDisable(false);
     }
     
     public void handleMakeMove(ActionEvent event)
@@ -395,6 +408,7 @@ public class GeneralViewController {
         Field sourceField = buttonMap.get(source);
         int index = board.getListOfFields().indexOf(sourceField) + diceRoll;
         int tokenID = sourceField.getTokenID();
+        System.out.println(sourceField.getTokenID());
         Player sourcePlayer = null;
         Token sourceToken = null;
         for (Player player : listOfPlayers.getPlayerList())
@@ -403,38 +417,484 @@ public class GeneralViewController {
             sourceToken = player.getTokenById(tokenID);
             if(sourceToken != null) break;
         }
-        
-        sourceToken.setCounter(sourceToken.getCounter() + diceRoll);
-        source.setDisable(true);
-        source.setOpacity(0);
+        if(sourcePlayer.isIsMyTurn()){
+            if(sourceToken.isIsInGarage() && (diceRoll == 1 || diceRoll == 6)){
+                if(isStartingFieldClear(sourcePlayer))
+                {
+                    source.setDisable(true);
+                    source.setOpacity(0);
+                    sourceField.setIsOccupied(false);
+                    takeFromGarage(sourceToken, sourcePlayer);
+                    this.diceRoll = null;
+                    setActive(sourcePlayer.getColor());
+                    this.diceRollButton.setDisable(false);
+                }
+            }
+            if(sourceToken.isIsOnTheField())
+            {
+                if(sourceToken.getCounter() + diceRoll < 40)
+                {
+                    makeMove(sourceField, sourceToken, sourcePlayer);
+                    this.diceRoll = null;
+                    setActive(sourcePlayer.getColor());
+                    this.diceRollButton.setDisable(false);
+                }
+                else 
+                {
+                    //takeToWinningField(sourceField, sourceToken, sourcePlayer);
+                    this.diceRoll = null;
+                    setActive(sourcePlayer.getColor());
+                    this.diceRollButton.setDisable(false);
+                }
+            }
+        }
+    }
+    
+    private void makeMove(Field sourceField, Token sourceToken, Player sourcePlayer)
+    {
+        int index = 0;
+        if(sourceField.getNumber() + diceRoll > 39)
+            index = sourceField.getNumber() + diceRoll - 38;
+        else 
+            index = sourceField.getNumber() + diceRoll;
+        String color = sourcePlayer.getColor();
+        sourceField.setTokenID(null);
         sourceField.setIsOccupied(false);
-        listOfButtons.get(index).setDisable(false);
+        buttonMap.get(listOfButtons.get(index)).setTokenID(sourceToken.getId());
+        buttonMap.get(listOfButtons.get(index)).setIsOccupied(true);
+        listOfButtons.get(sourceField.getNumber()).setOpacity(0);
+        listOfButtons.get(sourceField.getNumber()).setDisable(true);
         listOfButtons.get(index).setOpacity(1);
-        switch(sourcePlayer.getColor()) {
+        listOfButtons.get(index).setDisable(false);
+        switch(color) {
             case "blue": {
                 listOfButtons.get(index).setStyle("-fx-base: #0090FF; "
-                    + "-fx-background-radius: 50%;");
+                                                        + "-fx-background-radius: 50%;");
                 break;
             }
             case "green": {
                 listOfButtons.get(index).setStyle("-fx-base: #00B200; "
-                    + "-fx-background-radius: 50%;");
+                                                        + "-fx-background-radius: 50%;");
                 break;
             }
             case "yellow": {
                 listOfButtons.get(index).setStyle("-fx-base: #F6C900; "
-                    + "-fx-background-radius: 50%;");
+                                                        + "-fx-background-radius: 50%;");
                 break;
             }
             case "red": {
                 listOfButtons.get(index).setStyle("-fx-base: #DE0600; "
-                    + "-fx-background-radius: 50%;");
+                                                        + "-fx-background-radius: 50%;");
                 break;
             }
         }
-        buttonMap.get(listOfButtons.get(index)).setTokenID(tokenID);
-        buttonMap.get(listOfButtons.get(index)).setIsOccupied(true);
-        
+        sourceToken.setCounter(sourceToken.getCounter() + diceRoll);
+    }
+    
+    private void takeFromGarage(Token sourceToken, Player sourcePlayer)
+    {
+        String color = sourcePlayer.getColor();
+        removeOtherPlayerTokenFromMyStartField(sourcePlayer, color);
+        setOnStartField(sourceToken, color);
+    }
+    
+    private void setOnStartField(Token sourceToken, String color)
+    {
+        sourceToken.setOnStartField(color);
+        board.setTokenOnStartField(sourceToken.getId());
+        switch(color) {
+            case "blue": {
+                listOfButtons.get(0).setStyle("-fx-base: #0090FF; "
+                    + "-fx-background-radius: 50%;");
+                listOfButtons.get(0).setDisable(false);
+                listOfButtons.get(0).setOpacity(1);
+                break;
+            }
+            case "green": {
+                listOfButtons.get(10).setStyle("-fx-base: #00B200; "
+                    + "-fx-background-radius: 50%;");
+                listOfButtons.get(10).setDisable(false);
+                listOfButtons.get(10).setOpacity(1);
+                break;
+            }
+            case "yellow": {
+                listOfButtons.get(20).setStyle("-fx-base: #F6C900; "
+                    + "-fx-background-radius: 50%;");
+                listOfButtons.get(20).setDisable(false);
+                listOfButtons.get(20).setOpacity(1);
+                break;
+            }
+            case "red": {
+                listOfButtons.get(30).setStyle("-fx-base: #DE0600; "
+                    + "-fx-background-radius: 50%;");
+                listOfButtons.get(30).setDisable(false);
+                listOfButtons.get(30).setOpacity(1);
+                break;
+            }
+        }
+        this.diceRoll = null;
+    }
+    
+    private void removeOtherPlayerTokenFromMyStartField(Player sourcePlayer, String color)
+    {
+        switch(color) {
+            case "blue": {
+                if(buttonMap.get(button0).isIsOccupied())
+                {
+                    Integer tokenID = buttonMap.get(button0).getTokenID();
+                    Token sourceToken = null; 
+                    String sourceColor = null;
+                    for (Player player : listOfPlayers.getPlayerList())
+                    {
+                        sourceColor = player.getColor();
+                        sourceToken = player.getTokenById(tokenID);
+                        if (sourceToken != null) break;
+                    }
+                    if(sourceColor.equalsIgnoreCase("green"))
+                    {
+                        for(Button button : greenButtons)
+                        {
+                            if(!buttonMap.get(button).isIsOccupied())
+                            {
+                                int index = listOfButtons.indexOf(button);
+                                buttonMap.get(button).setIsOccupied(false);
+                                buttonMap.get(button).setTokenID(tokenID);
+                                sourceToken.setCounter(0);
+                                sourceToken.setFieldNumber(buttonMap.get(button).getNumber());
+                                sourceToken.setIsInGarage(true);
+                                sourceToken.setIsOnTheField(false);
+                                listOfButtons.get(index).setStyle("-fx-base: #00B200; "
+                                                        + "-fx-background-radius: 50%;");
+                                listOfButtons.get(index).setDisable(false);
+                                listOfButtons.get(index).setOpacity(1);
+                                break; 
+                            }
+                        }
+                    }
+                    if(sourceColor.equalsIgnoreCase("yellow"))
+                    {
+                        for(Button button : yellowButtons)
+                        {
+                            if(!buttonMap.get(button).isIsOccupied())
+                            {
+                                int index = listOfButtons.indexOf(button);
+                                buttonMap.get(button).setIsOccupied(false);
+                                buttonMap.get(button).setTokenID(tokenID);
+                                sourceToken.setCounter(0);
+                                sourceToken.setFieldNumber(buttonMap.get(button).getNumber());
+                                sourceToken.setIsInGarage(true);
+                                sourceToken.setIsOnTheField(false);
+                                listOfButtons.get(index).setStyle("-fx-base: #F6C900; "
+                                                        + "-fx-background-radius: 50%;");
+                                listOfButtons.get(index).setDisable(false);
+                                listOfButtons.get(index).setOpacity(1);
+                                break; 
+                            }
+                        }
+                    }
+                    if(sourceColor.equalsIgnoreCase("red"))
+                    {
+                        for(Button button : redButtons)
+                        {
+                            if(!buttonMap.get(button).isIsOccupied())
+                            {
+                                int index = listOfButtons.indexOf(button);
+                                buttonMap.get(button).setIsOccupied(false);
+                                buttonMap.get(button).setTokenID(tokenID);
+                                sourceToken.setCounter(0);
+                                sourceToken.setFieldNumber(buttonMap.get(button).getNumber());
+                                sourceToken.setIsInGarage(true);
+                                sourceToken.setIsOnTheField(false);
+                                listOfButtons.get(index).setStyle("-fx-base: #DE0600; "
+                                                        + "-fx-background-radius: 50%;");
+                                listOfButtons.get(index).setDisable(false);
+                                listOfButtons.get(index).setOpacity(1);
+                                break; 
+                            }
+                        }
+                    }
+                }
+                break;
+            }
+            case "green": {
+                if(buttonMap.get(button10).isIsOccupied())
+                {
+                    Integer tokenID = buttonMap.get(button10).getTokenID();
+                    Token sourceToken = null; 
+                    String sourceColor = null;
+                    for (Player player : listOfPlayers.getPlayerList())
+                    {
+                        sourceColor = player.getColor();
+                        sourceToken = player.getTokenById(tokenID);
+                        if (sourceToken != null) break;
+                    }
+                    if(sourceColor.equalsIgnoreCase("blue"))
+                    {
+                        for(Button button : blueButtons)
+                        {
+                            if(!buttonMap.get(button).isIsOccupied())
+                            {
+                                int index = listOfButtons.indexOf(button);
+                                buttonMap.get(button).setIsOccupied(false);
+                                buttonMap.get(button).setTokenID(tokenID);
+                                sourceToken.setCounter(0);
+                                sourceToken.setFieldNumber(buttonMap.get(button).getNumber());
+                                sourceToken.setIsInGarage(true);
+                                sourceToken.setIsOnTheField(false);
+                                listOfButtons.get(index).setStyle("-fx-base: #0090FF; "
+                                                        + "-fx-background-radius: 50%;");
+                                listOfButtons.get(index).setDisable(false);
+                                listOfButtons.get(index).setOpacity(1);
+                                break; 
+                            }
+                        }
+                    }
+                    if(sourceColor.equalsIgnoreCase("yellow"))
+                    {
+                        for(Button button : yellowButtons)
+                        {
+                            if(!buttonMap.get(button).isIsOccupied())
+                            {
+                                int index = listOfButtons.indexOf(button);
+                                buttonMap.get(button).setIsOccupied(false);
+                                buttonMap.get(button).setTokenID(tokenID);
+                                sourceToken.setCounter(0);
+                                sourceToken.setFieldNumber(buttonMap.get(button).getNumber());
+                                sourceToken.setIsInGarage(true);
+                                sourceToken.setIsOnTheField(false);
+                                listOfButtons.get(index).setStyle("-fx-base: #F6C900; "
+                                                        + "-fx-background-radius: 50%;");
+                                listOfButtons.get(index).setDisable(false);
+                                listOfButtons.get(index).setOpacity(1);
+                                break; 
+                            }
+                        }
+                    }
+                    if(sourceColor.equalsIgnoreCase("red"))
+                    {
+                        for(Button button : redButtons)
+                        {
+                            if(!buttonMap.get(button).isIsOccupied())
+                            {
+                                int index = listOfButtons.indexOf(button);
+                                buttonMap.get(button).setIsOccupied(false);
+                                buttonMap.get(button).setTokenID(tokenID);
+                                sourceToken.setCounter(0);
+                                sourceToken.setFieldNumber(buttonMap.get(button).getNumber());
+                                sourceToken.setIsInGarage(true);
+                                sourceToken.setIsOnTheField(false);
+                                listOfButtons.get(index).setStyle("-fx-base: #DE0600; "
+                                                        + "-fx-background-radius: 50%;");
+                                listOfButtons.get(index).setDisable(false);
+                                listOfButtons.get(index).setOpacity(1);
+                                break; 
+                            }
+                        }
+                    }
+                }
+                break;
+            }
+            case "yellow": {
+                if(buttonMap.get(button20).isIsOccupied())
+                {
+                    Integer tokenID = buttonMap.get(button20).getTokenID();
+                    Token sourceToken = null; 
+                    String sourceColor = null;
+                    for (Player player : listOfPlayers.getPlayerList())
+                    {
+                        sourceColor = player.getColor();
+                        sourceToken = player.getTokenById(tokenID);
+                        if (sourceToken != null) break;
+                    }
+                    if(sourceColor.equalsIgnoreCase("blue"))
+                    {
+                        for(Button button : blueButtons)
+                        {
+                            if(!buttonMap.get(button).isIsOccupied())
+                            {
+                                int index = listOfButtons.indexOf(button);
+                                buttonMap.get(button).setIsOccupied(false);
+                                buttonMap.get(button).setTokenID(tokenID);
+                                sourceToken.setCounter(0);
+                                sourceToken.setFieldNumber(buttonMap.get(button).getNumber());
+                                sourceToken.setIsInGarage(true);
+                                sourceToken.setIsOnTheField(false);
+                                listOfButtons.get(index).setStyle("-fx-base: #0090FF; "
+                                                        + "-fx-background-radius: 50%;");
+                                listOfButtons.get(index).setDisable(false);
+                                listOfButtons.get(index).setOpacity(1);
+                                break; 
+                            }
+                        }
+                    }
+                    if(sourceColor.equalsIgnoreCase("green"))
+                    {
+                        for(Button button : greenButtons)
+                        {
+                            if(!buttonMap.get(button).isIsOccupied())
+                            {
+                                int index = listOfButtons.indexOf(button);
+                                buttonMap.get(button).setIsOccupied(false);
+                                buttonMap.get(button).setTokenID(tokenID);
+                                sourceToken.setCounter(0);
+                                sourceToken.setFieldNumber(buttonMap.get(button).getNumber());
+                                sourceToken.setIsInGarage(true);
+                                sourceToken.setIsOnTheField(false);
+                                listOfButtons.get(index).setStyle("-fx-base: #00B200; "
+                                                        + "-fx-background-radius: 50%;");
+                                listOfButtons.get(index).setDisable(false);
+                                listOfButtons.get(index).setOpacity(1);
+                                break; 
+                            }
+                        }
+                    }
+                    if(sourceColor.equalsIgnoreCase("red"))
+                    {
+                        for(Button button : redButtons)
+                        {
+                            if(!buttonMap.get(button).isIsOccupied())
+                            {
+                                int index = listOfButtons.indexOf(button);
+                                buttonMap.get(button).setIsOccupied(false);
+                                buttonMap.get(button).setTokenID(tokenID);
+                                sourceToken.setCounter(0);
+                                sourceToken.setFieldNumber(buttonMap.get(button).getNumber());
+                                sourceToken.setIsInGarage(true);
+                                sourceToken.setIsOnTheField(false);
+                                listOfButtons.get(index).setStyle("-fx-base: #DE0600; "
+                                                        + "-fx-background-radius: 50%;");
+                                listOfButtons.get(index).setDisable(false);
+                                listOfButtons.get(index).setOpacity(1);
+                                break; 
+                            }
+                        }
+                    }
+                }
+                break;
+            }
+            case "red": {
+                if(buttonMap.get(button30).isIsOccupied())
+                {
+                    Integer tokenID = buttonMap.get(button30).getTokenID();
+                    Token sourceToken = null; 
+                    String sourceColor = null;
+                    for (Player player : listOfPlayers.getPlayerList())
+                    {
+                        sourceColor = player.getColor();
+                        sourceToken = player.getTokenById(tokenID);
+                        if (sourceToken != null) break;
+                    }
+                    if(sourceColor.equalsIgnoreCase("blue"))
+                    {
+                        for(Button button : blueButtons)
+                        {
+                            if(!buttonMap.get(button).isIsOccupied())
+                            {
+                                int index = listOfButtons.indexOf(button);
+                                buttonMap.get(button).setIsOccupied(false);
+                                buttonMap.get(button).setTokenID(tokenID);
+                                sourceToken.setCounter(0);
+                                sourceToken.setFieldNumber(buttonMap.get(button).getNumber());
+                                sourceToken.setIsInGarage(true);
+                                sourceToken.setIsOnTheField(false);
+                                listOfButtons.get(index).setStyle("-fx-base: #0090FF; "
+                                                        + "-fx-background-radius: 50%;");
+                                listOfButtons.get(index).setDisable(false);
+                                listOfButtons.get(index).setOpacity(1);
+                                break; 
+                            }
+                        }
+                    }
+                    if(sourceColor.equalsIgnoreCase("green"))
+                    {
+                        for(Button button : greenButtons)
+                        {
+                            if(!buttonMap.get(button).isIsOccupied())
+                            {
+                                int index = listOfButtons.indexOf(button);
+                                buttonMap.get(button).setIsOccupied(false);
+                                buttonMap.get(button).setTokenID(tokenID);
+                                sourceToken.setCounter(0);
+                                sourceToken.setFieldNumber(buttonMap.get(button).getNumber());
+                                sourceToken.setIsInGarage(true);
+                                sourceToken.setIsOnTheField(false);
+                                listOfButtons.get(index).setStyle("-fx-base: #00B200; "
+                                                        + "-fx-background-radius: 50%;");
+                                listOfButtons.get(index).setDisable(false);
+                                listOfButtons.get(index).setOpacity(1);
+                                break; 
+                            }
+                        }
+                    }
+                    if(sourceColor.equalsIgnoreCase("yellow"))
+                    {
+                        for(Button button : yellowButtons)
+                        {
+                            if(!buttonMap.get(button).isIsOccupied())
+                            {
+                                int index = listOfButtons.indexOf(button);
+                                buttonMap.get(button).setIsOccupied(true);
+                                buttonMap.get(button).setTokenID(tokenID);
+                                sourceToken.setCounter(0);
+                                sourceToken.setFieldNumber(buttonMap.get(button).getNumber());
+                                sourceToken.setIsInGarage(true);
+                                sourceToken.setIsOnTheField(false);
+                                listOfButtons.get(index).setStyle("-fx-base: #F6C900; "
+                                                        + "-fx-background-radius: 50%;");
+                                listOfButtons.get(index).setDisable(false);
+                                listOfButtons.get(index).setOpacity(1);
+                                break; 
+                            }
+                        }
+                    }
+                }
+                break;
+            }
+        }
+    }
+    
+    private boolean isStartingFieldClear(Player sourcePlayer)
+    {
+        String color = sourcePlayer.getColor();
+        Integer tokenID = null;
+        switch(color) {
+            case "blue": {
+                if(this.board.getListOfFields().get(0).isIsOccupied())
+                    tokenID = this.board.getListOfFields().get(0).getTokenID();
+                break;
+            }
+            case "green": {
+                if(this.board.getListOfFields().get(10).isIsOccupied())
+                    tokenID = this.board.getListOfFields().get(10).getTokenID();
+                break;
+            }
+            case "yellow": {
+                if(this.board.getListOfFields().get(20).isIsOccupied())
+                    tokenID = this.board.getListOfFields().get(20).getTokenID();
+                break;
+            }
+            case "red": {
+                if(this.board.getListOfFields().get(30).isIsOccupied())
+                    tokenID = this.board.getListOfFields().get(30).getTokenID();
+                break;
+            }
+        }
+         if(tokenID != null)
+        {
+        String tokenColor = null;
+        for (Player player : listOfPlayers.getPlayerList())
+        {
+            tokenColor = player.getColor();
+            if(player.getTokenById(tokenID) != null) break;
+        }
+       
+            if(color.equals(tokenColor))
+                return false;
+            else 
+                return true;
+        }
+        else 
+            return true;
     }
     
     public void setActive(String color)
@@ -442,24 +902,28 @@ public class GeneralViewController {
         switch(color)
         {
             case "blue": {
+                this.listOfPlayers.getPlayer(0).setIsMyTurn(false);
                 this.listOfPlayers.getPlayer(1).setIsMyTurn(true);
                 this.bluePlayerArrow.setVisible(false);
                 this.greenPlayerArrow.setVisible(true);
                 break;
             }
             case "green": {
+                this.listOfPlayers.getPlayer(1).setIsMyTurn(false);
                 this.listOfPlayers.getPlayer(2).setIsMyTurn(true);
                 this.greenPlayerArrow.setVisible(false);
                 this.yellowPlayerArrow.setVisible(true);
                 break;
             }
             case "yellow": {
+                this.listOfPlayers.getPlayer(2).setIsMyTurn(false);
                 this.listOfPlayers.getPlayer(3).setIsMyTurn(true);
                 this.yellowPlayerArrow.setVisible(false);
                 this.redPlayerArrow.setVisible(true);
                 break;
             }
             case "red": {
+                this.listOfPlayers.getPlayer(3).setIsMyTurn(false);
                 this.listOfPlayers.getPlayer(0).setIsMyTurn(true);
                 this.redPlayerArrow.setVisible(false);
                 this.bluePlayerArrow.setVisible(true);

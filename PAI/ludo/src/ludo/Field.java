@@ -20,8 +20,8 @@ public class Field {
     private boolean isRedGarageField = false;
     
     private boolean isOccupied = false;
-    private int number;
-    private int tokenID;
+    private Integer number;
+    private Integer tokenID;
     
     public Field(int number) {
         this.number = number;
@@ -156,7 +156,7 @@ public class Field {
         this.isOccupied = isOccupied;
     }
 
-    public int getNumber() {
+    public Integer getNumber() {
         return number;
     }
 
@@ -164,11 +164,11 @@ public class Field {
         this.number = number;
     }
 
-    public int getTokenID() {
+    public Integer getTokenID() {
         return tokenID;
     }
 
-    public void setTokenID(int tokenID) {
+    public void setTokenID(Integer tokenID) {
         this.tokenID = tokenID;
     }
 
