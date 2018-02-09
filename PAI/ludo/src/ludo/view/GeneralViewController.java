@@ -440,10 +440,13 @@ public class GeneralViewController {
             {
                 if(sourceToken.getCounter() + diceRoll < 40)
                 {
-                    makeMove(sourceField, sourceToken, sourcePlayer);
-                    this.diceRoll = null;
-                    setActive(sourcePlayer.getColor());
-                    this.diceRollButton.setDisable(false);
+                    if(isMovePossible(sourceField, sourcePlayer)) {
+                        removeOtherTokenFromEndField(sourceField, sourceToken, sourcePlayer);
+                        makeMove(sourceField, sourceToken, sourcePlayer);
+                        this.diceRoll = null;
+                        setActive(sourcePlayer.getColor());
+                        this.diceRollButton.setDisable(false);
+                    }
                 }
                 else 
                 {
@@ -454,6 +457,112 @@ public class GeneralViewController {
                 }
             }
         }
+    }
+    
+    private void removeOtherTokenFromEndField(Field sourceField, Token sourceToken, Player sourcePlayer) {
+        int index = sourceField.getNumber() + diceRoll;
+        Field endField = board.getListOfFields().get(index);
+        if(endField.isIsOccupied()) {
+            String endFieldTokenColor = null;
+            Integer endFieldTokenID = endField.getTokenID();
+            for(Player player : listOfPlayers.getPlayerList()) {
+                endFieldTokenColor = player.getColor();
+                if(player.getTokenById(endFieldTokenID) != null)
+                    break;
+            }
+            switch(endFieldTokenColor) {
+                case "blue": {
+                    for(int i = 59; i > 55; i--) {
+                        Field garage = board.getListOfFields().get(i);
+                        if(!garage.isIsOccupied()) {
+                            sourceToken.setFieldNumber(garage.getNumber());
+                            garage.setTokenID(sourceToken.getId());
+                            garage.setIsOccupied(true);
+                            listOfButtons.get(garage.getNumber()).setDisable(false);
+                            listOfButtons.get(garage.getNumber()).setOpacity(1);
+                            listOfButtons.get(garage.getNumber()).setStyle("-fx-base: #0090FF; "
+                            + "-fx-background-radius: 50%;");
+                            break;
+                        }
+                    }
+                    break;
+                }
+                case "green": {
+                    for(int i = 63; i > 59; i--) {
+                        Field garage = board.getListOfFields().get(i);
+                        if(!garage.isIsOccupied()) {
+                            sourceToken.setFieldNumber(garage.getNumber());
+                            garage.setTokenID(sourceToken.getId());
+                            garage.setIsOccupied(true);
+                            listOfButtons.get(garage.getNumber()).setDisable(false);
+                            listOfButtons.get(garage.getNumber()).setOpacity(1);
+                            listOfButtons.get(garage.getNumber()).setStyle("-fx-base: #00B200; "
+                            + "-fx-background-radius: 50%;");
+                            break;
+                        }
+                    }
+                    break;
+                }
+                case "yellow": {
+                    for(int i = 67; i > 63; i--) {
+                        Field garage = board.getListOfFields().get(i);
+                        if(!garage.isIsOccupied()) {
+                            sourceToken.setFieldNumber(garage.getNumber());
+                            garage.setTokenID(sourceToken.getId());
+                            garage.setIsOccupied(true);
+                            listOfButtons.get(garage.getNumber()).setDisable(false);
+                            listOfButtons.get(garage.getNumber()).setOpacity(1);
+                            listOfButtons.get(garage.getNumber()).setStyle("-fx-base: #F6C900; "
+                            + "-fx-background-radius: 50%;");
+                            break;
+                        }
+                    }
+                    break;
+                }
+                case "red": {
+                    for(int i = 71; i > 67; i--) {
+                        Field garage = board.getListOfFields().get(i);
+                        if(!garage.isIsOccupied()) {
+                            sourceToken.setFieldNumber(garage.getNumber());
+                            garage.setTokenID(sourceToken.getId());
+                            garage.setIsOccupied(true);
+                            listOfButtons.get(garage.getNumber()).setDisable(false);
+                            listOfButtons.get(garage.getNumber()).setOpacity(1);
+                            listOfButtons.get(garage.getNumber()).setStyle("-fx-base: #DE0600; "
+                            + "-fx-background-radius: 50%;");
+                            break;
+                        }
+                    }
+                    break;
+                }
+            }
+        }
+    }
+    
+    private boolean isMovePossible(Field sourceField, Player sourcePlayer) {
+        String sourceColor = sourcePlayer.getColor();
+        int index = sourceField.getNumber();
+        String endFieldTokenColor = null;
+        Integer endFieldTokenID = null;
+        if(board.getListOfFields().get(index + diceRoll).isIsOccupied()) {
+            endFieldTokenID = board.getListOfFields().get(index + diceRoll).getTokenID();
+            for(Player player : listOfPlayers.getPlayerList()) {
+                endFieldTokenColor = player.getColor();
+                if(player.getTokenById(endFieldTokenID) != null) {
+                    break;
+                }
+            }
+        }
+        if(endFieldTokenColor != null) {
+            if(endFieldTokenColor.equalsIgnoreCase(sourceColor)) {
+                return false;
+            }
+            else {
+                return true;
+            }
+        }
+        return true;
+        
     }
     
     private void takeToWinningField(Field sourceField, Token sourceToken, Player sourcePlayer)
@@ -547,6 +656,8 @@ public class GeneralViewController {
         chinczyk.showWinner(name, color);
         gameStage.close();
     }
+    
+    
     
     private void makeMove(Field sourceField, Token sourceToken, Player sourcePlayer)
     {
