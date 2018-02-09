@@ -410,6 +410,7 @@ public class GeneralViewController {
     
     public void handleMakeMove(ActionEvent event)
     {
+        if(diceRoll != null) {
         Button source = (Button)event.getSource();
         Field sourceField = buttonMap.get(source);
         int index = board.getListOfFields().indexOf(sourceField) + diceRoll;
@@ -436,12 +437,12 @@ public class GeneralViewController {
                     this.diceRollButton.setDisable(false);
                 }
             }
-            if(sourceToken.isIsOnTheField())
+            else if(sourceToken.isIsOnTheField())
             {
                 if(sourceToken.getCounter() + diceRoll < 40)
                 {
                     if(isMovePossible(sourceField, sourcePlayer)) {
-                        removeOtherTokenFromEndField(sourceField, sourceToken, sourcePlayer);
+                        removeOtherTokenFromEndField(sourceField);
                         makeMove(sourceField, sourceToken, sourcePlayer);
                         this.diceRoll = null;
                         setActive(sourcePlayer.getColor());
@@ -457,17 +458,25 @@ public class GeneralViewController {
                 }
             }
         }
+        }
+        
     }
     
-    private void removeOtherTokenFromEndField(Field sourceField, Token sourceToken, Player sourcePlayer) {
-        int index = sourceField.getNumber() + diceRoll;
+    private void removeOtherTokenFromEndField(Field sourceField) {
+        int index = 0;
+        if(sourceField.getNumber() + diceRoll > 39)
+            index = sourceField.getNumber() + diceRoll - 40;
+        else 
+            index = sourceField.getNumber() + diceRoll;
         Field endField = board.getListOfFields().get(index);
         if(endField.isIsOccupied()) {
             String endFieldTokenColor = null;
             Integer endFieldTokenID = endField.getTokenID();
+            Token endToken = null;
             for(Player player : listOfPlayers.getPlayerList()) {
                 endFieldTokenColor = player.getColor();
-                if(player.getTokenById(endFieldTokenID) != null)
+                endToken = player.getTokenById(endFieldTokenID);
+                if(endToken != null)
                     break;
             }
             switch(endFieldTokenColor) {
@@ -475,8 +484,10 @@ public class GeneralViewController {
                     for(int i = 59; i > 55; i--) {
                         Field garage = board.getListOfFields().get(i);
                         if(!garage.isIsOccupied()) {
-                            sourceToken.setFieldNumber(garage.getNumber());
-                            garage.setTokenID(sourceToken.getId());
+                            endToken.setFieldNumber(garage.getNumber());
+                            endToken.setIsInGarage(true);
+                            endToken.setIsOnTheField(false);
+                            garage.setTokenID(endToken.getId());
                             garage.setIsOccupied(true);
                             listOfButtons.get(garage.getNumber()).setDisable(false);
                             listOfButtons.get(garage.getNumber()).setOpacity(1);
@@ -491,8 +502,10 @@ public class GeneralViewController {
                     for(int i = 63; i > 59; i--) {
                         Field garage = board.getListOfFields().get(i);
                         if(!garage.isIsOccupied()) {
-                            sourceToken.setFieldNumber(garage.getNumber());
-                            garage.setTokenID(sourceToken.getId());
+                            endToken.setFieldNumber(garage.getNumber());
+                            endToken.setIsInGarage(true);
+                            endToken.setIsOnTheField(false);
+                            garage.setTokenID(endToken.getId());
                             garage.setIsOccupied(true);
                             listOfButtons.get(garage.getNumber()).setDisable(false);
                             listOfButtons.get(garage.getNumber()).setOpacity(1);
@@ -507,8 +520,10 @@ public class GeneralViewController {
                     for(int i = 67; i > 63; i--) {
                         Field garage = board.getListOfFields().get(i);
                         if(!garage.isIsOccupied()) {
-                            sourceToken.setFieldNumber(garage.getNumber());
-                            garage.setTokenID(sourceToken.getId());
+                            endToken.setFieldNumber(garage.getNumber());
+                            endToken.setIsInGarage(true);
+                            endToken.setIsOnTheField(false);
+                            garage.setTokenID(endToken.getId());
                             garage.setIsOccupied(true);
                             listOfButtons.get(garage.getNumber()).setDisable(false);
                             listOfButtons.get(garage.getNumber()).setOpacity(1);
@@ -523,8 +538,10 @@ public class GeneralViewController {
                     for(int i = 71; i > 67; i--) {
                         Field garage = board.getListOfFields().get(i);
                         if(!garage.isIsOccupied()) {
-                            sourceToken.setFieldNumber(garage.getNumber());
-                            garage.setTokenID(sourceToken.getId());
+                            endToken.setFieldNumber(garage.getNumber());
+                            endToken.setIsInGarage(true);
+                            endToken.setIsOnTheField(false);
+                            garage.setTokenID(endToken.getId());
                             garage.setIsOccupied(true);
                             listOfButtons.get(garage.getNumber()).setDisable(false);
                             listOfButtons.get(garage.getNumber()).setOpacity(1);
@@ -541,11 +558,15 @@ public class GeneralViewController {
     
     private boolean isMovePossible(Field sourceField, Player sourcePlayer) {
         String sourceColor = sourcePlayer.getColor();
-        int index = sourceField.getNumber();
+        int index = 0;
+        if(sourceField.getNumber() + diceRoll > 39)
+            index = sourceField.getNumber() + diceRoll - 40;
+        else 
+            index = sourceField.getNumber() + diceRoll;
         String endFieldTokenColor = null;
         Integer endFieldTokenID = null;
-        if(board.getListOfFields().get(index + diceRoll).isIsOccupied()) {
-            endFieldTokenID = board.getListOfFields().get(index + diceRoll).getTokenID();
+        if(board.getListOfFields().get(index).isIsOccupied()) {
+            endFieldTokenID = board.getListOfFields().get(index).getTokenID();
             for(Player player : listOfPlayers.getPlayerList()) {
                 endFieldTokenColor = player.getColor();
                 if(player.getTokenById(endFieldTokenID) != null) {
@@ -669,8 +690,10 @@ public class GeneralViewController {
         String color = sourcePlayer.getColor();
         sourceField.setTokenID(null);
         sourceField.setIsOccupied(false);
-        buttonMap.get(listOfButtons.get(index)).setTokenID(sourceToken.getId());
-        buttonMap.get(listOfButtons.get(index)).setIsOccupied(true);
+        sourceToken.setCounter(sourceToken.getCounter() + diceRoll);
+        sourceToken.setFieldNumber(index);
+        board.getListOfFields().get(index).setTokenID(sourceToken.getId());
+        board.getListOfFields().get(index).setIsOccupied(true);
         listOfButtons.get(sourceField.getNumber()).setOpacity(0);
         listOfButtons.get(sourceField.getNumber()).setDisable(true);
         listOfButtons.get(index).setOpacity(1);
@@ -697,7 +720,7 @@ public class GeneralViewController {
                 break;
             }
         }
-        sourceToken.setCounter(sourceToken.getCounter() + diceRoll);
+        
     }
     
     private void takeFromGarage(Token sourceToken, Player sourcePlayer)
@@ -741,7 +764,6 @@ public class GeneralViewController {
                 break;
             }
         }
-        this.diceRoll = null;
     }
     
     private void removeOtherPlayerTokenFromMyStartField(Player sourcePlayer, String color)
@@ -1097,7 +1119,7 @@ public class GeneralViewController {
             if(player.getTokenById(tokenID) != null) break;
         }
        
-            if(color.equals(tokenColor))
+            if(color.equalsIgnoreCase(tokenColor))
                 return false;
             else 
                 return true;

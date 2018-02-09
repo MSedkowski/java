@@ -55,11 +55,11 @@ public class Field {
                 break;
             }
             case 7: {
-                setIsRedEndField(true);
+                setIsYellowEndField(true);
                 break;
             }
             case 8: {
-                setIsYellowEndField(true);
+                setIsRedEndField(true);
                 break;
             }
             case 9: {
@@ -71,11 +71,11 @@ public class Field {
                 break;
             }
             case 11: {
-                setIsRedGarageField(true);
+                setIsYellowGarageField(true);
                 break;
             }
             case 12: {
-                setIsYellowGarageField(true);
+                setIsRedGarageField(true);
                 break;
             }
             default : {
