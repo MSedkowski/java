@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.text.Font?>
+
+
+<AnchorPane id="AnchorPane" prefHeight="400.0" prefWidth="600.0" xmlns:fx="http://javafx.com/fxml/1" xmlns="http://javafx.com/javafx/8.0.102" fx:controller="ludo.view.WinningScreenController">
+   <children>
+      <Label layoutX="199.0" layoutY="45.0" text="Gratulacje">
+         <font>
+            <Font name="System Bold Italic" size="42.0" />
+         </font>
+      </Label>
+      <Label fx:id="winningPlayer" layoutX="199.0" layoutY="138.0">
+         <font>
+            <Font name="System Bold Italic" size="42.0" />
+         </font>
+      </Label>
+      <Label layoutX="169.0" layoutY="246.0" text="Zwyciężyłeś!!">
+         <font>
+            <Font name="System Bold Italic" size="42.0" />
+         </font>
+      </Label>
+      <Button layoutX="284.0" layoutY="344.0" mnemonicParsing="false" onAction="#handleOK" text="OK" />
+   </children>
+</AnchorPane>

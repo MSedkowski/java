@@ -8,6 +8,7 @@ import javafx.scene.layout.AnchorPane;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 import ludo.view.GeneralViewController;
+import ludo.view.WinningScreenController;
 
 /**
  *
@@ -26,7 +27,7 @@ public class Chinczyk extends Application{
         this.listOfPlayers.addPlayer(new Player("Tomek", "yellow"));
         this.listOfPlayers.addPlayer(new Player("Piotr", "red"));
         this.board = new Board(listOfPlayers);
-        
+       
         showGeneralView();
     }
     
@@ -48,6 +49,7 @@ public class Chinczyk extends Application{
             // Set the person into the controller.
             GeneralViewController controller = loader.getController();
             controller.setChinczyk(this, board, listOfPlayers);
+            controller.setEnterStage(generalStage);
 
             // Show the dialog and wait until the user closes it
             generalStage.show();
@@ -56,6 +58,35 @@ public class Chinczyk extends Application{
         }
 
     }
+    
+    public void showWinner(String name, String color) {
+        try {
+            // Load the fxml file and create a new stage for the popup dialog.
+            FXMLLoader loader = new FXMLLoader();
+            loader.setLocation(Chinczyk.class.getResource("./view/WinningScreen.fxml"));
+            AnchorPane winner = (AnchorPane) loader.load();
+
+            // Create the dialog Stage.
+            Stage winningStage = new Stage();
+            winningStage.setTitle("Game");
+            winningStage.initModality(Modality.WINDOW_MODAL);
+            winningStage.initOwner(primaryStage);
+            Scene scene = new Scene(winner);
+            winningStage.setScene(scene);
+
+            // Set the person into the controller.
+            WinningScreenController controller = loader.getController();
+            controller.setStage(winningStage);
+            controller.setWinner(name, color);
+
+            // Show the dialog and wait until the user closes it
+            winningStage.show();
+
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+    
     public static void main(String[] args) {
         launch(args);
     }

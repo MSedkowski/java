@@ -8,6 +8,7 @@ import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.image.ImageView;
+import javafx.stage.Stage;
 import ludo.Board;
 import ludo.Chinczyk;
 import ludo.Field;
@@ -203,6 +204,8 @@ public class GeneralViewController {
     private final List<Button> greenButtons = new ArrayList<>();
     private final List<Button> yellowButtons = new ArrayList<>();
     private final List<Button> redButtons = new ArrayList<>();
+    private Stage gameStage;
+    
     public void initialize() {
         
     }    
@@ -232,6 +235,9 @@ public class GeneralViewController {
         initializeListOfFields();
    }
     
+    public void setEnterStage(Stage gameStage) {
+        this.gameStage = gameStage;
+    }
     public void createListOfButtons()
     {
         this.listOfButtons = new ArrayList<>();
@@ -441,7 +447,7 @@ public class GeneralViewController {
                 }
                 else 
                 {
-                    //takeToWinningField(sourceField, sourceToken, sourcePlayer);
+                    takeToWinningField(sourceField, sourceToken, sourcePlayer);
                     this.diceRoll = null;
                     setActive(sourcePlayer.getColor());
                     this.diceRollButton.setDisable(false);
@@ -450,11 +456,103 @@ public class GeneralViewController {
         }
     }
     
+    private void takeToWinningField(Field sourceField, Token sourceToken, Player sourcePlayer)
+    {
+        String color = sourcePlayer.getColor();
+        int index = sourceField.getNumber();
+        sourceField.setIsOccupied(false);
+        sourceField.setTokenID(null);
+        listOfButtons.get(index).setDisable(true);
+        listOfButtons.get(index).setOpacity(0);
+        switch(color) {
+            case "blue": {
+                for(int i = 43; i > 39; i--) {
+                    Field winningField = board.getListOfFields().get(i);
+                    if(!winningField.isIsOccupied()) {
+                        sourceToken.setFieldNumber(winningField.getNumber());
+                        winningField.setTokenID(sourceToken.getId());
+                        winningField.setIsOccupied(true);
+                        listOfButtons.get(winningField.getNumber()).setOpacity(1);
+                        listOfButtons.get(winningField.getNumber()).setStyle("-fx-base: #0090FF; "
+                    + "-fx-background-radius: 50%;");
+                        if(i == 40)
+                            showWinningScreen(sourcePlayer);
+                        else 
+                            break;
+                    }
+                }
+                break;
+            }
+            case "green": {
+                for(int i = 47; i > 43; i--) {
+                    Field winningField = board.getListOfFields().get(i);
+                    if(!winningField.isIsOccupied()) {
+                        sourceToken.setFieldNumber(winningField.getNumber());
+                        winningField.setTokenID(sourceToken.getId());
+                        winningField.setIsOccupied(true);
+                        listOfButtons.get(winningField.getNumber()).setOpacity(1);
+                        listOfButtons.get(winningField.getNumber()).setStyle("-fx-base: #00B200; "
+                    + "-fx-background-radius: 50%;");
+                        if(i == 44)
+                            showWinningScreen(sourcePlayer);
+                        else 
+                            break;
+                    }
+                }
+                break;
+            }
+            case "yellow": {
+                for(int i = 51; i > 47; i--) {
+                    Field winningField = board.getListOfFields().get(i);
+                    if(!winningField.isIsOccupied()) {
+                        sourceToken.setFieldNumber(winningField.getNumber());
+                        winningField.setTokenID(sourceToken.getId());
+                        winningField.setIsOccupied(true);
+                        listOfButtons.get(winningField.getNumber()).setOpacity(1);
+                        listOfButtons.get(winningField.getNumber()).setStyle("-fx-base: #F6C900; "
+                    + "-fx-background-radius: 50%;");
+                        if(i == 48)
+                            showWinningScreen(sourcePlayer);
+                        else 
+                            break;
+                    }
+                }
+                break;
+            }
+            case "red": {
+                for(int i = 55; i > 51; i--) {
+                    Field winningField = board.getListOfFields().get(i);
+                    if(!winningField.isIsOccupied()) {
+                        sourceToken.setFieldNumber(winningField.getNumber());
+                        winningField.setTokenID(sourceToken.getId());
+                        winningField.setIsOccupied(true);
+                        listOfButtons.get(winningField.getNumber()).setOpacity(1);
+                        listOfButtons.get(winningField.getNumber()).setStyle("-fx-base: #DE0600; "
+                    + "-fx-background-radius: 50%;");
+                        if(i == 52)
+                            showWinningScreen(sourcePlayer);
+                        else 
+                            break;
+                    }
+                }
+                break;
+            }
+        }
+    }
+    
+    private void showWinningScreen(Player sourcePlayer)
+    {
+        String color = sourcePlayer.getColor();
+        String name = sourcePlayer.getName();
+        chinczyk.showWinner(name, color);
+        gameStage.close();
+    }
+    
     private void makeMove(Field sourceField, Token sourceToken, Player sourcePlayer)
     {
         int index = 0;
         if(sourceField.getNumber() + diceRoll > 39)
-            index = sourceField.getNumber() + diceRoll - 38;
+            index = sourceField.getNumber() + diceRoll - 40;
         else 
             index = sourceField.getNumber() + diceRoll;
         String color = sourcePlayer.getColor();

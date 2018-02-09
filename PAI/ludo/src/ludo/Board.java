@@ -28,16 +28,15 @@ public class Board {
                 this.listOfFields.add(new Field(number)); //Zwykłe
             }
         }
-        
         //Końcowe
-        for (int i = 5; i < 9; i++, number++) {
+        for (int i = 5; i < 9; i++) {
             for (int j = 0; j < 4; j++, number++) {
                 this.listOfFields.add(new Field(number, i));
             }
         }
         
         //Garaże
-        for (int i = 9; i < 13; i++, number++) {
+        for (int i = 9; i < 13; i++) {
             for (int j = 0; j < 4; j++, number++) {
                 this.listOfFields.add(new Field(number, i));
             }
