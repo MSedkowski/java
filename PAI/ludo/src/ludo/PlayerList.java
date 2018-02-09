@@ -34,4 +34,12 @@ public class PlayerList {
     public Player getPlayer(int number) {
         return this.playerList.get(number);
     }
+    
+    public Player searchPlayerByName(String name) {
+        for(Player player : this.playerList) {
+            if(player.getName().equalsIgnoreCase(name))
+                return player;
+        }
+        return null;
+    }
 }

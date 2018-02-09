@@ -10,7 +10,7 @@ import javafx.scene.control.Label;
 import javafx.scene.image.ImageView;
 import javafx.stage.Stage;
 import ludo.Board;
-import ludo.Chinczyk;
+import ludo.client.Chinczyk;
 import ludo.Field;
 import ludo.Player;
 import ludo.PlayerList;
