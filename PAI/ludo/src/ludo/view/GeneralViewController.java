@@ -415,7 +415,6 @@ public class GeneralViewController {
         Field sourceField = buttonMap.get(source);
         int index = board.getListOfFields().indexOf(sourceField) + diceRoll;
         int tokenID = sourceField.getTokenID();
-        System.out.println(sourceField.getTokenID());
         Player sourcePlayer = null;
         Token sourceToken = null;
         for (Player player : listOfPlayers.getPlayerList())
