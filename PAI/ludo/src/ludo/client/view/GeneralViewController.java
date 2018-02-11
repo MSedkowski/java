@@ -1,8 +1,5 @@
 package ludo.client.view;
 
-import java.io.DataInputStream;
-import java.io.IOException;
-import java.net.Socket;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -13,7 +10,6 @@ import javafx.scene.control.Label;
 import javafx.scene.image.ImageView;
 import javafx.stage.Stage;
 import ludo.common.Board;
-import ludo.client.Chinczyk;
 import ludo.client.Client;
 import ludo.common.Field;
 import ludo.common.Player;
@@ -200,7 +196,6 @@ public class GeneralViewController {
     private Board board;
     private PlayerList listOfPlayers;
     private Integer diceRoll;
-    private Chinczyk chinczyk;
     private HashMap<Button, Field> buttonMap;
     private List<Button> listOfButtons;
     private final int blueTokens[] = {0,57,58,59};
@@ -468,8 +463,12 @@ public class GeneralViewController {
                     source.setDisable(true);
                     source.setOpacity(0);
                     sourceField.setIsOccupied(false);
+                    sourceField.setTokenID(null);
+                    buttonMap.get(listOfButtons.get(sourceField.getNumber())).setIsOccupied(false);
+                    buttonMap.get(listOfButtons.get(sourceField.getNumber())).setTokenID(null);
                     takeFromGarage(sourceToken, sourcePlayer);
                     this.diceRoll = null;
+                    this.rollDiceLabel.setText(" ");
                     setNextActive(sourcePlayer.getColor());
                     this.diceRollButton.setDisable(false);
                     Request request;
@@ -495,6 +494,7 @@ public class GeneralViewController {
                         removeOtherTokenFromEndField(sourceField);
                         makeMove(sourceField, sourceToken, sourcePlayer);
                         this.diceRoll = null;
+                        this.rollDiceLabel.setText(" ");
                         setNextActive(sourcePlayer.getColor());
                         this.diceRollButton.setDisable(false);
                         Request request;
@@ -516,6 +516,7 @@ public class GeneralViewController {
                 {
                     takeToWinningField(sourceField, sourceToken, sourcePlayer);
                     this.diceRoll = null;
+                    this.rollDiceLabel.setText(" ");
                     setNextActive(sourcePlayer.getColor());
                     this.diceRollButton.setDisable(false);
                     Request request;
@@ -546,6 +547,8 @@ public class GeneralViewController {
         else 
             index = sourceField.getNumber() + diceRoll;
         Field endField = board.getListOfFields().get(index);
+        buttonMap.get(listOfButtons.get(sourceField.getNumber())).setIsOccupied(false);
+        buttonMap.get(listOfButtons.get(sourceField.getNumber())).setTokenID(null);
         if(endField.isIsOccupied()) {
             String endFieldTokenColor = null;
             Integer endFieldTokenID = endField.getTokenID();
@@ -566,6 +569,8 @@ public class GeneralViewController {
                             endToken.setIsOnTheField(false);
                             garage.setTokenID(endToken.getId());
                             garage.setIsOccupied(true);
+                            buttonMap.get(listOfButtons.get(garage.getNumber())).setIsOccupied(true);
+                            buttonMap.get(listOfButtons.get(garage.getNumber())).setTokenID(endToken.getId());
                             listOfButtons.get(garage.getNumber()).setDisable(false);
                             listOfButtons.get(garage.getNumber()).setOpacity(1);
                             listOfButtons.get(garage.getNumber()).setStyle("-fx-base: #0090FF; "
@@ -584,6 +589,8 @@ public class GeneralViewController {
                             endToken.setIsOnTheField(false);
                             garage.setTokenID(endToken.getId());
                             garage.setIsOccupied(true);
+                            buttonMap.get(listOfButtons.get(garage.getNumber())).setIsOccupied(true);
+                            buttonMap.get(listOfButtons.get(garage.getNumber())).setTokenID(endToken.getId());
                             listOfButtons.get(garage.getNumber()).setDisable(false);
                             listOfButtons.get(garage.getNumber()).setOpacity(1);
                             listOfButtons.get(garage.getNumber()).setStyle("-fx-base: #00B200; "
@@ -602,6 +609,8 @@ public class GeneralViewController {
                             endToken.setIsOnTheField(false);
                             garage.setTokenID(endToken.getId());
                             garage.setIsOccupied(true);
+                            buttonMap.get(listOfButtons.get(garage.getNumber())).setIsOccupied(true);
+                            buttonMap.get(listOfButtons.get(garage.getNumber())).setTokenID(endToken.getId());
                             listOfButtons.get(garage.getNumber()).setDisable(false);
                             listOfButtons.get(garage.getNumber()).setOpacity(1);
                             listOfButtons.get(garage.getNumber()).setStyle("-fx-base: #F6C900; "
@@ -620,6 +629,8 @@ public class GeneralViewController {
                             endToken.setIsOnTheField(false);
                             garage.setTokenID(endToken.getId());
                             garage.setIsOccupied(true);
+                            buttonMap.get(listOfButtons.get(garage.getNumber())).setIsOccupied(true);
+                            buttonMap.get(listOfButtons.get(garage.getNumber())).setTokenID(endToken.getId());
                             listOfButtons.get(garage.getNumber()).setDisable(false);
                             listOfButtons.get(garage.getNumber()).setOpacity(1);
                             listOfButtons.get(garage.getNumber()).setStyle("-fx-base: #DE0600; "
@@ -669,8 +680,8 @@ public class GeneralViewController {
         int index = sourceField.getNumber();
         buttonMap.get(listOfButtons.get(index)).setIsOccupied(false);
         buttonMap.get(listOfButtons.get(index)).setTokenID(null);
-        sourceField.setIsOccupied(false);
-        sourceField.setTokenID(null);
+        board.getListOfFields().get(index).setIsOccupied(false);
+        board.getListOfFields().get(index).setTokenID(null);
         listOfButtons.get(index).setDisable(true);
         listOfButtons.get(index).setOpacity(0);
         switch(color) {
@@ -751,10 +762,8 @@ public class GeneralViewController {
     
     private void showWinningScreen(Player sourcePlayer)
     {
-        String color = sourcePlayer.getColor();
-        String name = sourcePlayer.getName();
-        chinczyk.showWinner(name, color);
-        gameStage.close();
+        Request request = new Request(106, client.getMyId());
+        client.sendRequest(request);
     }
     
     private void makeMove(Field sourceField, Token sourceToken, Player sourcePlayer)
@@ -866,6 +875,8 @@ public class GeneralViewController {
                     }
                     buttonMap.get(button0).setIsOccupied(false);
                     buttonMap.get(button0).setTokenID(null);
+                    board.getListOfFields().get(0).setIsOccupied(false);
+                    board.getListOfFields().get(0).setTokenID(null);
                     if(sourceColor.equalsIgnoreCase("green"))
                     {
                         for(Button button : greenButtons)
@@ -952,6 +963,8 @@ public class GeneralViewController {
                     }
                     buttonMap.get(button10).setIsOccupied(false);
                     buttonMap.get(button10).setTokenID(null);
+                    board.getListOfFields().get(10).setIsOccupied(false);
+                    board.getListOfFields().get(10).setTokenID(null);
                     if(sourceColor.equalsIgnoreCase("blue"))
                     {
                         for(Button button : blueButtons)
@@ -1038,6 +1051,8 @@ public class GeneralViewController {
                     }
                     buttonMap.get(button20).setIsOccupied(false);
                     buttonMap.get(button20).setTokenID(null);
+                    board.getListOfFields().get(20).setIsOccupied(false);
+                    board.getListOfFields().get(20).setTokenID(null);
                     if(sourceColor.equalsIgnoreCase("blue"))
                     {
                         for(Button button : blueButtons)
@@ -1124,6 +1139,8 @@ public class GeneralViewController {
                     }
                     buttonMap.get(button30).setIsOccupied(false);
                     buttonMap.get(button30).setTokenID(null);
+                    board.getListOfFields().get(30).setIsOccupied(false);
+                    board.getListOfFields().get(30).setTokenID(null);
                     if(sourceColor.equalsIgnoreCase("blue"))
                     {
                         for(Button button : blueButtons)

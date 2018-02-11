@@ -25,6 +25,7 @@ public class Server extends Receiver {
     private Board board;
     private int activePlayer;
     private boolean setToken = true;
+    private int winnerId;
     
     public Server(){
         super(null);
@@ -80,6 +81,11 @@ public class Server extends Receiver {
                 case 105:
                         this.listOfPlayers = (PlayerList) req.getData();
                         this.addTask(SendPlayerList);
+                        break;
+                case 106:
+                        this.winnerId = (int) req.getData();
+                        this.addTask(SendResult);
+                        break;
 		default:
 			System.out.println("Server - Incoming request code: " + req.getCodeRequest());
 			break;
@@ -131,6 +137,10 @@ public class Server extends Receiver {
         }
         if(task == SendPlayerList) {
             Request request = new Request(506, this.listOfPlayers);
+            sendToAll(request);
+        }
+        if(task == SendResult) {
+            Request request = new Request(507, this.winnerId);
             sendToAll(request);
         }
     }

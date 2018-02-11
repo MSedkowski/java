@@ -1,6 +1,5 @@
 package ludo.client.view;
 
-import ludo.client.Chinczyk;
 import java.io.IOException;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;

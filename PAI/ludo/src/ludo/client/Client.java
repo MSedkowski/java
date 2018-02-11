@@ -90,6 +90,18 @@ public class Client {
             case 506:
                 ScreenController.getScreenController().getGeneralViewController().setPlayerList((PlayerList) request.getData());
                 break;
+            case 507:
+                ScreenController.getScreenController().getWinningStage().setTitle(name);
+                ScreenController.getScreenController().getGeneralStage().close();
+                if(this.myId == (int) request.getData()){
+                    ScreenController.getScreenController().showResultScreen();
+                    ScreenController.getScreenController().getWinningStageController().setWinner("Zwycięstwo!", this.color.toString());
+                }
+                else {
+                    ScreenController.getScreenController().showResultScreen();
+                    ScreenController.getScreenController().getWinningStageController().setWinner("Porażka!", this.color.toString());
+                }
+                break;
         }
     }
     

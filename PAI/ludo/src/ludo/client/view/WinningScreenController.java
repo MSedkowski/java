@@ -35,9 +35,9 @@ public class WinningScreenController implements Initializable {
         this.winningStage = winningStage;
     }
     
-    public void setWinner(String name, String color) {
-        winningPlayer.setText(name);
-        switch(color) {
+    public void setWinner(String text, String color) {
+        winningPlayer.setText(text);
+        switch(color.toLowerCase()) {
             case "blue": {
                 winningPlayer.setTextFill(Color.BLUE);
                 break;

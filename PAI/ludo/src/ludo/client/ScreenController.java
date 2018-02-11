@@ -14,6 +14,7 @@ import javafx.stage.Modality;
 import javafx.stage.Stage;
 import ludo.client.view.EnterScreenController;
 import ludo.client.view.GeneralViewController;
+import ludo.client.view.WinningScreenController;
 
 /**
  *
@@ -24,12 +25,14 @@ public class ScreenController {
     
     private Stage enterStage;
     private Stage generalStage;
+    private Stage winningStage;
     
     private AnimationTimer gameTimer;
     private Controller controller;
     
     private EnterScreenController enterScreenController;
     private GeneralViewController generalViewController;
+    private WinningScreenController winningScreenController;
     
     public void init(AnimationTimer timer, Controller controller, Stage primaryStage) {
 	this.controller = controller;
@@ -73,6 +76,22 @@ public class ScreenController {
             this.generalViewController = loader.getController();
             this.generalViewController.setEnterStage(generalStage, controller.getClient());
             
+            loader = new FXMLLoader();
+            loader.setLocation(this.getClass().getResource("./view/WinningScreen.fxml"));
+            AnchorPane winner = (AnchorPane) loader.load();
+
+            // Create the dialog Stage.
+            this.winningStage = new Stage();
+            winningStage.setTitle(" ");
+            winningStage.initModality(Modality.WINDOW_MODAL);
+            winningStage.initOwner(primaryStage);
+            Scene resultScene = new Scene(winner);
+            winningStage.setScene(resultScene);
+
+            // Set the person into the controller.
+            this.winningScreenController = loader.getController();
+            this.winningScreenController.setStage(winningStage);
+            
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -87,6 +106,10 @@ public class ScreenController {
 
     public void showGame() {
         this.generalStage.show();
+    }
+    
+    public void showResultScreen() {
+        this.winningStage.show();
     }
     
     public Stage getEnterStage() {
@@ -127,6 +150,22 @@ public class ScreenController {
 
     public void setGeneralViewController(GeneralViewController generalViewController) {
         this.generalViewController = generalViewController;
+    }
+
+    public WinningScreenController getWinningStageController() {
+        return winningScreenController;
+    }
+
+    public void setWinningStageController(WinningScreenController winningStageController) {
+        this.winningScreenController = winningStageController;
+    }
+
+    public Stage getWinningStage() {
+        return winningStage;
+    }
+
+    public void setWinningStage(Stage winningStage) {
+        this.winningStage = winningStage;
     }
     
     
