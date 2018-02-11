@@ -1,5 +1,5 @@
 
-package ludo;
+package ludo.common;
 
 /**
  *

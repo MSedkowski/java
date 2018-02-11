@@ -1,5 +1,6 @@
-package ludo;
+package ludo.common;
 
+import java.io.Serializable;
 import static java.lang.Math.abs;
 import java.util.Random;
 
@@ -7,7 +8,7 @@ import java.util.Random;
  *
  * @author Mateusz
  */
-public class Token {
+public class Token implements Serializable{
     private int id;
     private boolean isOnTheField = false;
     private boolean isInGarage = true;

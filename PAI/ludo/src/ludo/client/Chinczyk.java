@@ -1,14 +1,23 @@
-package ludo;
+package ludo.client;
 
+import java.io.DataInputStream;
+import java.io.DataOutputStream;
 import java.io.IOException;
+import java.net.Socket;
+import java.net.UnknownHostException;
+import java.util.Queue;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
 import javafx.scene.layout.AnchorPane;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
-import ludo.view.GeneralViewController;
-import ludo.view.WinningScreenController;
+import ludo.common.Board;
+import ludo.common.Player;
+import ludo.common.PlayerList;
+import ludo.client.view.EnterScreenController;
+import ludo.client.view.GeneralViewController;
+import ludo.client.view.WinningScreenController;
 
 /**
  *
@@ -17,18 +26,28 @@ import ludo.view.WinningScreenController;
 public class Chinczyk extends Application{
 
     private Stage primaryStage;
+    private PlayerList playerList;
+    private String hostName = "localhost";
+    private int portNumber = 4444;
+    Socket echoSocket;
+    private String color;
+    private String name;
+    private int actualPlayer;
     private Board board;
     private PlayerList listOfPlayers;
+
     @Override
     public void start(Stage stage) {
-        this.listOfPlayers = new PlayerList();
-        this.listOfPlayers.addPlayer(new Player("Mateusz", "blue"));
-        this.listOfPlayers.addPlayer(new Player("Michal", "green"));
-        this.listOfPlayers.addPlayer(new Player("Tomek", "yellow"));
-        this.listOfPlayers.addPlayer(new Player("Piotr", "red"));
-        this.board = new Board(listOfPlayers);
-       
-        showGeneralView();
+        
+    }
+    
+    public Chinczyk(PlayerList listOfPlayers) {
+        this.listOfPlayers = listOfPlayers;
+    }
+    
+    
+    public void setName(String name) {
+        this.name = name;
     }
     
     public void showGeneralView() {
@@ -48,7 +67,7 @@ public class Chinczyk extends Application{
 
             // Set the person into the controller.
             GeneralViewController controller = loader.getController();
-            controller.setChinczyk(this, board, listOfPlayers);
+            controller.setChinczyk(this, listOfPlayers, echoSocket, this.color);
             controller.setEnterStage(generalStage);
 
             // Show the dialog and wait until the user closes it
@@ -87,8 +106,8 @@ public class Chinczyk extends Application{
         }
     }
     
-    public static void main(String[] args) {
-        launch(args);
+    public int getActualPlayer(){
+        return actualPlayer;
     }
-    
+   
 }

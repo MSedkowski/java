@@ -1,6 +1,7 @@
 
-package ludo;
+package ludo.common;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -8,17 +9,18 @@ import java.util.List;
  *
  * @author Mateusz
  */
-public class Player {
+public class Player implements Serializable{
     private String color;
     private List<Token> tokenList;
     private boolean isMyTurn = false;
     private String name;
+    private Integer id;
 
     public Player(String name, String color) {
         this.name = name;
         this.color = color;
         this.tokenList = new ArrayList<>(); //Tworzę nową listę pionków
-        //Dodaję cztery pionki do listy
+        //Dodaje cztery pionki do listy
         for (int i = 0; i < 4; i++) {
             tokenList.add(new Token());
         }
@@ -64,4 +66,14 @@ public class Player {
         }
         return null;
     }
+
+    public Integer getId() {
+        return id;
+    }
+
+    public void setId(Integer id) {
+        this.id = id;
+    }
+    
+    
 }

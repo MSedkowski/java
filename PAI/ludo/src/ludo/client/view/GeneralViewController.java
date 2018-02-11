@@ -1,5 +1,8 @@
-package ludo.view;
+package ludo.client.view;
 
+import java.io.DataInputStream;
+import java.io.IOException;
+import java.net.Socket;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -9,12 +12,13 @@ import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.image.ImageView;
 import javafx.stage.Stage;
-import ludo.Board;
-import ludo.Chinczyk;
-import ludo.Field;
-import ludo.Player;
-import ludo.PlayerList;
-import ludo.Token;
+import ludo.common.Board;
+import ludo.client.Chinczyk;
+import ludo.client.Client;
+import ludo.common.Field;
+import ludo.common.Player;
+import ludo.common.PlayerList;
+import ludo.common.Token;
 
 /**
  * FXML Controller class
@@ -205,15 +209,18 @@ public class GeneralViewController {
     private final List<Button> yellowButtons = new ArrayList<>();
     private final List<Button> redButtons = new ArrayList<>();
     private Stage gameStage;
+    private Socket echoSocket;
+    private String myColor;
+    private Client client;
     
     public void initialize() {
-        
     }    
     
-    public void setChinczyk(Chinczyk chinczyk, Board board, PlayerList listOfPlayers) {
+    public void setChinczyk(Chinczyk chinczyk, PlayerList listOfPlayers, Socket echoSocket, String myColor) throws IOException {
         this.chinczyk = chinczyk;
-        this.board = board;
         this.listOfPlayers = listOfPlayers;
+        this.myColor = myColor;
+        this.echoSocket = echoSocket;
         this.blueButtons.add(button56);
         this.blueButtons.add(button57);
         this.blueButtons.add(button58);
@@ -231,12 +238,14 @@ public class GeneralViewController {
         this.redButtons.add(button70);
         this.redButtons.add(button71);
         createListOfButtons();
-        initializeListOfPlayers();
-        initializeListOfFields();
+        //initializeListOfPlayers();
+        //initializeListOfFields();
    }
     
-    public void setEnterStage(Stage gameStage) {
+    
+    public void setEnterStage(Stage gameStage, Client client) {
         this.gameStage = gameStage;
+        this.client = client;
     }
     public void createListOfButtons()
     {
@@ -323,31 +332,41 @@ public class GeneralViewController {
         this.listOfButtons.add(button71);
     }
     
-    public void initializeListOfPlayers()
+    public void initializeListOfPlayers(PlayerList listOfPlayers)
     {
+        this.listOfPlayers = listOfPlayers;
         this.bluePlayer.setText(listOfPlayers.getPlayer(0).getName());
-        this.greenPlayer.setText(listOfPlayers.getPlayer(1).getName());
-        this.yellowPlayer.setText(listOfPlayers.getPlayer(2).getName());
-        this.redPlayer.setText(listOfPlayers.getPlayer(3).getName());
+        if(listOfPlayers.getPlayerList().size() > 1 && listOfPlayers.getPlayer(1) != null)
+            this.greenPlayer.setText(listOfPlayers.getPlayer(1).getName());
+        if(listOfPlayers.getPlayerList().size() > 2 && listOfPlayers.getPlayer(2) != null)
+            this.yellowPlayer.setText(listOfPlayers.getPlayer(2).getName());
+        if(listOfPlayers.getPlayerList().size() > 3 && listOfPlayers.getPlayer(3) != null)
+            this.redPlayer.setText(listOfPlayers.getPlayer(3).getName());
         listOfPlayers.getPlayer(0).setIsMyTurn(true);
         this.bluePlayerArrow.setVisible(true);
     }
     
     public void initializeListOfFields()
     {
-        this.buttonMap = new HashMap<>();
         int i = 0;
-        for(Field field : board.getListOfFields())
-        {
-            this.buttonMap.put(listOfButtons.get(i), field);
-            i++;
-        }
+        
         for (i = 0; i < 72; i++)
         {
             listOfButtons.get(i).opacityProperty().set(0);
             listOfButtons.get(i).setDisable(true);
         }
+        if(this.listOfPlayers.getPlayerList().size() == 4) {
+        this.board = new Board(listOfPlayers);
+        this.buttonMap = new HashMap<>();
+        i = 0;
+        for(Field field : board.getListOfFields())
+        {
+            this.buttonMap.put(listOfButtons.get(i), field);
+            i++;
+        }
+        
         setTokens();  
+        }
     }
     
     public void setTokens()
@@ -676,8 +695,6 @@ public class GeneralViewController {
         chinczyk.showWinner(name, color);
         gameStage.close();
     }
-    
-    
     
     private void makeMove(Field sourceField, Token sourceToken, Player sourcePlayer)
     {

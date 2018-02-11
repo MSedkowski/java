@@ -1,6 +1,7 @@
 
-package ludo;
+package ludo.common;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -8,7 +9,7 @@ import java.util.List;
  *
  * @author Mateusz
  */
-public class PlayerList {
+public class PlayerList implements Serializable {
     private List<Player> playerList = new ArrayList<>();
     
     public PlayerList(){
@@ -33,5 +34,13 @@ public class PlayerList {
     
     public Player getPlayer(int number) {
         return this.playerList.get(number);
+    }
+    
+    public Player searchPlayerByName(String name) {
+        for(Player player : this.playerList) {
+            if(player.getName().equalsIgnoreCase(name))
+                return player;
+        }
+        return null;
     }
 }
