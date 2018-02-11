@@ -12,7 +12,9 @@ import java.util.ArrayDeque;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Queue;
+import javafx.scene.control.Button;
 import ludo.client.view.GeneralViewController;
+import ludo.common.Board;
 import ludo.common.PlayerList;
 /**
  *
@@ -30,6 +32,7 @@ public class Client {
     private int port;
 
     private Queue<Request> listRequest;
+    private boolean myTurn = false;
     public Client( InetAddress inetAddress, int port ) {
 	this.hostName = inetAddress.getHostName();
 	this.port = port;
@@ -52,16 +55,41 @@ public class Client {
     @SuppressWarnings("unchecked")
     private void handleTheRequest(Request request){
         switch (request.getCodeRequest()){
-            case 500:
+            case 500: //Ustawienie graczy i wyświetlenie gry
                 ScreenController.getScreenController().getEnterStage().close();
+                ScreenController.getScreenController().getGeneralStage().setTitle(name);
                 ScreenController.getScreenController().showGame();
                 ScreenController.getScreenController().getGeneralViewController().createListOfButtons();
                 ScreenController.getScreenController().getGeneralViewController().initializeListOfPlayers((PlayerList) request.getData());
                 ScreenController.getScreenController().getGeneralViewController().initializeListOfFields();
                 if(color == null) {
-                    color = PlayerColor.valueOf(((PlayerList) request.getData()).getPlayerList().size());
+                    color = PlayerColor.valueOf(((PlayerList) request.getData()).getPlayerList().size()-1);
+                    System.out.print(color);
                 }
-                break; 
+                break;
+            case 501: //Ustawienie żetonów na planszy
+                ScreenController.getScreenController().getGeneralViewController().setTokens();
+                break;
+            case 503: //Ustawienie identyfikatora
+                this.myId = (int) request.getData();
+                break;
+            case 504: //Ustawienie aktywnego gracza
+                if(this.color.toString().equalsIgnoreCase((String) request.getData())) {
+                    ScreenController.getScreenController().getGeneralViewController().setActivePlayer(this.color.toString());
+                    this.myTurn = true;
+                }
+                else {
+                    ScreenController.getScreenController().getGeneralViewController().setActivePlayer((String) request.getData());
+                    this.myTurn = false;
+                }
+                System.out.println(myTurn);
+                break;
+            case 505:
+                ScreenController.getScreenController().getGeneralViewController().setBoard((Board) request.getData());
+                break;
+            case 506:
+                ScreenController.getScreenController().getGeneralViewController().setPlayerList((PlayerList) request.getData());
+                break;
         }
     }
     

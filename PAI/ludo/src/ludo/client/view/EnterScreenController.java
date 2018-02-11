@@ -56,7 +56,6 @@ public class EnterScreenController {
             Request sendName = new Request(100, nameField.getText());
             client.sendRequest(sendName);
             client.setName(nameField.getText());
-            //enterStage.close();
         }
     }
     

@@ -1,11 +1,13 @@
 
 package ludo.common;
 
+import java.io.Serializable;
+
 /**
  *
  * @author Mateusz
  */
-public class Field {
+public class Field implements Serializable{
     
     private boolean isOccupied = false;
     private Integer number;

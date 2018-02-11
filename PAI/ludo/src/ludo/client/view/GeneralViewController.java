@@ -18,6 +18,7 @@ import ludo.client.Client;
 import ludo.common.Field;
 import ludo.common.Player;
 import ludo.common.PlayerList;
+import ludo.common.Request;
 import ludo.common.Token;
 
 /**
@@ -49,6 +50,8 @@ public class GeneralViewController {
     private ImageView yellowPlayerArrow;
     @FXML 
     private ImageView redPlayerArrow;
+    @FXML
+    private Button skipTurnButton;
     @FXML 
     private Button button0;
     @FXML 
@@ -209,39 +212,12 @@ public class GeneralViewController {
     private final List<Button> yellowButtons = new ArrayList<>();
     private final List<Button> redButtons = new ArrayList<>();
     private Stage gameStage;
-    private Socket echoSocket;
-    private String myColor;
     private Client client;
+    private boolean activeTurn;
     
     public void initialize() {
     }    
-    
-    public void setChinczyk(Chinczyk chinczyk, PlayerList listOfPlayers, Socket echoSocket, String myColor) throws IOException {
-        this.chinczyk = chinczyk;
-        this.listOfPlayers = listOfPlayers;
-        this.myColor = myColor;
-        this.echoSocket = echoSocket;
-        this.blueButtons.add(button56);
-        this.blueButtons.add(button57);
-        this.blueButtons.add(button58);
-        this.blueButtons.add(button59);
-        this.greenButtons.add(button60);
-        this.greenButtons.add(button61);
-        this.greenButtons.add(button62);
-        this.greenButtons.add(button63);
-        this.yellowButtons.add(button64);
-        this.yellowButtons.add(button65);
-        this.yellowButtons.add(button66);
-        this.yellowButtons.add(button67);
-        this.redButtons.add(button68);
-        this.redButtons.add(button69);
-        this.redButtons.add(button70);
-        this.redButtons.add(button71);
-        createListOfButtons();
-        //initializeListOfPlayers();
-        //initializeListOfFields();
-   }
-    
+        
     
     public void setEnterStage(Stage gameStage, Client client) {
         this.gameStage = gameStage;
@@ -355,6 +331,8 @@ public class GeneralViewController {
             listOfButtons.get(i).opacityProperty().set(0);
             listOfButtons.get(i).setDisable(true);
         }
+        this.diceRollButton.setDisable(true);
+        this.skipTurnButton.setDisable(true);
         if(this.listOfPlayers.getPlayerList().size() == 4) {
         this.board = new Board(listOfPlayers);
         this.buttonMap = new HashMap<>();
@@ -364,13 +342,31 @@ public class GeneralViewController {
             this.buttonMap.put(listOfButtons.get(i), field);
             i++;
         }
-        
-        setTokens();  
+        if(this.client.getMyId() == 3) {
+            Request request = new Request(101, this.board);
+            client.sendRequest(request);
+        }
         }
     }
     
     public void setTokens()
     {
+        this.blueButtons.add(button56);
+        this.blueButtons.add(button57);
+        this.blueButtons.add(button58);
+        this.blueButtons.add(button59);
+        this.greenButtons.add(button60);
+        this.greenButtons.add(button61);
+        this.greenButtons.add(button62);
+        this.greenButtons.add(button63);
+        this.yellowButtons.add(button64);
+        this.yellowButtons.add(button65);
+        this.yellowButtons.add(button66);
+        this.yellowButtons.add(button67);
+        this.redButtons.add(button68);
+        this.redButtons.add(button69);
+        this.redButtons.add(button70);
+        this.redButtons.add(button71);
         
         for(int i = 0; i < 4; i++)
         {
@@ -400,7 +396,22 @@ public class GeneralViewController {
             listOfButtons.get(redTokens[i]).setDisable(false);
             listOfButtons.get(redTokens[i]).setOpacity(1);
         }
-        
+        Request request = new Request(102, 0);
+        client.sendRequest(request);
+    }
+    
+    public void setActivePlayer(String color) {
+        setActive(color);
+        if(client.getColor().toString().equalsIgnoreCase(color)) {
+            this.activeTurn = true;
+            this.diceRollButton.setDisable(false);
+            this.skipTurnButton.setDisable(false);
+        }
+        else {
+            this.activeTurn = false;
+            this.diceRollButton.setDisable(true);
+            this.skipTurnButton.setDisable(true);
+        }
     }
     
     public void handleRollDiceButton(ActionEvent event) 
@@ -423,8 +434,16 @@ public class GeneralViewController {
             }
         }
         this.diceRoll = null;
-        setActive(color);
+        setNextActive(color);
         this.diceRollButton.setDisable(false);
+        Request request;
+        if(this.client.getMyId() == 3) {
+            request = new Request(103, 0);
+        }
+        else {
+            request = new Request(103, this.client.getMyId() + 1);
+        }
+        client.sendRequest(request);
     }
     
     public void handleMakeMove(ActionEvent event)
@@ -451,8 +470,21 @@ public class GeneralViewController {
                     sourceField.setIsOccupied(false);
                     takeFromGarage(sourceToken, sourcePlayer);
                     this.diceRoll = null;
-                    setActive(sourcePlayer.getColor());
+                    setNextActive(sourcePlayer.getColor());
                     this.diceRollButton.setDisable(false);
+                    Request request;
+                    
+                    request = new Request(105, this.listOfPlayers);
+                    client.sendRequest(request);
+                    request = new Request(104, this.board);
+                    client.sendRequest(request);
+                    if(this.client.getMyId() == 3) {
+                        request = new Request(103, 0);
+                    }
+                    else {
+                        request = new Request(103, this.client.getMyId() + 1);
+                    }
+                    client.sendRequest(request);
                 }
             }
             else if(sourceToken.isIsOnTheField())
@@ -463,17 +495,44 @@ public class GeneralViewController {
                         removeOtherTokenFromEndField(sourceField);
                         makeMove(sourceField, sourceToken, sourcePlayer);
                         this.diceRoll = null;
-                        setActive(sourcePlayer.getColor());
+                        setNextActive(sourcePlayer.getColor());
                         this.diceRollButton.setDisable(false);
+                        Request request;
+                
+                request = new Request(105, this.listOfPlayers);
+                client.sendRequest(request);
+                request = new Request(104, this.board);
+                client.sendRequest(request);
+                if(this.client.getMyId() == 3) {
+                    request = new Request(103, 0);
+                }
+                else {
+                    request = new Request(103, this.client.getMyId() + 1);
+                }
+                client.sendRequest(request);
                     }
                 }
                 else 
                 {
                     takeToWinningField(sourceField, sourceToken, sourcePlayer);
                     this.diceRoll = null;
-                    setActive(sourcePlayer.getColor());
+                    setNextActive(sourcePlayer.getColor());
                     this.diceRollButton.setDisable(false);
+                    Request request;
+                
+                request = new Request(105, this.listOfPlayers);
+                client.sendRequest(request);
+                request = new Request(104, this.board);
+                client.sendRequest(request);
+                if(this.client.getMyId() == 3) {
+                    request = new Request(103, 0);
                 }
+                else {
+                    request = new Request(103, this.client.getMyId() + 1);
+                }
+                client.sendRequest(request);
+                }
+                
             }
         }
         }
@@ -608,6 +667,8 @@ public class GeneralViewController {
     {
         String color = sourcePlayer.getColor();
         int index = sourceField.getNumber();
+        buttonMap.get(listOfButtons.get(index)).setIsOccupied(false);
+        buttonMap.get(listOfButtons.get(index)).setTokenID(null);
         sourceField.setIsOccupied(false);
         sourceField.setTokenID(null);
         listOfButtons.get(index).setDisable(true);
@@ -706,6 +767,8 @@ public class GeneralViewController {
         String color = sourcePlayer.getColor();
         sourceField.setTokenID(null);
         sourceField.setIsOccupied(false);
+        board.getListOfFields().get(sourceField.getNumber()).setIsOccupied(false);
+        board.getListOfFields().get(sourceField.getNumber()).setTokenID(null);
         sourceToken.setCounter(sourceToken.getCounter() + diceRoll);
         sourceToken.setFieldNumber(index);
         board.getListOfFields().get(index).setTokenID(sourceToken.getId());
@@ -748,8 +811,12 @@ public class GeneralViewController {
     
     private void setOnStartField(Token sourceToken, String color)
     {
+        board.getListOfFields().get(sourceToken.getFieldNumber()).setIsOccupied(false);
+        board.getListOfFields().get(sourceToken.getFieldNumber()).setTokenID(null);
         sourceToken.setOnStartField(color);
         board.setTokenOnStartField(sourceToken.getId());
+        listOfButtons.get(sourceToken.getFieldNumber()).setDisable(true);
+        listOfButtons.get(sourceToken.getFieldNumber()).setOpacity(0);
         switch(color) {
             case "blue": {
                 listOfButtons.get(0).setStyle("-fx-base: #0090FF; "
@@ -797,6 +864,8 @@ public class GeneralViewController {
                         sourceToken = player.getTokenById(tokenID);
                         if (sourceToken != null) break;
                     }
+                    buttonMap.get(button0).setIsOccupied(false);
+                    buttonMap.get(button0).setTokenID(null);
                     if(sourceColor.equalsIgnoreCase("green"))
                     {
                         for(Button button : greenButtons)
@@ -804,8 +873,10 @@ public class GeneralViewController {
                             if(!buttonMap.get(button).isIsOccupied())
                             {
                                 int index = listOfButtons.indexOf(button);
-                                buttonMap.get(button).setIsOccupied(false);
+                                buttonMap.get(button).setIsOccupied(true);
                                 buttonMap.get(button).setTokenID(tokenID);
+                                board.getListOfFields().get(index).setIsOccupied(true);
+                                board.getListOfFields().get(index).setTokenID(tokenID);
                                 sourceToken.setCounter(0);
                                 sourceToken.setFieldNumber(buttonMap.get(button).getNumber());
                                 sourceToken.setIsInGarage(true);
@@ -825,8 +896,10 @@ public class GeneralViewController {
                             if(!buttonMap.get(button).isIsOccupied())
                             {
                                 int index = listOfButtons.indexOf(button);
-                                buttonMap.get(button).setIsOccupied(false);
+                                buttonMap.get(button).setIsOccupied(true);
                                 buttonMap.get(button).setTokenID(tokenID);
+                                board.getListOfFields().get(index).setIsOccupied(true);
+                                board.getListOfFields().get(index).setTokenID(tokenID);
                                 sourceToken.setCounter(0);
                                 sourceToken.setFieldNumber(buttonMap.get(button).getNumber());
                                 sourceToken.setIsInGarage(true);
@@ -846,8 +919,10 @@ public class GeneralViewController {
                             if(!buttonMap.get(button).isIsOccupied())
                             {
                                 int index = listOfButtons.indexOf(button);
-                                buttonMap.get(button).setIsOccupied(false);
+                                buttonMap.get(button).setIsOccupied(true);
                                 buttonMap.get(button).setTokenID(tokenID);
+                                board.getListOfFields().get(index).setIsOccupied(true);
+                                board.getListOfFields().get(index).setTokenID(tokenID);
                                 sourceToken.setCounter(0);
                                 sourceToken.setFieldNumber(buttonMap.get(button).getNumber());
                                 sourceToken.setIsInGarage(true);
@@ -875,6 +950,8 @@ public class GeneralViewController {
                         sourceToken = player.getTokenById(tokenID);
                         if (sourceToken != null) break;
                     }
+                    buttonMap.get(button10).setIsOccupied(false);
+                    buttonMap.get(button10).setTokenID(null);
                     if(sourceColor.equalsIgnoreCase("blue"))
                     {
                         for(Button button : blueButtons)
@@ -882,8 +959,10 @@ public class GeneralViewController {
                             if(!buttonMap.get(button).isIsOccupied())
                             {
                                 int index = listOfButtons.indexOf(button);
-                                buttonMap.get(button).setIsOccupied(false);
+                                buttonMap.get(button).setIsOccupied(true);
                                 buttonMap.get(button).setTokenID(tokenID);
+                                board.getListOfFields().get(index).setIsOccupied(true);
+                                board.getListOfFields().get(index).setTokenID(tokenID);
                                 sourceToken.setCounter(0);
                                 sourceToken.setFieldNumber(buttonMap.get(button).getNumber());
                                 sourceToken.setIsInGarage(true);
@@ -903,8 +982,10 @@ public class GeneralViewController {
                             if(!buttonMap.get(button).isIsOccupied())
                             {
                                 int index = listOfButtons.indexOf(button);
-                                buttonMap.get(button).setIsOccupied(false);
+                                buttonMap.get(button).setIsOccupied(true);
                                 buttonMap.get(button).setTokenID(tokenID);
+                                board.getListOfFields().get(index).setIsOccupied(true);
+                                board.getListOfFields().get(index).setTokenID(tokenID);
                                 sourceToken.setCounter(0);
                                 sourceToken.setFieldNumber(buttonMap.get(button).getNumber());
                                 sourceToken.setIsInGarage(true);
@@ -924,8 +1005,10 @@ public class GeneralViewController {
                             if(!buttonMap.get(button).isIsOccupied())
                             {
                                 int index = listOfButtons.indexOf(button);
-                                buttonMap.get(button).setIsOccupied(false);
+                                buttonMap.get(button).setIsOccupied(true);
                                 buttonMap.get(button).setTokenID(tokenID);
+                                board.getListOfFields().get(index).setIsOccupied(true);
+                                board.getListOfFields().get(index).setTokenID(tokenID);
                                 sourceToken.setCounter(0);
                                 sourceToken.setFieldNumber(buttonMap.get(button).getNumber());
                                 sourceToken.setIsInGarage(true);
@@ -953,6 +1036,8 @@ public class GeneralViewController {
                         sourceToken = player.getTokenById(tokenID);
                         if (sourceToken != null) break;
                     }
+                    buttonMap.get(button20).setIsOccupied(false);
+                    buttonMap.get(button20).setTokenID(null);
                     if(sourceColor.equalsIgnoreCase("blue"))
                     {
                         for(Button button : blueButtons)
@@ -960,8 +1045,10 @@ public class GeneralViewController {
                             if(!buttonMap.get(button).isIsOccupied())
                             {
                                 int index = listOfButtons.indexOf(button);
-                                buttonMap.get(button).setIsOccupied(false);
+                                buttonMap.get(button).setIsOccupied(true);
                                 buttonMap.get(button).setTokenID(tokenID);
+                                board.getListOfFields().get(index).setIsOccupied(true);
+                                board.getListOfFields().get(index).setTokenID(tokenID);
                                 sourceToken.setCounter(0);
                                 sourceToken.setFieldNumber(buttonMap.get(button).getNumber());
                                 sourceToken.setIsInGarage(true);
@@ -981,8 +1068,10 @@ public class GeneralViewController {
                             if(!buttonMap.get(button).isIsOccupied())
                             {
                                 int index = listOfButtons.indexOf(button);
-                                buttonMap.get(button).setIsOccupied(false);
+                                buttonMap.get(button).setIsOccupied(true);
                                 buttonMap.get(button).setTokenID(tokenID);
+                                board.getListOfFields().get(index).setIsOccupied(true);
+                                board.getListOfFields().get(index).setTokenID(tokenID);
                                 sourceToken.setCounter(0);
                                 sourceToken.setFieldNumber(buttonMap.get(button).getNumber());
                                 sourceToken.setIsInGarage(true);
@@ -1002,8 +1091,10 @@ public class GeneralViewController {
                             if(!buttonMap.get(button).isIsOccupied())
                             {
                                 int index = listOfButtons.indexOf(button);
-                                buttonMap.get(button).setIsOccupied(false);
+                                buttonMap.get(button).setIsOccupied(true);
                                 buttonMap.get(button).setTokenID(tokenID);
+                                board.getListOfFields().get(index).setIsOccupied(true);
+                                board.getListOfFields().get(index).setTokenID(tokenID);
                                 sourceToken.setCounter(0);
                                 sourceToken.setFieldNumber(buttonMap.get(button).getNumber());
                                 sourceToken.setIsInGarage(true);
@@ -1031,6 +1122,8 @@ public class GeneralViewController {
                         sourceToken = player.getTokenById(tokenID);
                         if (sourceToken != null) break;
                     }
+                    buttonMap.get(button30).setIsOccupied(false);
+                    buttonMap.get(button30).setTokenID(null);
                     if(sourceColor.equalsIgnoreCase("blue"))
                     {
                         for(Button button : blueButtons)
@@ -1038,8 +1131,10 @@ public class GeneralViewController {
                             if(!buttonMap.get(button).isIsOccupied())
                             {
                                 int index = listOfButtons.indexOf(button);
-                                buttonMap.get(button).setIsOccupied(false);
+                                buttonMap.get(button).setIsOccupied(true);
                                 buttonMap.get(button).setTokenID(tokenID);
+                                board.getListOfFields().get(index).setIsOccupied(true);
+                                board.getListOfFields().get(index).setTokenID(tokenID);
                                 sourceToken.setCounter(0);
                                 sourceToken.setFieldNumber(buttonMap.get(button).getNumber());
                                 sourceToken.setIsInGarage(true);
@@ -1059,8 +1154,10 @@ public class GeneralViewController {
                             if(!buttonMap.get(button).isIsOccupied())
                             {
                                 int index = listOfButtons.indexOf(button);
-                                buttonMap.get(button).setIsOccupied(false);
+                                buttonMap.get(button).setIsOccupied(true);
                                 buttonMap.get(button).setTokenID(tokenID);
+                                board.getListOfFields().get(index).setIsOccupied(true);
+                                board.getListOfFields().get(index).setTokenID(tokenID);
                                 sourceToken.setCounter(0);
                                 sourceToken.setFieldNumber(buttonMap.get(button).getNumber());
                                 sourceToken.setIsInGarage(true);
@@ -1082,6 +1179,8 @@ public class GeneralViewController {
                                 int index = listOfButtons.indexOf(button);
                                 buttonMap.get(button).setIsOccupied(true);
                                 buttonMap.get(button).setTokenID(tokenID);
+                                board.getListOfFields().get(index).setIsOccupied(true);
+                                board.getListOfFields().get(index).setTokenID(tokenID);
                                 sourceToken.setCounter(0);
                                 sourceToken.setFieldNumber(buttonMap.get(button).getNumber());
                                 sourceToken.setIsInGarage(true);
@@ -1144,9 +1243,9 @@ public class GeneralViewController {
             return true;
     }
     
-    public void setActive(String color)
+    public void setNextActive(String color)
     {
-        switch(color)
+        switch(color.toLowerCase())
         {
             case "blue": {
                 this.listOfPlayers.getPlayer(0).setIsMyTurn(false);
@@ -1179,4 +1278,93 @@ public class GeneralViewController {
         }
     }
     
+    public void setActive(String color)
+    {
+        this.listOfPlayers.getPlayer(0).setIsMyTurn(false);
+        this.listOfPlayers.getPlayer(1).setIsMyTurn(false);
+        this.listOfPlayers.getPlayer(2).setIsMyTurn(false);
+        this.listOfPlayers.getPlayer(3).setIsMyTurn(false);
+        this.bluePlayerArrow.setVisible(false);
+        this.greenPlayerArrow.setVisible(false);
+        this.yellowPlayerArrow.setVisible(false);
+        this.redPlayerArrow.setVisible(false);
+        switch(color.toLowerCase())
+        {
+            case "blue": {
+                this.listOfPlayers.getPlayer(0).setIsMyTurn(true);
+                this.bluePlayerArrow.setVisible(true);
+                break;
+            }
+            case "green": {
+                this.listOfPlayers.getPlayer(1).setIsMyTurn(true);
+                this.greenPlayerArrow.setVisible(true);
+                break;
+            }
+            case "yellow": {
+                this.listOfPlayers.getPlayer(2).setIsMyTurn(true);
+                this.yellowPlayerArrow.setVisible(true);
+                break;
+            }
+            case "red": {
+                this.listOfPlayers.getPlayer(3).setIsMyTurn(true);
+                this.redPlayerArrow.setVisible(true);
+                break;
+            }
+        }
+    }
+
+    public void setPlayerList(PlayerList listOfPlayers) {
+        this.listOfPlayers = listOfPlayers;
+    }
+    
+    public void setBoard(Board board) {
+        this.board = board;
+        for(Button button : listOfButtons) {
+            button.setDisable(true);
+            button.setOpacity(0);
+        }
+        for(Field field : board.getListOfFields()) 
+        {
+            if(field.isIsOccupied()){
+                int tokenId = field.getTokenID();
+                int number = field.getNumber();
+                String color = null;
+                for(Player player : listOfPlayers.getPlayerList()) {
+                    color = player.getColor();
+                    if(player.getTokenById(tokenId) != null)
+                        break;
+                }
+                buttonMap.get(listOfButtons.get(number)).setIsOccupied(true);
+                buttonMap.get(listOfButtons.get(number)).setTokenID(tokenId);
+                switch(color) {
+                    case "blue":
+                        listOfButtons.get(number).setStyle("-fx-base: #0090FF; "
+                                                        + "-fx-background-radius: 50%;");
+                        listOfButtons.get(number).setDisable(false);
+                        listOfButtons.get(number).setOpacity(1);
+                        break;
+                    case "green":
+                        listOfButtons.get(number).setStyle("-fx-base: #00B200; "
+                                                        + "-fx-background-radius: 50%;");
+                        listOfButtons.get(number).setDisable(false);
+                        listOfButtons.get(number).setOpacity(1);
+                        break;
+                    case "yellow":
+                        listOfButtons.get(number).setStyle("-fx-base: #F6C900; "
+                                                        + "-fx-background-radius: 50%;");
+                        listOfButtons.get(number).setDisable(false);
+                        listOfButtons.get(number).setOpacity(1);
+                        break;
+                    case "red":
+                        listOfButtons.get(number).setStyle("-fx-base: #DE0600; "
+                                                        + "-fx-background-radius: 50%;");
+                        listOfButtons.get(number).setDisable(false);
+                        listOfButtons.get(number).setOpacity(1);
+                        break;
+                }
+            }
+        }
+    }
+    
+
 }

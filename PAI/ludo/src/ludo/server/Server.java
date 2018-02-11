@@ -4,26 +4,27 @@ package ludo.server;
  *
  * @author Mateusz
  */
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Queue;
 
 import ludo.common.Request;
-//import ludo.common.Space;
 import javafx.util.Pair;
+import ludo.common.Board;
 import ludo.common.Player;
 import ludo.common.PlayerList;
-//import ludo.client.Color;
 
 public class Server extends Receiver {
     private static final int RefreshPlayers = 0;
-    private static final int SendMove = 1;
-    private static final int SendResult = 2;
+    private static final int SetTokens = 1;
+    private static final int SetActivePlayer = 2;
+    private static final int NextActivePlayer = 3;
+    private static final int SendBoard = 4;
+    private static final int SendPlayerList = 5;
+    private static final int SendResult = 6;
     
     private PlayerList listOfPlayers;
     private static String[] colorList = {"blue", "green", "yellow", "red"};
-    //private Queue<Move> moveTosend;
-    //private Color win;
+    private Board board;
+    private int activePlayer;
+    private boolean setToken = true;
     
     public Server(){
         super(null);
@@ -58,6 +59,27 @@ public class Server extends Receiver {
 			listOfPlayers.addPlayer(new Player((String)req.getData(), colorList[listOfPlayers.getPlayerList().size()]));
 			this.addTask(RefreshPlayers);
 			break;
+                case 101:
+                        if(listOfPlayers.getPlayerList().size() == 4) {
+                            this.board = (Board) req.getData();
+                            this.addTask(SetTokens);
+                        }
+                        break;
+                case 102:
+                        this.activePlayer = (int) req.getData();
+                        this.addTask(SetActivePlayer);
+                        break;
+                case 103:
+                        this.activePlayer = (int) req.getData();
+                        this.addTask(NextActivePlayer);
+                        break;
+                case 104: 
+                        this.board = (Board) req.getData();
+                        this.addTask(SendBoard);
+                        break;
+                case 105:
+                        this.listOfPlayers = (PlayerList) req.getData();
+                        this.addTask(SendPlayerList);
 		default:
 			System.out.println("Server - Incoming request code: " + req.getCodeRequest());
 			break;
@@ -70,7 +92,47 @@ public class Server extends Receiver {
             Request request = new Request(500, this.listOfPlayers);
             sendToAll(request);
         }
-        
+        if(task == SetTokens) {
+            Request request = new Request(501, null);
+            sendToAll(request);
+        }
+        if(task == SetActivePlayer && setToken) {
+            String color = null;
+            for(Client client : this.getClientList())
+            {
+                if(client.getMyId() == this.activePlayer){
+                    
+                    color = colorList[this.activePlayer];
+                    break;
+                }
+            }
+            System.out.println(color);
+            Request request = new Request(504, color);
+            sendToAll(request);
+            setToken = false;
+        }
+        if(task == NextActivePlayer) {
+            String color = null;
+            for(Client client : this.getClientList())
+            {
+                if(client.getMyId() == this.activePlayer){
+                    
+                    color = colorList[this.activePlayer];
+                    break;
+                }
+            }
+            System.out.println(color);
+            Request request = new Request(504, color);
+            sendToAll(request);
+        }
+        if(task == SendBoard) {
+            Request request = new Request(505, this.board);
+            sendToAll(request);
+        }
+        if(task == SendPlayerList) {
+            Request request = new Request(506, this.listOfPlayers);
+            sendToAll(request);
+        }
     }
     
     private void sendToAll(Request request) {

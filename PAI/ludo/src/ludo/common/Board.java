@@ -1,5 +1,6 @@
 package ludo.common;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
@@ -8,7 +9,7 @@ import java.util.Random;
  *
  * @author Mateusz
  */
-public class Board {
+public class Board implements Serializable{
 
     private PlayerList listOfPlayers;
     private boolean isOver = false;
