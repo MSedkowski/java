@@ -16,9 +16,17 @@ public class Token implements Serializable{
     private int counter;
     private int fieldNumber;
     private static int referenceCounter = 0;
+    private String color;
 
     public Token() {
         this.counter = 0;
+        this.id = referenceCounter;
+        referenceCounter++;
+    }
+    
+    public Token(String color) {
+        this.counter = 0;
+        this.color = color;
         this.id = referenceCounter;
         referenceCounter++;
     }
@@ -71,7 +79,7 @@ public class Token implements Serializable{
         this.fieldNumber = fieldNumber;
     }
     
-    public void setOnStartField(String color) {
+    public void setOnStartField() {
         switch(color){
             case "blue": {
                 this.fieldNumber = 0;
@@ -94,6 +102,13 @@ public class Token implements Serializable{
         this.setIsInGarage(false);
         this.counter = 0;
     }
-    
+
+    public String getColor() {
+        return color;
+    }
+
+    public void setColor(String color) {
+        this.color = color;
+    }
     
 }

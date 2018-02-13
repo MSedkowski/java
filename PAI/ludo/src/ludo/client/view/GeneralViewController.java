@@ -313,7 +313,6 @@ public class GeneralViewController {
             this.yellowPlayer.setText(listOfPlayers.getPlayer(2).getName());
         if(listOfPlayers.getPlayerList().size() > 3 && listOfPlayers.getPlayer(3) != null)
             this.redPlayer.setText(listOfPlayers.getPlayer(3).getName());
-        listOfPlayers.getPlayer(0).setIsMyTurn(true);
         this.bluePlayerArrow.setVisible(true);
     }
     
@@ -328,7 +327,7 @@ public class GeneralViewController {
         }
         this.diceRollButton.setDisable(true);
         this.skipTurnButton.setDisable(true);
-        if(this.listOfPlayers.getPlayerList().size() == 4) {
+        if(this.listOfPlayers.getPlayerList().size() == 2) { //SIZE!!!!
         this.board = new Board(listOfPlayers);
         this.buttonMap = new HashMap<>();
         i = 0;
@@ -337,7 +336,7 @@ public class GeneralViewController {
             this.buttonMap.put(listOfButtons.get(i), field);
             i++;
         }
-        if(this.client.getMyId() == 3) {
+        if(this.client.getMyId() == 1) { ////////SIZE !!!!!!
             Request request = new Request(101, this.board);
             client.sendRequest(request);
         }
@@ -418,27 +417,19 @@ public class GeneralViewController {
     
     public void handleSkipTurn(ActionEvent event)
     {
-        String color = "";
-        for(Player player : listOfPlayers.getPlayerList())
-        {
-            color = player.getColor();
-            if(player.isIsMyTurn())
-            {
-                player.setIsMyTurn(false);
-                break;
-            }
-        }
+        board.nextPlayerTurn();
         this.diceRoll = null;
-        setNextActive(color);
         this.diceRollButton.setDisable(false);
         Request request;
-        if(this.client.getMyId() == 3) {
-            request = new Request(103, 0);
-        }
-        else {
-            request = new Request(103, this.client.getMyId() + 1);
-        }
-        client.sendRequest(request);
+        request = new Request(104, this.board);
+            client.sendRequest(request);
+            if(this.client.getMyId() == 3) {
+                request = new Request(103, 0);
+            }
+            else {
+                request = new Request(103, this.client.getMyId() + 1);
+            }
+            client.sendRequest(request);
     }
     
     public void handleMakeMove(ActionEvent event)
@@ -456,307 +447,23 @@ public class GeneralViewController {
             sourceToken = player.getTokenById(tokenID);
             if(sourceToken != null) break;
         }
-        if(sourcePlayer.isIsMyTurn()){
-            if(sourceToken.isIsInGarage() && (diceRoll == 1 || diceRoll == 6)){
-                if(isStartingFieldClear(sourcePlayer))
-                {
-                    source.setDisable(true);
-                    source.setOpacity(0);
-                    sourceField.setIsOccupied(false);
-                    sourceField.setTokenID(null);
-                    buttonMap.get(listOfButtons.get(sourceField.getNumber())).setIsOccupied(false);
-                    buttonMap.get(listOfButtons.get(sourceField.getNumber())).setTokenID(null);
-                    takeFromGarage(sourceToken, sourcePlayer);
-                    this.diceRoll = null;
-                    this.rollDiceLabel.setText(" ");
-                    setNextActive(sourcePlayer.getColor());
-                    this.diceRollButton.setDisable(false);
-                    Request request;
-                    
-                    request = new Request(105, this.listOfPlayers);
-                    client.sendRequest(request);
-                    request = new Request(104, this.board);
-                    client.sendRequest(request);
-                    if(this.client.getMyId() == 3) {
-                        request = new Request(103, 0);
-                    }
-                    else {
-                        request = new Request(103, this.client.getMyId() + 1);
-                    }
-                    client.sendRequest(request);
-                }
-            }
-            else if(sourceToken.isIsOnTheField())
-            {
-                if(sourceToken.getCounter() + diceRoll < 40)
-                {
-                    if(isMovePossible(sourceField, sourcePlayer)) {
-                        removeOtherTokenFromEndField(sourceField);
-                        makeMove(sourceField, sourceToken, sourcePlayer);
-                        this.diceRoll = null;
-                        this.rollDiceLabel.setText(" ");
-                        setNextActive(sourcePlayer.getColor());
-                        this.diceRollButton.setDisable(false);
-                        Request request;
-                
-                request = new Request(105, this.listOfPlayers);
-                client.sendRequest(request);
-                request = new Request(104, this.board);
-                client.sendRequest(request);
-                if(this.client.getMyId() == 3) {
-                    request = new Request(103, 0);
-                }
-                else {
-                    request = new Request(103, this.client.getMyId() + 1);
-                }
-                client.sendRequest(request);
-                    }
-                }
-                else 
-                {
-                    takeToWinningField(sourceField, sourceToken, sourcePlayer);
-                    this.diceRoll = null;
-                    this.rollDiceLabel.setText(" ");
-                    setNextActive(sourcePlayer.getColor());
-                    this.diceRollButton.setDisable(false);
-                    Request request;
-                
-                request = new Request(105, this.listOfPlayers);
-                client.sendRequest(request);
-                request = new Request(104, this.board);
-                client.sendRequest(request);
-                if(this.client.getMyId() == 3) {
-                    request = new Request(103, 0);
-                }
-                else {
-                    request = new Request(103, this.client.getMyId() + 1);
-                }
-                client.sendRequest(request);
-                }
-                
-            }
-        }
-        }
-        
-    }
-    
-    private void removeOtherTokenFromEndField(Field sourceField) {
-        int index = 0;
-        if(sourceField.getNumber() + diceRoll > 39)
-            index = sourceField.getNumber() + diceRoll - 40;
-        else 
-            index = sourceField.getNumber() + diceRoll;
-        Field endField = board.getListOfFields().get(index);
-        buttonMap.get(listOfButtons.get(sourceField.getNumber())).setIsOccupied(false);
-        buttonMap.get(listOfButtons.get(sourceField.getNumber())).setTokenID(null);
-        if(endField.isIsOccupied()) {
-            String endFieldTokenColor = null;
-            Integer endFieldTokenID = endField.getTokenID();
-            Token endToken = null;
-            for(Player player : listOfPlayers.getPlayerList()) {
-                endFieldTokenColor = player.getColor();
-                endToken = player.getTokenById(endFieldTokenID);
-                if(endToken != null)
-                    break;
-            }
-            switch(endFieldTokenColor) {
-                case "blue": {
-                    for(int i = 59; i > 55; i--) {
-                        Field garage = board.getListOfFields().get(i);
-                        if(!garage.isIsOccupied()) {
-                            endToken.setFieldNumber(garage.getNumber());
-                            endToken.setIsInGarage(true);
-                            endToken.setIsOnTheField(false);
-                            garage.setTokenID(endToken.getId());
-                            garage.setIsOccupied(true);
-                            buttonMap.get(listOfButtons.get(garage.getNumber())).setIsOccupied(true);
-                            buttonMap.get(listOfButtons.get(garage.getNumber())).setTokenID(endToken.getId());
-                            listOfButtons.get(garage.getNumber()).setDisable(false);
-                            listOfButtons.get(garage.getNumber()).setOpacity(1);
-                            listOfButtons.get(garage.getNumber()).setStyle("-fx-base: #0090FF; "
-                            + "-fx-background-radius: 50%;");
-                            break;
-                        }
-                    }
-                    break;
-                }
-                case "green": {
-                    for(int i = 63; i > 59; i--) {
-                        Field garage = board.getListOfFields().get(i);
-                        if(!garage.isIsOccupied()) {
-                            endToken.setFieldNumber(garage.getNumber());
-                            endToken.setIsInGarage(true);
-                            endToken.setIsOnTheField(false);
-                            garage.setTokenID(endToken.getId());
-                            garage.setIsOccupied(true);
-                            buttonMap.get(listOfButtons.get(garage.getNumber())).setIsOccupied(true);
-                            buttonMap.get(listOfButtons.get(garage.getNumber())).setTokenID(endToken.getId());
-                            listOfButtons.get(garage.getNumber()).setDisable(false);
-                            listOfButtons.get(garage.getNumber()).setOpacity(1);
-                            listOfButtons.get(garage.getNumber()).setStyle("-fx-base: #00B200; "
-                            + "-fx-background-radius: 50%;");
-                            break;
-                        }
-                    }
-                    break;
-                }
-                case "yellow": {
-                    for(int i = 67; i > 63; i--) {
-                        Field garage = board.getListOfFields().get(i);
-                        if(!garage.isIsOccupied()) {
-                            endToken.setFieldNumber(garage.getNumber());
-                            endToken.setIsInGarage(true);
-                            endToken.setIsOnTheField(false);
-                            garage.setTokenID(endToken.getId());
-                            garage.setIsOccupied(true);
-                            buttonMap.get(listOfButtons.get(garage.getNumber())).setIsOccupied(true);
-                            buttonMap.get(listOfButtons.get(garage.getNumber())).setTokenID(endToken.getId());
-                            listOfButtons.get(garage.getNumber()).setDisable(false);
-                            listOfButtons.get(garage.getNumber()).setOpacity(1);
-                            listOfButtons.get(garage.getNumber()).setStyle("-fx-base: #F6C900; "
-                            + "-fx-background-radius: 50%;");
-                            break;
-                        }
-                    }
-                    break;
-                }
-                case "red": {
-                    for(int i = 71; i > 67; i--) {
-                        Field garage = board.getListOfFields().get(i);
-                        if(!garage.isIsOccupied()) {
-                            endToken.setFieldNumber(garage.getNumber());
-                            endToken.setIsInGarage(true);
-                            endToken.setIsOnTheField(false);
-                            garage.setTokenID(endToken.getId());
-                            garage.setIsOccupied(true);
-                            buttonMap.get(listOfButtons.get(garage.getNumber())).setIsOccupied(true);
-                            buttonMap.get(listOfButtons.get(garage.getNumber())).setTokenID(endToken.getId());
-                            listOfButtons.get(garage.getNumber()).setDisable(false);
-                            listOfButtons.get(garage.getNumber()).setOpacity(1);
-                            listOfButtons.get(garage.getNumber()).setStyle("-fx-base: #DE0600; "
-                            + "-fx-background-radius: 50%;");
-                            break;
-                        }
-                    }
-                    break;
-                }
-            }
-        }
-    }
-    
-    private boolean isMovePossible(Field sourceField, Player sourcePlayer) {
-        String sourceColor = sourcePlayer.getColor();
-        int index = 0;
-        if(sourceField.getNumber() + diceRoll > 39)
-            index = sourceField.getNumber() + diceRoll - 40;
-        else 
-            index = sourceField.getNumber() + diceRoll;
-        String endFieldTokenColor = null;
-        Integer endFieldTokenID = null;
-        if(board.getListOfFields().get(index).isIsOccupied()) {
-            endFieldTokenID = board.getListOfFields().get(index).getTokenID();
-            for(Player player : listOfPlayers.getPlayerList()) {
-                endFieldTokenColor = player.getColor();
-                if(player.getTokenById(endFieldTokenID) != null) {
-                    break;
-                }
-            }
-        }
-        if(endFieldTokenColor != null) {
-            if(endFieldTokenColor.equalsIgnoreCase(sourceColor)) {
-                return false;
+        if(this.client.getColor().toString().equalsIgnoreCase(sourcePlayer.getColor())) {
+            if(board.makeMove(sourceToken, diceRoll)){
+            this.diceRoll = null;
+            this.rollDiceLabel.setText(" ");
+            this.diceRollButton.setDisable(false);
+            Request request;
+            request = new Request(104, this.board);
+            client.sendRequest(request);
+            if(this.client.getMyId() == 3) {
+                request = new Request(103, 0);
             }
             else {
-                return true;
+                request = new Request(103, this.client.getMyId() + 1);
             }
-        }
-        return true;
-        
-    }
-    
-    private void takeToWinningField(Field sourceField, Token sourceToken, Player sourcePlayer)
-    {
-        String color = sourcePlayer.getColor();
-        int index = sourceField.getNumber();
-        buttonMap.get(listOfButtons.get(index)).setIsOccupied(false);
-        buttonMap.get(listOfButtons.get(index)).setTokenID(null);
-        board.getListOfFields().get(index).setIsOccupied(false);
-        board.getListOfFields().get(index).setTokenID(null);
-        listOfButtons.get(index).setDisable(true);
-        listOfButtons.get(index).setOpacity(0);
-        switch(color) {
-            case "blue": {
-                for(int i = 43; i > 39; i--) {
-                    Field winningField = board.getListOfFields().get(i);
-                    if(!winningField.isIsOccupied()) {
-                        sourceToken.setFieldNumber(winningField.getNumber());
-                        winningField.setTokenID(sourceToken.getId());
-                        winningField.setIsOccupied(true);
-                        listOfButtons.get(winningField.getNumber()).setOpacity(1);
-                        listOfButtons.get(winningField.getNumber()).setStyle("-fx-base: #0090FF; "
-                    + "-fx-background-radius: 50%;");
-                        if(i == 40)
-                            showWinningScreen(sourcePlayer);
-                        else 
-                            break;
-                    }
-                }
-                break;
+            client.sendRequest(request);
             }
-            case "green": {
-                for(int i = 47; i > 43; i--) {
-                    Field winningField = board.getListOfFields().get(i);
-                    if(!winningField.isIsOccupied()) {
-                        sourceToken.setFieldNumber(winningField.getNumber());
-                        winningField.setTokenID(sourceToken.getId());
-                        winningField.setIsOccupied(true);
-                        listOfButtons.get(winningField.getNumber()).setOpacity(1);
-                        listOfButtons.get(winningField.getNumber()).setStyle("-fx-base: #00B200; "
-                    + "-fx-background-radius: 50%;");
-                        if(i == 44)
-                            showWinningScreen(sourcePlayer);
-                        else 
-                            break;
-                    }
-                }
-                break;
-            }
-            case "yellow": {
-                for(int i = 51; i > 47; i--) {
-                    Field winningField = board.getListOfFields().get(i);
-                    if(!winningField.isIsOccupied()) {
-                        sourceToken.setFieldNumber(winningField.getNumber());
-                        winningField.setTokenID(sourceToken.getId());
-                        winningField.setIsOccupied(true);
-                        listOfButtons.get(winningField.getNumber()).setOpacity(1);
-                        listOfButtons.get(winningField.getNumber()).setStyle("-fx-base: #F6C900; "
-                    + "-fx-background-radius: 50%;");
-                        if(i == 48)
-                            showWinningScreen(sourcePlayer);
-                        else 
-                            break;
-                    }
-                }
-                break;
-            }
-            case "red": {
-                for(int i = 55; i > 51; i--) {
-                    Field winningField = board.getListOfFields().get(i);
-                    if(!winningField.isIsOccupied()) {
-                        sourceToken.setFieldNumber(winningField.getNumber());
-                        winningField.setTokenID(sourceToken.getId());
-                        winningField.setIsOccupied(true);
-                        listOfButtons.get(winningField.getNumber()).setOpacity(1);
-                        listOfButtons.get(winningField.getNumber()).setStyle("-fx-base: #DE0600; "
-                    + "-fx-background-radius: 50%;");
-                        if(i == 52)
-                            showWinningScreen(sourcePlayer);
-                        else 
-                            break;
-                    }
-                }
-                break;
-            }
+        } 
         }
     }
     
@@ -766,541 +473,8 @@ public class GeneralViewController {
         client.sendRequest(request);
     }
     
-    private void makeMove(Field sourceField, Token sourceToken, Player sourcePlayer)
-    {
-        int index = 0;
-        if(sourceField.getNumber() + diceRoll > 39)
-            index = sourceField.getNumber() + diceRoll - 40;
-        else 
-            index = sourceField.getNumber() + diceRoll;
-        String color = sourcePlayer.getColor();
-        sourceField.setTokenID(null);
-        sourceField.setIsOccupied(false);
-        board.getListOfFields().get(sourceField.getNumber()).setIsOccupied(false);
-        board.getListOfFields().get(sourceField.getNumber()).setTokenID(null);
-        sourceToken.setCounter(sourceToken.getCounter() + diceRoll);
-        sourceToken.setFieldNumber(index);
-        board.getListOfFields().get(index).setTokenID(sourceToken.getId());
-        board.getListOfFields().get(index).setIsOccupied(true);
-        listOfButtons.get(sourceField.getNumber()).setOpacity(0);
-        listOfButtons.get(sourceField.getNumber()).setDisable(true);
-        listOfButtons.get(index).setOpacity(1);
-        listOfButtons.get(index).setDisable(false);
-        switch(color) {
-            case "blue": {
-                listOfButtons.get(index).setStyle("-fx-base: #0090FF; "
-                                                        + "-fx-background-radius: 50%;");
-                break;
-            }
-            case "green": {
-                listOfButtons.get(index).setStyle("-fx-base: #00B200; "
-                                                        + "-fx-background-radius: 50%;");
-                break;
-            }
-            case "yellow": {
-                listOfButtons.get(index).setStyle("-fx-base: #F6C900; "
-                                                        + "-fx-background-radius: 50%;");
-                break;
-            }
-            case "red": {
-                listOfButtons.get(index).setStyle("-fx-base: #DE0600; "
-                                                        + "-fx-background-radius: 50%;");
-                break;
-            }
-        }
-        
-    }
-    
-    private void takeFromGarage(Token sourceToken, Player sourcePlayer)
-    {
-        String color = sourcePlayer.getColor();
-        removeOtherPlayerTokenFromMyStartField(sourcePlayer, color);
-        setOnStartField(sourceToken, color);
-    }
-    
-    private void setOnStartField(Token sourceToken, String color)
-    {
-        board.getListOfFields().get(sourceToken.getFieldNumber()).setIsOccupied(false);
-        board.getListOfFields().get(sourceToken.getFieldNumber()).setTokenID(null);
-        sourceToken.setOnStartField(color);
-        board.setTokenOnStartField(sourceToken.getId());
-        listOfButtons.get(sourceToken.getFieldNumber()).setDisable(true);
-        listOfButtons.get(sourceToken.getFieldNumber()).setOpacity(0);
-        switch(color) {
-            case "blue": {
-                listOfButtons.get(0).setStyle("-fx-base: #0090FF; "
-                    + "-fx-background-radius: 50%;");
-                listOfButtons.get(0).setDisable(false);
-                listOfButtons.get(0).setOpacity(1);
-                break;
-            }
-            case "green": {
-                listOfButtons.get(10).setStyle("-fx-base: #00B200; "
-                    + "-fx-background-radius: 50%;");
-                listOfButtons.get(10).setDisable(false);
-                listOfButtons.get(10).setOpacity(1);
-                break;
-            }
-            case "yellow": {
-                listOfButtons.get(20).setStyle("-fx-base: #F6C900; "
-                    + "-fx-background-radius: 50%;");
-                listOfButtons.get(20).setDisable(false);
-                listOfButtons.get(20).setOpacity(1);
-                break;
-            }
-            case "red": {
-                listOfButtons.get(30).setStyle("-fx-base: #DE0600; "
-                    + "-fx-background-radius: 50%;");
-                listOfButtons.get(30).setDisable(false);
-                listOfButtons.get(30).setOpacity(1);
-                break;
-            }
-        }
-    }
-    
-    private void removeOtherPlayerTokenFromMyStartField(Player sourcePlayer, String color)
-    {
-        switch(color) {
-            case "blue": {
-                if(buttonMap.get(button0).isIsOccupied())
-                {
-                    Integer tokenID = buttonMap.get(button0).getTokenID();
-                    Token sourceToken = null; 
-                    String sourceColor = null;
-                    for (Player player : listOfPlayers.getPlayerList())
-                    {
-                        sourceColor = player.getColor();
-                        sourceToken = player.getTokenById(tokenID);
-                        if (sourceToken != null) break;
-                    }
-                    buttonMap.get(button0).setIsOccupied(false);
-                    buttonMap.get(button0).setTokenID(null);
-                    board.getListOfFields().get(0).setIsOccupied(false);
-                    board.getListOfFields().get(0).setTokenID(null);
-                    if(sourceColor.equalsIgnoreCase("green"))
-                    {
-                        for(Button button : greenButtons)
-                        {
-                            if(!buttonMap.get(button).isIsOccupied())
-                            {
-                                int index = listOfButtons.indexOf(button);
-                                buttonMap.get(button).setIsOccupied(true);
-                                buttonMap.get(button).setTokenID(tokenID);
-                                board.getListOfFields().get(index).setIsOccupied(true);
-                                board.getListOfFields().get(index).setTokenID(tokenID);
-                                sourceToken.setCounter(0);
-                                sourceToken.setFieldNumber(buttonMap.get(button).getNumber());
-                                sourceToken.setIsInGarage(true);
-                                sourceToken.setIsOnTheField(false);
-                                listOfButtons.get(index).setStyle("-fx-base: #00B200; "
-                                                        + "-fx-background-radius: 50%;");
-                                listOfButtons.get(index).setDisable(false);
-                                listOfButtons.get(index).setOpacity(1);
-                                break; 
-                            }
-                        }
-                    }
-                    if(sourceColor.equalsIgnoreCase("yellow"))
-                    {
-                        for(Button button : yellowButtons)
-                        {
-                            if(!buttonMap.get(button).isIsOccupied())
-                            {
-                                int index = listOfButtons.indexOf(button);
-                                buttonMap.get(button).setIsOccupied(true);
-                                buttonMap.get(button).setTokenID(tokenID);
-                                board.getListOfFields().get(index).setIsOccupied(true);
-                                board.getListOfFields().get(index).setTokenID(tokenID);
-                                sourceToken.setCounter(0);
-                                sourceToken.setFieldNumber(buttonMap.get(button).getNumber());
-                                sourceToken.setIsInGarage(true);
-                                sourceToken.setIsOnTheField(false);
-                                listOfButtons.get(index).setStyle("-fx-base: #F6C900; "
-                                                        + "-fx-background-radius: 50%;");
-                                listOfButtons.get(index).setDisable(false);
-                                listOfButtons.get(index).setOpacity(1);
-                                break; 
-                            }
-                        }
-                    }
-                    if(sourceColor.equalsIgnoreCase("red"))
-                    {
-                        for(Button button : redButtons)
-                        {
-                            if(!buttonMap.get(button).isIsOccupied())
-                            {
-                                int index = listOfButtons.indexOf(button);
-                                buttonMap.get(button).setIsOccupied(true);
-                                buttonMap.get(button).setTokenID(tokenID);
-                                board.getListOfFields().get(index).setIsOccupied(true);
-                                board.getListOfFields().get(index).setTokenID(tokenID);
-                                sourceToken.setCounter(0);
-                                sourceToken.setFieldNumber(buttonMap.get(button).getNumber());
-                                sourceToken.setIsInGarage(true);
-                                sourceToken.setIsOnTheField(false);
-                                listOfButtons.get(index).setStyle("-fx-base: #DE0600; "
-                                                        + "-fx-background-radius: 50%;");
-                                listOfButtons.get(index).setDisable(false);
-                                listOfButtons.get(index).setOpacity(1);
-                                break; 
-                            }
-                        }
-                    }
-                }
-                break;
-            }
-            case "green": {
-                if(buttonMap.get(button10).isIsOccupied())
-                {
-                    Integer tokenID = buttonMap.get(button10).getTokenID();
-                    Token sourceToken = null; 
-                    String sourceColor = null;
-                    for (Player player : listOfPlayers.getPlayerList())
-                    {
-                        sourceColor = player.getColor();
-                        sourceToken = player.getTokenById(tokenID);
-                        if (sourceToken != null) break;
-                    }
-                    buttonMap.get(button10).setIsOccupied(false);
-                    buttonMap.get(button10).setTokenID(null);
-                    board.getListOfFields().get(10).setIsOccupied(false);
-                    board.getListOfFields().get(10).setTokenID(null);
-                    if(sourceColor.equalsIgnoreCase("blue"))
-                    {
-                        for(Button button : blueButtons)
-                        {
-                            if(!buttonMap.get(button).isIsOccupied())
-                            {
-                                int index = listOfButtons.indexOf(button);
-                                buttonMap.get(button).setIsOccupied(true);
-                                buttonMap.get(button).setTokenID(tokenID);
-                                board.getListOfFields().get(index).setIsOccupied(true);
-                                board.getListOfFields().get(index).setTokenID(tokenID);
-                                sourceToken.setCounter(0);
-                                sourceToken.setFieldNumber(buttonMap.get(button).getNumber());
-                                sourceToken.setIsInGarage(true);
-                                sourceToken.setIsOnTheField(false);
-                                listOfButtons.get(index).setStyle("-fx-base: #0090FF; "
-                                                        + "-fx-background-radius: 50%;");
-                                listOfButtons.get(index).setDisable(false);
-                                listOfButtons.get(index).setOpacity(1);
-                                break; 
-                            }
-                        }
-                    }
-                    if(sourceColor.equalsIgnoreCase("yellow"))
-                    {
-                        for(Button button : yellowButtons)
-                        {
-                            if(!buttonMap.get(button).isIsOccupied())
-                            {
-                                int index = listOfButtons.indexOf(button);
-                                buttonMap.get(button).setIsOccupied(true);
-                                buttonMap.get(button).setTokenID(tokenID);
-                                board.getListOfFields().get(index).setIsOccupied(true);
-                                board.getListOfFields().get(index).setTokenID(tokenID);
-                                sourceToken.setCounter(0);
-                                sourceToken.setFieldNumber(buttonMap.get(button).getNumber());
-                                sourceToken.setIsInGarage(true);
-                                sourceToken.setIsOnTheField(false);
-                                listOfButtons.get(index).setStyle("-fx-base: #F6C900; "
-                                                        + "-fx-background-radius: 50%;");
-                                listOfButtons.get(index).setDisable(false);
-                                listOfButtons.get(index).setOpacity(1);
-                                break; 
-                            }
-                        }
-                    }
-                    if(sourceColor.equalsIgnoreCase("red"))
-                    {
-                        for(Button button : redButtons)
-                        {
-                            if(!buttonMap.get(button).isIsOccupied())
-                            {
-                                int index = listOfButtons.indexOf(button);
-                                buttonMap.get(button).setIsOccupied(true);
-                                buttonMap.get(button).setTokenID(tokenID);
-                                board.getListOfFields().get(index).setIsOccupied(true);
-                                board.getListOfFields().get(index).setTokenID(tokenID);
-                                sourceToken.setCounter(0);
-                                sourceToken.setFieldNumber(buttonMap.get(button).getNumber());
-                                sourceToken.setIsInGarage(true);
-                                sourceToken.setIsOnTheField(false);
-                                listOfButtons.get(index).setStyle("-fx-base: #DE0600; "
-                                                        + "-fx-background-radius: 50%;");
-                                listOfButtons.get(index).setDisable(false);
-                                listOfButtons.get(index).setOpacity(1);
-                                break; 
-                            }
-                        }
-                    }
-                }
-                break;
-            }
-            case "yellow": {
-                if(buttonMap.get(button20).isIsOccupied())
-                {
-                    Integer tokenID = buttonMap.get(button20).getTokenID();
-                    Token sourceToken = null; 
-                    String sourceColor = null;
-                    for (Player player : listOfPlayers.getPlayerList())
-                    {
-                        sourceColor = player.getColor();
-                        sourceToken = player.getTokenById(tokenID);
-                        if (sourceToken != null) break;
-                    }
-                    buttonMap.get(button20).setIsOccupied(false);
-                    buttonMap.get(button20).setTokenID(null);
-                    board.getListOfFields().get(20).setIsOccupied(false);
-                    board.getListOfFields().get(20).setTokenID(null);
-                    if(sourceColor.equalsIgnoreCase("blue"))
-                    {
-                        for(Button button : blueButtons)
-                        {
-                            if(!buttonMap.get(button).isIsOccupied())
-                            {
-                                int index = listOfButtons.indexOf(button);
-                                buttonMap.get(button).setIsOccupied(true);
-                                buttonMap.get(button).setTokenID(tokenID);
-                                board.getListOfFields().get(index).setIsOccupied(true);
-                                board.getListOfFields().get(index).setTokenID(tokenID);
-                                sourceToken.setCounter(0);
-                                sourceToken.setFieldNumber(buttonMap.get(button).getNumber());
-                                sourceToken.setIsInGarage(true);
-                                sourceToken.setIsOnTheField(false);
-                                listOfButtons.get(index).setStyle("-fx-base: #0090FF; "
-                                                        + "-fx-background-radius: 50%;");
-                                listOfButtons.get(index).setDisable(false);
-                                listOfButtons.get(index).setOpacity(1);
-                                break; 
-                            }
-                        }
-                    }
-                    if(sourceColor.equalsIgnoreCase("green"))
-                    {
-                        for(Button button : greenButtons)
-                        {
-                            if(!buttonMap.get(button).isIsOccupied())
-                            {
-                                int index = listOfButtons.indexOf(button);
-                                buttonMap.get(button).setIsOccupied(true);
-                                buttonMap.get(button).setTokenID(tokenID);
-                                board.getListOfFields().get(index).setIsOccupied(true);
-                                board.getListOfFields().get(index).setTokenID(tokenID);
-                                sourceToken.setCounter(0);
-                                sourceToken.setFieldNumber(buttonMap.get(button).getNumber());
-                                sourceToken.setIsInGarage(true);
-                                sourceToken.setIsOnTheField(false);
-                                listOfButtons.get(index).setStyle("-fx-base: #00B200; "
-                                                        + "-fx-background-radius: 50%;");
-                                listOfButtons.get(index).setDisable(false);
-                                listOfButtons.get(index).setOpacity(1);
-                                break; 
-                            }
-                        }
-                    }
-                    if(sourceColor.equalsIgnoreCase("red"))
-                    {
-                        for(Button button : redButtons)
-                        {
-                            if(!buttonMap.get(button).isIsOccupied())
-                            {
-                                int index = listOfButtons.indexOf(button);
-                                buttonMap.get(button).setIsOccupied(true);
-                                buttonMap.get(button).setTokenID(tokenID);
-                                board.getListOfFields().get(index).setIsOccupied(true);
-                                board.getListOfFields().get(index).setTokenID(tokenID);
-                                sourceToken.setCounter(0);
-                                sourceToken.setFieldNumber(buttonMap.get(button).getNumber());
-                                sourceToken.setIsInGarage(true);
-                                sourceToken.setIsOnTheField(false);
-                                listOfButtons.get(index).setStyle("-fx-base: #DE0600; "
-                                                        + "-fx-background-radius: 50%;");
-                                listOfButtons.get(index).setDisable(false);
-                                listOfButtons.get(index).setOpacity(1);
-                                break; 
-                            }
-                        }
-                    }
-                }
-                break;
-            }
-            case "red": {
-                if(buttonMap.get(button30).isIsOccupied())
-                {
-                    Integer tokenID = buttonMap.get(button30).getTokenID();
-                    Token sourceToken = null; 
-                    String sourceColor = null;
-                    for (Player player : listOfPlayers.getPlayerList())
-                    {
-                        sourceColor = player.getColor();
-                        sourceToken = player.getTokenById(tokenID);
-                        if (sourceToken != null) break;
-                    }
-                    buttonMap.get(button30).setIsOccupied(false);
-                    buttonMap.get(button30).setTokenID(null);
-                    board.getListOfFields().get(30).setIsOccupied(false);
-                    board.getListOfFields().get(30).setTokenID(null);
-                    if(sourceColor.equalsIgnoreCase("blue"))
-                    {
-                        for(Button button : blueButtons)
-                        {
-                            if(!buttonMap.get(button).isIsOccupied())
-                            {
-                                int index = listOfButtons.indexOf(button);
-                                buttonMap.get(button).setIsOccupied(true);
-                                buttonMap.get(button).setTokenID(tokenID);
-                                board.getListOfFields().get(index).setIsOccupied(true);
-                                board.getListOfFields().get(index).setTokenID(tokenID);
-                                sourceToken.setCounter(0);
-                                sourceToken.setFieldNumber(buttonMap.get(button).getNumber());
-                                sourceToken.setIsInGarage(true);
-                                sourceToken.setIsOnTheField(false);
-                                listOfButtons.get(index).setStyle("-fx-base: #0090FF; "
-                                                        + "-fx-background-radius: 50%;");
-                                listOfButtons.get(index).setDisable(false);
-                                listOfButtons.get(index).setOpacity(1);
-                                break; 
-                            }
-                        }
-                    }
-                    if(sourceColor.equalsIgnoreCase("green"))
-                    {
-                        for(Button button : greenButtons)
-                        {
-                            if(!buttonMap.get(button).isIsOccupied())
-                            {
-                                int index = listOfButtons.indexOf(button);
-                                buttonMap.get(button).setIsOccupied(true);
-                                buttonMap.get(button).setTokenID(tokenID);
-                                board.getListOfFields().get(index).setIsOccupied(true);
-                                board.getListOfFields().get(index).setTokenID(tokenID);
-                                sourceToken.setCounter(0);
-                                sourceToken.setFieldNumber(buttonMap.get(button).getNumber());
-                                sourceToken.setIsInGarage(true);
-                                sourceToken.setIsOnTheField(false);
-                                listOfButtons.get(index).setStyle("-fx-base: #00B200; "
-                                                        + "-fx-background-radius: 50%;");
-                                listOfButtons.get(index).setDisable(false);
-                                listOfButtons.get(index).setOpacity(1);
-                                break; 
-                            }
-                        }
-                    }
-                    if(sourceColor.equalsIgnoreCase("yellow"))
-                    {
-                        for(Button button : yellowButtons)
-                        {
-                            if(!buttonMap.get(button).isIsOccupied())
-                            {
-                                int index = listOfButtons.indexOf(button);
-                                buttonMap.get(button).setIsOccupied(true);
-                                buttonMap.get(button).setTokenID(tokenID);
-                                board.getListOfFields().get(index).setIsOccupied(true);
-                                board.getListOfFields().get(index).setTokenID(tokenID);
-                                sourceToken.setCounter(0);
-                                sourceToken.setFieldNumber(buttonMap.get(button).getNumber());
-                                sourceToken.setIsInGarage(true);
-                                sourceToken.setIsOnTheField(false);
-                                listOfButtons.get(index).setStyle("-fx-base: #F6C900; "
-                                                        + "-fx-background-radius: 50%;");
-                                listOfButtons.get(index).setDisable(false);
-                                listOfButtons.get(index).setOpacity(1);
-                                break; 
-                            }
-                        }
-                    }
-                }
-                break;
-            }
-        }
-    }
-    
-    private boolean isStartingFieldClear(Player sourcePlayer)
-    {
-        String color = sourcePlayer.getColor();
-        Integer tokenID = null;
-        switch(color) {
-            case "blue": {
-                if(this.board.getListOfFields().get(0).isIsOccupied())
-                    tokenID = this.board.getListOfFields().get(0).getTokenID();
-                break;
-            }
-            case "green": {
-                if(this.board.getListOfFields().get(10).isIsOccupied())
-                    tokenID = this.board.getListOfFields().get(10).getTokenID();
-                break;
-            }
-            case "yellow": {
-                if(this.board.getListOfFields().get(20).isIsOccupied())
-                    tokenID = this.board.getListOfFields().get(20).getTokenID();
-                break;
-            }
-            case "red": {
-                if(this.board.getListOfFields().get(30).isIsOccupied())
-                    tokenID = this.board.getListOfFields().get(30).getTokenID();
-                break;
-            }
-        }
-         if(tokenID != null)
-        {
-        String tokenColor = null;
-        for (Player player : listOfPlayers.getPlayerList())
-        {
-            tokenColor = player.getColor();
-            if(player.getTokenById(tokenID) != null) break;
-        }
-       
-            if(color.equalsIgnoreCase(tokenColor))
-                return false;
-            else 
-                return true;
-        }
-        else 
-            return true;
-    }
-    
-    public void setNextActive(String color)
-    {
-        switch(color.toLowerCase())
-        {
-            case "blue": {
-                this.listOfPlayers.getPlayer(0).setIsMyTurn(false);
-                this.listOfPlayers.getPlayer(1).setIsMyTurn(true);
-                this.bluePlayerArrow.setVisible(false);
-                this.greenPlayerArrow.setVisible(true);
-                break;
-            }
-            case "green": {
-                this.listOfPlayers.getPlayer(1).setIsMyTurn(false);
-                this.listOfPlayers.getPlayer(2).setIsMyTurn(true);
-                this.greenPlayerArrow.setVisible(false);
-                this.yellowPlayerArrow.setVisible(true);
-                break;
-            }
-            case "yellow": {
-                this.listOfPlayers.getPlayer(2).setIsMyTurn(false);
-                this.listOfPlayers.getPlayer(3).setIsMyTurn(true);
-                this.yellowPlayerArrow.setVisible(false);
-                this.redPlayerArrow.setVisible(true);
-                break;
-            }
-            case "red": {
-                this.listOfPlayers.getPlayer(3).setIsMyTurn(false);
-                this.listOfPlayers.getPlayer(0).setIsMyTurn(true);
-                this.redPlayerArrow.setVisible(false);
-                this.bluePlayerArrow.setVisible(true);
-                break;
-            }
-        }
-    }
-    
     public void setActive(String color)
     {
-        this.listOfPlayers.getPlayer(0).setIsMyTurn(false);
-        this.listOfPlayers.getPlayer(1).setIsMyTurn(false);
-        this.listOfPlayers.getPlayer(2).setIsMyTurn(false);
-        this.listOfPlayers.getPlayer(3).setIsMyTurn(false);
         this.bluePlayerArrow.setVisible(false);
         this.greenPlayerArrow.setVisible(false);
         this.yellowPlayerArrow.setVisible(false);
@@ -1308,30 +482,32 @@ public class GeneralViewController {
         switch(color.toLowerCase())
         {
             case "blue": {
-                this.listOfPlayers.getPlayer(0).setIsMyTurn(true);
                 this.bluePlayerArrow.setVisible(true);
                 break;
             }
             case "green": {
-                this.listOfPlayers.getPlayer(1).setIsMyTurn(true);
                 this.greenPlayerArrow.setVisible(true);
                 break;
             }
             case "yellow": {
-                this.listOfPlayers.getPlayer(2).setIsMyTurn(true);
                 this.yellowPlayerArrow.setVisible(true);
                 break;
             }
             case "red": {
-                this.listOfPlayers.getPlayer(3).setIsMyTurn(true);
                 this.redPlayerArrow.setVisible(true);
                 break;
             }
         }
     }
-
+    
     public void setPlayerList(PlayerList listOfPlayers) {
         this.listOfPlayers = listOfPlayers;
+        for(Player player : listOfPlayers.getPlayerList()) {
+            if(player.isIsMyTurn()) {
+                setActive(player.getColor());
+                break;
+            }
+        }
     }
     
     public void setBoard(Board board) {
@@ -1340,47 +516,36 @@ public class GeneralViewController {
             button.setDisable(true);
             button.setOpacity(0);
         }
-        for(Field field : board.getListOfFields()) 
-        {
+        for(Field field : board.getListOfFields()) {
             if(field.isIsOccupied()){
                 int tokenId = field.getTokenID();
+                String tokenColor = field.getTokenColor();
                 int number = field.getNumber();
-                String color = null;
-                for(Player player : listOfPlayers.getPlayerList()) {
-                    color = player.getColor();
-                    if(player.getTokenById(tokenId) != null)
-                        break;
-                }
                 buttonMap.get(listOfButtons.get(number)).setIsOccupied(true);
                 buttonMap.get(listOfButtons.get(number)).setTokenID(tokenId);
-                switch(color) {
+                listOfButtons.get(number).setDisable(false);
+                listOfButtons.get(number).setOpacity(1);
+                switch(tokenColor) {
                     case "blue":
                         listOfButtons.get(number).setStyle("-fx-base: #0090FF; "
                                                         + "-fx-background-radius: 50%;");
-                        listOfButtons.get(number).setDisable(false);
-                        listOfButtons.get(number).setOpacity(1);
                         break;
                     case "green":
                         listOfButtons.get(number).setStyle("-fx-base: #00B200; "
                                                         + "-fx-background-radius: 50%;");
-                        listOfButtons.get(number).setDisable(false);
-                        listOfButtons.get(number).setOpacity(1);
                         break;
                     case "yellow":
                         listOfButtons.get(number).setStyle("-fx-base: #F6C900; "
                                                         + "-fx-background-radius: 50%;");
-                        listOfButtons.get(number).setDisable(false);
-                        listOfButtons.get(number).setOpacity(1);
                         break;
                     case "red":
                         listOfButtons.get(number).setStyle("-fx-base: #DE0600; "
                                                         + "-fx-background-radius: 50%;");
-                        listOfButtons.get(number).setDisable(false);
-                        listOfButtons.get(number).setOpacity(1);
                         break;
                 }
             }
         }
+        setPlayerList(board.getListOfPlayers());
     }
     
 

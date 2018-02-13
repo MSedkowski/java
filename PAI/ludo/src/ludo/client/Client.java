@@ -87,9 +87,6 @@ public class Client {
             case 505:
                 ScreenController.getScreenController().getGeneralViewController().setBoard((Board) request.getData());
                 break;
-            case 506:
-                ScreenController.getScreenController().getGeneralViewController().setPlayerList((PlayerList) request.getData());
-                break;
             case 507:
                 ScreenController.getScreenController().getWinningStage().setTitle(name);
                 ScreenController.getScreenController().getGeneralStage().close();

@@ -61,7 +61,7 @@ public class Server extends Receiver {
 			this.addTask(RefreshPlayers);
 			break;
                 case 101:
-                        if(listOfPlayers.getPlayerList().size() == 4) {
+                        if(listOfPlayers.getPlayerList().size() == 2) {
                             this.board = (Board) req.getData();
                             this.addTask(SetTokens);
                         }
@@ -77,10 +77,7 @@ public class Server extends Receiver {
                 case 104: 
                         this.board = (Board) req.getData();
                         this.addTask(SendBoard);
-                        break;
-                case 105:
-                        this.listOfPlayers = (PlayerList) req.getData();
-                        this.addTask(SendPlayerList);
+                        this.addTask(NextActivePlayer);
                         break;
                 case 106:
                         this.winnerId = (int) req.getData();
@@ -118,25 +115,15 @@ public class Server extends Receiver {
             setToken = false;
         }
         if(task == NextActivePlayer) {
-            String color = null;
-            for(Client client : this.getClientList())
-            {
-                if(client.getMyId() == this.activePlayer){
-                    
-                    color = colorList[this.activePlayer];
-                    break;
+            for(Player player : board.getListOfPlayers().getPlayerList()) {
+                if(player.isIsMyTurn()) {
+                    Request request = new Request(504, player.getColor());
+                    sendToAll(request);
                 }
-            }
-            System.out.println(color);
-            Request request = new Request(504, color);
-            sendToAll(request);
+            }   
         }
         if(task == SendBoard) {
             Request request = new Request(505, this.board);
-            sendToAll(request);
-        }
-        if(task == SendPlayerList) {
-            Request request = new Request(506, this.listOfPlayers);
             sendToAll(request);
         }
         if(task == SendResult) {

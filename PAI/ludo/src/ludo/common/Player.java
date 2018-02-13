@@ -22,7 +22,7 @@ public class Player implements Serializable{
         this.tokenList = new ArrayList<>(); //Tworzę nową listę pionków
         //Dodaje cztery pionki do listy
         for (int i = 0; i < 4; i++) {
-            tokenList.add(new Token());
+            tokenList.add(new Token(color));
         }
     }
 
@@ -74,6 +74,5 @@ public class Player implements Serializable{
     public void setId(Integer id) {
         this.id = id;
     }
-    
     
 }

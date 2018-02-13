@@ -12,6 +12,7 @@ public class Field implements Serializable{
     private boolean isOccupied = false;
     private Integer number;
     private Integer tokenID;
+    private String tokenColor;
     
     public Field(int number) {
         this.number = number;
@@ -39,6 +40,14 @@ public class Field implements Serializable{
 
     public void setTokenID(Integer tokenID) {
         this.tokenID = tokenID;
+    }
+
+    public String getTokenColor() {
+        return tokenColor;
+    }
+
+    public void setTokenColor(String tokenColor) {
+        this.tokenColor = tokenColor;
     }
     
 }
