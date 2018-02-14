@@ -56,6 +56,10 @@ public class Board implements Serializable{
                 this.listOfFields.get(field).setTokenID(this.listOfPlayers.getPlayer(i).getTokenList().get(j).getId());
                 this.listOfFields.get(field).setIsOccupied(true);
                 this.listOfFields.get(field).setTokenColor(this.listOfPlayers.getPlayer(i).getColor());
+                Token token = this.listOfPlayers.getPlayer(i).getTokenList().get(j);
+                token.setFieldNumber(field);
+                token.setIsInGarage(true);
+                token.setIsOnTheField(false);
             }
             field++;
         }
@@ -71,7 +75,9 @@ public class Board implements Serializable{
 
     public void setTokenOnStartField(Token token)
     {
-        token.setOnStartField();
+        token.setCounter(0);
+        token.setIsInGarage(false);
+        token.setIsOnTheField(true);
         Field startField = null;
         switch(token.getColor()) {
             case "blue":{
@@ -91,6 +97,7 @@ public class Board implements Serializable{
                 break;
             }
         }
+        token.setFieldNumber(startField.getNumber());
         startField.setIsOccupied(true);
         startField.setTokenID(token.getId());
         startField.setTokenColor(token.getColor());
@@ -98,6 +105,7 @@ public class Board implements Serializable{
     
     public void moveTokenFromGarage(Token token) {
         int fieldNumber = token.getFieldNumber();
+        System.out.println("Pole: " + listOfFields.get(fieldNumber).getNumber());
         listOfFields.get(fieldNumber).setIsOccupied(false);
         listOfFields.get(fieldNumber).setTokenID(null);
         listOfFields.get(fieldNumber).setTokenColor(null);
@@ -267,29 +275,33 @@ public class Board implements Serializable{
         int field = 0;
         switch(token.getColor()) {
             case "blue": 
-                for(field = 44; field > 39; field--) {
+                for(field = 43; field > 39; field--) {
                     if(!listOfFields.get(field).isIsOccupied()){
                         break;
                     }
                 }
+                break;
             case "green": 
-                for(field = 48; field > 44; field--) {
+                for(field = 47; field > 43; field--) {
                     if(!listOfFields.get(field).isIsOccupied()){
                         break;
                     }
                 }
+                break;
             case "yellow": 
-                for(field = 52; field > 48; field--) {
+                for(field = 51; field > 47; field--) {
                     if(!listOfFields.get(field).isIsOccupied()){
                         break;
                     }
                 }
+                break;
             case "red": 
-                for(field = 56; field > 52; field--) {
+                for(field = 55; field > 51; field--) {
                     if(!listOfFields.get(field).isIsOccupied()){
                         break;
                     }
                 }
+                break;
         }
         Field endField = listOfFields.get(field);
         endField.setIsOccupied(true);
@@ -315,6 +327,19 @@ public class Board implements Serializable{
             listOfPlayers.getPlayerList().get(index + 1).setIsMyTurn(true);
     }
 
+    public boolean checkWin(String color) {
+        switch(color) {
+            case "blue": 
+                return listOfFields.get(40).isIsOccupied();
+            case "green": 
+                return listOfFields.get(44).isIsOccupied();
+            case "yellow":
+                return listOfFields.get(48).isIsOccupied();
+            case "red":
+                return listOfFields.get(52).isIsOccupied();
+        }
+        return false;
+    }
     public PlayerList getListOfPlayers() {
         return listOfPlayers;
     }

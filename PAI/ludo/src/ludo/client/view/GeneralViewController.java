@@ -202,14 +202,9 @@ public class GeneralViewController {
     private final int greenTokens[] = {10,61,62,63};
     private final int yellowTokens[] = {20,65,66,67};
     private final int redTokens[] = {30,69,70,71};
-    private final List<Button> blueButtons = new ArrayList<>();
-    private final List<Button> greenButtons = new ArrayList<>();
-    private final List<Button> yellowButtons = new ArrayList<>();
-    private final List<Button> redButtons = new ArrayList<>();
-    private Stage gameStage;
     private Client client;
+    private Stage gameStage;
     private boolean activeTurn;
-    
     public void initialize() {
     }    
         
@@ -345,23 +340,6 @@ public class GeneralViewController {
     
     public void setTokens()
     {
-        this.blueButtons.add(button56);
-        this.blueButtons.add(button57);
-        this.blueButtons.add(button58);
-        this.blueButtons.add(button59);
-        this.greenButtons.add(button60);
-        this.greenButtons.add(button61);
-        this.greenButtons.add(button62);
-        this.greenButtons.add(button63);
-        this.yellowButtons.add(button64);
-        this.yellowButtons.add(button65);
-        this.yellowButtons.add(button66);
-        this.yellowButtons.add(button67);
-        this.redButtons.add(button68);
-        this.redButtons.add(button69);
-        this.redButtons.add(button70);
-        this.redButtons.add(button71);
-        
         for(int i = 0; i < 4; i++)
         {
             listOfButtons.get(blueTokens[i]).setStyle("-fx-base: #0090FF; "
@@ -376,6 +354,7 @@ public class GeneralViewController {
             listOfButtons.get(greenTokens[i]).setDisable(false);
             listOfButtons.get(greenTokens[i]).setOpacity(1);
         }
+        if(listOfPlayers.getPlayerList().size() >= 3){
         for(int i = 0; i < 4; i++)
         {
             listOfButtons.get(yellowTokens[i]).setStyle("-fx-base: #F6C900; "
@@ -383,12 +362,15 @@ public class GeneralViewController {
             listOfButtons.get(yellowTokens[i]).setDisable(false);
             listOfButtons.get(yellowTokens[i]).setOpacity(1);
         }
+        }
+        if(listOfPlayers.getPlayerList().size() >= 4){
         for(int i = 0; i < 4; i++)
         {
             listOfButtons.get(redTokens[i]).setStyle("-fx-base: #DE0600; "
                     + "-fx-background-radius: 50%;");
             listOfButtons.get(redTokens[i]).setDisable(false);
             listOfButtons.get(redTokens[i]).setOpacity(1);
+        }
         }
         Request request = new Request(102, 0);
         client.sendRequest(request);
@@ -449,10 +431,16 @@ public class GeneralViewController {
         }
         if(this.client.getColor().toString().equalsIgnoreCase(sourcePlayer.getColor())) {
             if(board.makeMove(sourceToken, diceRoll)){
-            this.diceRoll = null;
+                Request request;
+                if(board.checkWin(sourcePlayer.getColor())) {
+                    request = new Request(106, this.client.getMyId());
+                    client.sendRequest(request);
+                }
+                else {
+                     this.diceRoll = null;
             this.rollDiceLabel.setText(" ");
             this.diceRollButton.setDisable(false);
-            Request request;
+            
             request = new Request(104, this.board);
             client.sendRequest(request);
             if(this.client.getMyId() == 3) {
@@ -463,6 +451,8 @@ public class GeneralViewController {
             }
             client.sendRequest(request);
             }
+                }
+           
         } 
         }
     }
