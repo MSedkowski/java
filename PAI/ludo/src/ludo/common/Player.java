@@ -15,6 +15,7 @@ public class Player implements Serializable{
     private boolean isMyTurn = false;
     private String name;
     private Integer id;
+    private boolean ready = false;
 
     public Player(String name, String color) {
         this.name = name;
@@ -74,5 +75,14 @@ public class Player implements Serializable{
     public void setId(Integer id) {
         this.id = id;
     }
+
+    public boolean isReady() {
+        return ready;
+    }
+
+    public void setReady(boolean ready) {
+        this.ready = ready;
+    }
+    
     
 }

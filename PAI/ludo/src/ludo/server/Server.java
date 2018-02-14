@@ -19,6 +19,7 @@ public class Server extends Receiver {
     private static final int SendBoard = 4;
     private static final int SendPlayerList = 5;
     private static final int SendResult = 6;
+    private static final int StartGame = 7;
     
     private PlayerList listOfPlayers;
     private static String[] colorList = {"blue", "green", "yellow", "red"};
@@ -61,10 +62,8 @@ public class Server extends Receiver {
 			this.addTask(RefreshPlayers);
 			break;
                 case 101:
-                        if(listOfPlayers.getPlayerList().size() == 2) {
-                            this.board = (Board) req.getData();
-                            this.addTask(SetTokens);
-                        }
+                        this.board = (Board) req.getData();
+                        this.addTask(SetTokens);
                         break;
                 case 102:
                         this.activePlayer = (int) req.getData();
@@ -82,6 +81,10 @@ public class Server extends Receiver {
                 case 106:
                         this.winnerId = (int) req.getData();
                         this.addTask(SendResult);
+                        break;
+                case 107:
+                        this.listOfPlayers.searchPlayerByName(((Player) req.getData()).getName()).setReady(true);
+                        this.addTask(StartGame);
                         break;
 		default:
 			System.out.println("Server - Incoming request code: " + req.getCodeRequest());
@@ -130,6 +133,25 @@ public class Server extends Receiver {
             Request request = new Request(507, this.winnerId);
             sendToAll(request);
         }
+        if(task == StartGame) {
+            if(this.listOfPlayers.getPlayerList().size() > 1) {
+                if(allReady()) {
+                    Request request = new Request(508, null);
+                    sendToAll(request);
+                }
+            }
+        }
+    }
+    
+    private boolean allReady() {
+        boolean ready = true;
+        for(Player player : listOfPlayers.getPlayerList()) {
+            if(!player.isReady()) {
+                ready = false;
+                break;
+            }
+        }
+        return ready;
     }
     
     private void sendToAll(Request request) {

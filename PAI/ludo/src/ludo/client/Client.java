@@ -27,7 +27,7 @@ public class Client {
     private int myId;
     private PlayerColor color;
     private String name;
-
+    private int gameSize;
     private String hostName;   
     private int port;
 
@@ -99,6 +99,9 @@ public class Client {
                     ScreenController.getScreenController().getWinningStageController().setWinner("Porażka!", this.color.toString());
                 }
                 break;
+            case 508:
+                ScreenController.getScreenController().getGeneralViewController().initializeBoard();
+                break;
         }
     }
     
@@ -163,6 +166,9 @@ public class Client {
     public void setName(String text) {
         this.name = text;
     }
-    
 
+    public String getName() {
+        return name;
+    }
+    
 }

@@ -192,6 +192,8 @@ public class GeneralViewController {
     private Button button70;
     @FXML 
     private Button button71;
+    @FXML 
+    private Button startGameButton;
 
     private Board board;
     private PlayerList listOfPlayers;
@@ -322,19 +324,20 @@ public class GeneralViewController {
         }
         this.diceRollButton.setDisable(true);
         this.skipTurnButton.setDisable(true);
-        if(this.listOfPlayers.getPlayerList().size() == 2) { //SIZE!!!!
+    }
+    
+    public void initializeBoard() {
         this.board = new Board(listOfPlayers);
         this.buttonMap = new HashMap<>();
-        i = 0;
+        int i = 0;
         for(Field field : board.getListOfFields())
         {
             this.buttonMap.put(listOfButtons.get(i), field);
             i++;
         }
-        if(this.client.getMyId() == 1) { ////////SIZE !!!!!!
+        if(this.client.getMyId() == listOfPlayers.getPlayerList().size() - 1) { 
             Request request = new Request(101, this.board);
             client.sendRequest(request);
-        }
         }
     }
     
@@ -395,6 +398,12 @@ public class GeneralViewController {
         this.diceRoll = board.rollDice();
         this.rollDiceLabel.setText("" + diceRoll);
         this.diceRollButton.setDisable(true);
+    }
+    
+    public void handleStartGame(ActionEvent event) {
+        Request request = new Request(107, this.listOfPlayers.searchPlayerByName(this.client.getName()));
+        client.sendRequest(request);
+        this.startGameButton.setDisable(true);
     }
     
     public void handleSkipTurn(ActionEvent event)

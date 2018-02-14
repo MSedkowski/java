@@ -856,6 +856,11 @@
                         <Font size="53.0" />
                      </font>
                   </Label>
+                  <Button fx:id="startGameButton" layoutY="528.0" mnemonicParsing="false" onAction="#handleStartGame" prefHeight="37.0" prefWidth="196.0" text="Start gry">
+                     <font>
+                        <Font size="16.0" />
+                     </font>
+                  </Button>
                </children></AnchorPane>
         </items>
       </SplitPane>
